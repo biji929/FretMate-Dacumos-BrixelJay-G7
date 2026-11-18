@@ -189,15 +189,19 @@
                             </div>
                         </div>
 
-                        {% if chord.id in mastered_ids %}
-                            <span class="text-xs font-semibold px-2 py-1 rounded bg-green-100 dark:bg-green-900/60 text-green-700 dark:text-green-300">
-                                ✓ Mastered
-                            </span>
-                        {% elif chord.id in learning_ids %}
-                            <span class="text-xs font-semibold px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+                        <!-- Interactive Learning / Mastered Toggle Buttons -->
+                        <div class="chord-progress-controls flex items-center gap-1" data-chord-id="{{ chord.id }}">
+                            <button type="button" onclick="setChordStatus({{ chord.id }}, 'Learning')"
+                                class="progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition {% if chord.id in learning_ids %}bg-blue-600 text-white border-blue-600 shadow-sm{% else %}bg-transparent text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 border-gray-200 dark:border-gray-700{% endif %}"
+                                title="Toggle Learning status">
                                 ⏳ Learning
-                            </span>
-                        {% endif %}
+                            </button>
+                            <button type="button" onclick="setChordStatus({{ chord.id }}, 'Mastered')"
+                                class="progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition {% if chord.id in mastered_ids %}bg-emerald-600 text-white border-emerald-600 shadow-sm{% else %}bg-transparent text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 border-gray-200 dark:border-gray-700{% endif %}"
+                                title="Toggle Mastered status">
+                                ✓ Mastered
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Fretboard SVG Container -->
@@ -420,6 +424,63 @@
                 card.style.display = name.includes(query) ? '' : 'none';
             });
         });
+    }
+
+    // Interactive Chord Progress Toggle (AJAX)
+    function setChordStatus(chordId, targetStatus) {
+        const container = document.querySelector(`.chord-progress-controls[data-chord-id="${chordId}"]`);
+        if (!container) return;
+        const learningBtn = container.querySelector('.progress-btn-learning');
+        const masteredBtn = container.querySelector('.progress-btn-mastered');
+
+        let isCurrentlyActive = false;
+        if (targetStatus === 'Learning' && learningBtn.classList.contains('bg-blue-600')) isCurrentlyActive = true;
+        if (targetStatus === 'Mastered' && masteredBtn.classList.contains('bg-emerald-600')) isCurrentlyActive = true;
+
+        const newStatus = isCurrentlyActive ? 'None' : targetStatus;
+
+        fetch('{% url "api_chord_progress" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({
+                chord_id: chordId,
+                status: newStatus
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                if (newStatus === 'Learning') {
+                    learningBtn.className = 'progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-blue-600 text-white border-blue-600 shadow-sm';
+                    masteredBtn.className = 'progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 border-gray-200 dark:border-gray-700';
+                } else if (newStatus === 'Mastered') {
+                    masteredBtn.className = 'progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-emerald-600 text-white border-emerald-600 shadow-sm';
+                    learningBtn.className = 'progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 border-gray-200 dark:border-gray-700';
+                } else {
+                    learningBtn.className = 'progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 border-gray-200 dark:border-gray-700';
+                    masteredBtn.className = 'progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 border-gray-200 dark:border-gray-700';
+                }
+            }
+        })
+        .catch(err => console.error('Error updating chord progress:', err));
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
     }
 </script>
 {% endblock %}

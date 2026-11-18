@@ -86,6 +86,7 @@
                             <th class="px-5 py-3">Weekly Goal</th>
                             <th class="px-5 py-3">Contact</th>
                             <th class="px-5 py-3">Joined Date</th>
+                            <th class="px-5 py-3 text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
@@ -107,6 +108,11 @@
                                 <td class="px-5 py-3.5 font-medium text-gray-700 dark:text-gray-300">{{ student.weekly_goal_minutes }} mins/wk</td>
                                 <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 text-xs">{{ student.contact_number|default:"—" }}</td>
                                 <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 text-xs">{{ student.created_at|date:"M d, Y" }}</td>
+                                <td class="px-5 py-3.5 text-right">
+                                    <a href="{% url 'instructor_student_detail' student.user.id %}" class="inline-flex items-center gap-1 px-3 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:hover:bg-purple-900/60 dark:text-purple-300 text-xs font-bold rounded-lg border border-purple-200 dark:border-purple-800 transition">
+                                        View Progress →
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

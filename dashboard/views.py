@@ -1,5 +1,6 @@
+import json
 from functools import wraps
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import login, get_user_model
@@ -152,6 +153,37 @@ def dashboard_instructor(request):
         'total_sessions': total_sessions,
         'students': students,
         'recent_activity': recent_activity,
+    })
+
+@role_required([UserProfile.ROLE_INSTRUCTOR])
+def instructor_student_detail(request, student_id):
+    student = get_object_or_404(User, id=student_id)
+    profile = getattr(student, 'profile', None)
+
+    sessions = PracticeSession.objects.filter(user=student).order_by('-date', '-id')
+    total_minutes = sessions.aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0
+    total_sessions = sessions.count()
+
+    progress_qs = UserChordProgress.objects.filter(user=student).select_related('chord')
+    mastered_chords = [p.chord for p in progress_qs if p.status == 'Mastered']
+    learning_chords = [p.chord for p in progress_qs if p.status == 'Learning']
+
+    focus_breakdown = {
+        'Chords': sessions.filter(focus_area='Chords').aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0,
+        'Songs': sessions.filter(focus_area='Songs').aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0,
+        'Scales': sessions.filter(focus_area='Scales').aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0,
+        'Rhythm': sessions.filter(focus_area='Rhythm').aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0,
+    }
+
+    return render(request, 'instructor_student_detail.html', {
+        'student': student,
+        'profile': profile,
+        'sessions': sessions,
+        'total_minutes': total_minutes,
+        'total_sessions': total_sessions,
+        'mastered_chords': mastered_chords,
+        'learning_chords': learning_chords,
+        'focus_breakdown': focus_breakdown,
     })
 
 @login_required
@@ -362,6 +394,50 @@ def library(request):
         'key_chords': key_chords,
         'common_progressions': common_progressions,
     })
+
+@require_POST
+@login_required
+def api_chord_progress(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+    except Exception:
+        data = request.POST
+
+    chord_id = data.get('chord_id')
+    status = data.get('status')
+
+    if not chord_id:
+        return JsonResponse({'status': 'error', 'message': 'chord_id is required'}, status=400)
+
+    try:
+        chord = Chord.objects.get(id=chord_id)
+    except Chord.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Chord not found'}, status=404)
+
+    if status in ['Learning', 'Mastered']:
+        progress, _ = UserChordProgress.objects.update_or_create(
+            user=request.user,
+            chord=chord,
+            defaults={'status': status}
+        )
+        return JsonResponse({
+            'status': 'success',
+            'chord_id': chord.id,
+            'chord_name': chord.name,
+            'status': progress.status,
+            'message': f'"{chord.name}" marked as {progress.status}!'
+        })
+    elif status in ['None', '', 'reset']:
+        UserChordProgress.objects.filter(user=request.user, chord=chord).delete()
+        return JsonResponse({
+            'status': 'success',
+            'chord_id': chord.id,
+            'chord_name': chord.name,
+            'status': None,
+            'message': f'"{chord.name}" progress reset.'
+        })
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid status. Choose Learning, Mastered, or None.'}, status=400)
 
 @login_required
 def songs(request):

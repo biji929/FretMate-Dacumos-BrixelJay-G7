@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="space-y-8 max-w-6xl mx-auto">
+    <!-- Header with Back Link -->
+    <div class="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-800">
+        <div class="flex items-center gap-4">
+            <a href="{% url 'dashboard_instructor' %}" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                ←
+            </a>
+            <div>
+                <h1 class="text-2xl font-black text-gray-900 dark:text-white">
+                    Student Progress: {{ student.first_name|default:student.username }} {{ student.last_name }}
+                </h1>
+                <p class="text-xs text-gray-400">@{{ student.username }} · Joined {{ student.date_joined|date:"M d, Y" }}</p>
+            </div>
+        </div>
+        <span class="px-3 py-1 text-xs font-bold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200 border border-purple-200 dark:border-purple-800">
+            Student Overview
+        </span>
+    </div>
+
+    <!-- Student Profile & KPIs Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Student Info Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 p-6 shadow-sm space-y-4">
+            <div class="flex items-center gap-3">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-xl font-bold">
+                    {{ student.first_name|default:student.username|slice:":1"|upper }}
+                </div>
+                <div>
+                    <h2 class="font-bold text-gray-900 dark:text-white text-lg">{{ student.first_name }} {{ student.last_name }}</h2>
+                    <p class="text-xs text-gray-400">{{ student.email|default:"No email recorded" }}</p>
+                </div>
+            </div>
+
+            <div class="space-y-2 text-xs pt-3 border-t border-gray-100 dark:border-gray-700/60">
+                <div class="flex justify-between py-1">
+                    <span class="text-gray-400">Skill Level</span>
+                    <span class="font-semibold text-gray-800 dark:text-gray-200">{{ profile.skill_level|default:"Beginner" }}</span>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span class="text-gray-400">Weekly Goal</span>
+                    <span class="font-semibold text-gray-800 dark:text-gray-200">{{ profile.weekly_goal_minutes|default:120 }} mins/wk</span>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span class="text-gray-400">Contact Number</span>
+                    <span class="font-semibold text-gray-800 dark:text-gray-200">{{ profile.contact_number|default:"—" }}</span>
+                </div>
+            </div>
+
+            {% if profile.bio %}
+            <div class="pt-3 border-t border-gray-100 dark:border-gray-700/60">
+                <p class="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Student Bio</p>
+                <p class="text-xs text-gray-600 dark:text-gray-300 italic">{{ profile.bio }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- 2 Summary Cards -->
+        <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 p-5 shadow-sm">
+                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Total Practice Logged</span>
+                <p class="text-3xl font-black mt-2 text-blue-600 dark:text-blue-400">{{ total_minutes }} <span class="text-sm font-medium text-gray-500">mins</span></p>
+                <p class="text-xs text-gray-400 mt-1">Across {{ total_sessions }} logged sessions</p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 p-5 shadow-sm">
+                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Chord Progress</span>
+                <p class="text-3xl font-black mt-2 text-green-600 dark:text-green-400">{{ mastered_chords|length }} <span class="text-sm font-medium text-gray-500">Mastered</span></p>
+                <p class="text-xs text-gray-400 mt-1">{{ learning_chords|length }} currently learning</p>
+            </div>
+
+            <!-- Focus Area Breakdown -->
+            <div class="sm:col-span-2 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 p-5 shadow-sm">
+                <span class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 block">Practice Focus Distribution</span>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                    <div class="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800/40">
+                        <p class="text-xs text-blue-600 dark:text-blue-300 font-semibold">Chords</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-white mt-1">{{ focus_breakdown.Chords }}m</p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800/40">
+                        <p class="text-xs text-emerald-600 dark:text-emerald-300 font-semibold">Songs</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-white mt-1">{{ focus_breakdown.Songs }}m</p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-900/30 border border-amber-100 dark:border-amber-800/40">
+                        <p class="text-xs text-amber-600 dark:text-amber-300 font-semibold">Scales</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-white mt-1">{{ focus_breakdown.Scales }}m</p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-rose-50 dark:bg-rose-900/30 border border-rose-100 dark:border-rose-800/40">
+                        <p class="text-xs text-rose-600 dark:text-rose-300 font-semibold">Rhythm</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-white mt-1">{{ focus_breakdown.Rhythm }}m</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mastered & Learning Chords -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Mastered Chords -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 p-5 shadow-sm">
+            <h2 class="text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <span class="text-green-500">✓</span> Mastered Chords ({{ mastered_chords|length }})
+            </h2>
+            {% if mastered_chords %}
+                <div class="flex flex-wrap gap-2">
+                    {% for chord in mastered_chords %}
+                        <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-green-50 dark:bg-green-900/40 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800">
+                            {{ chord.name }}
+                        </span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-xs text-gray-400">No chords mastered yet.</p>
+            {% endif %}
+        </div>
+
+        <!-- Learning Chords -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 p-5 shadow-sm">
+            <h2 class="text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <span class="text-blue-500">⏳</span> Currently Learning ({{ learning_chords|length }})
+            </h2>
+            {% if learning_chords %}
+                <div class="flex flex-wrap gap-2">
+                    {% for chord in learning_chords %}
+                        <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                            {{ chord.name }}
+                        </span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-xs text-gray-400">No chords marked as learning.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Practice Session Log Table -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between">
+            <h2 class="text-base font-bold text-gray-900 dark:text-white">Practice Log History</h2>
+            <span class="text-xs text-gray-500">{{ total_sessions }} total entries</span>
+        </div>
+        {% if sessions %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700/40 text-gray-500">
+                        <tr>
+                            <th class="px-5 py-3">Date</th>
+                            <th class="px-5 py-3">Duration</th>
+                            <th class="px-5 py-3">Focus Area</th>
+                            <th class="px-5 py-3">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                        {% for session in sessions %}
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-700/20">
+                                <td class="px-5 py-3.5 font-medium text-gray-900 dark:text-white">{{ session.date|date:"M d, Y" }}</td>
+                                <td class="px-5 py-3.5 font-bold text-purple-600 dark:text-purple-400">{{ session.duration_minutes }} mins</td>
+                                <td class="px-5 py-3.5">
+                                    <span class="px-2 py-0.5 rounded text-xs font-semibold
+                                        {% if session.focus_area == 'Chords' %}bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200
+                                        {% elif session.focus_area == 'Songs' %}bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200
+                                        {% elif session.focus_area == 'Scales' %}bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200
+                                        {% else %}bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200{% endif %}">
+                                        {{ session.focus_area }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 text-xs">{{ session.notes|default:"—" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-8 text-center text-gray-400 text-sm">
+                This student has not logged any practice sessions yet.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

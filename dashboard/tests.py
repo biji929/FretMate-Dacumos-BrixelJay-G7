@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from .models import PracticeSession, Chord, UserProfile, Tab
+from .models import PracticeSession, Chord, UserProfile, Tab, UserChordProgress
 from django.urls import reverse
 
 class FretMateTests(TestCase):
@@ -125,3 +125,49 @@ class FretMateTests(TestCase):
         self.assertEqual(self.user.profile.contact_number, '+63 912 345 6789')
         self.assertEqual(self.user.profile.skill_level, 'Intermediate')
         self.assertEqual(self.user.profile.weekly_goal_minutes, 180)
+
+    def test_api_chord_progress_learning_and_mastered(self):
+        chord = Chord.objects.create(name='D Major', genre='Pop', difficulty='Easy', diagram_data={'frets': [-1, -1, 0, 2, 3, 2]})
+        # Mark as Learning
+        res = self.client.post(reverse('api_chord_progress'), {
+            'chord_id': chord.id,
+            'status': 'Learning'
+        }, content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(UserChordProgress.objects.filter(user=self.user, chord=chord, status='Learning').exists())
+
+        # Update to Mastered
+        res_mastered = self.client.post(reverse('api_chord_progress'), {
+            'chord_id': chord.id,
+            'status': 'Mastered'
+        }, content_type='application/json')
+        self.assertEqual(res_mastered.status_code, 200)
+        self.assertTrue(UserChordProgress.objects.filter(user=self.user, chord=chord, status='Mastered').exists())
+
+    def test_api_chord_progress_reset(self):
+        chord = Chord.objects.create(name='E Minor', genre='Rock', difficulty='Easy', diagram_data={'frets': [0, 2, 2, 0, 0, 0]})
+        UserChordProgress.objects.create(user=self.user, chord=chord, status='Learning')
+        res_reset = self.client.post(reverse('api_chord_progress'), {
+            'chord_id': chord.id,
+            'status': 'None'
+        }, content_type='application/json')
+        self.assertEqual(res_reset.status_code, 200)
+        self.assertFalse(UserChordProgress.objects.filter(user=self.user, chord=chord).exists())
+
+    def test_instructor_student_detail_view(self):
+        self.user.profile.role = UserProfile.ROLE_INSTRUCTOR
+        self.user.profile.save()
+        student = User.objects.create_user(username='student1', password='password123')
+        PracticeSession.objects.create(user=student, duration_minutes=45, focus_area='Scales')
+
+        response = self.client.get(reverse('instructor_student_detail', kwargs={'student_id': student.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'instructor_student_detail.html')
+        self.assertContains(response, 'student1')
+
+    def test_instructor_student_detail_blocked_for_guitarist(self):
+        self.user.profile.role = UserProfile.ROLE_GUITARIST
+        self.user.profile.save()
+        student = User.objects.create_user(username='student2', password='password123')
+        response = self.client.get(reverse('instructor_student_detail', kwargs={'student_id': student.id}))
+        self.assertRedirects(response, reverse('dashboard_guitarist'))
