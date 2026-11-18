@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="space-y-8 max-w-7xl mx-auto">
+    <!-- Header with Instructor Badge -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-gray-200 dark:border-gray-800">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-3xl font-black tracking-tight text-gray-900 dark:text-white">Instructor Dashboard</h1>
+                <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200 border border-purple-200 dark:border-purple-800">
+                    🎓 Instructor Portal
+                </span>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Oversee student practice analytics, curriculum content, and guitar repertoire.
+            </p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'songs' %}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl text-sm shadow transition-all active:scale-95">
+                <span>➕</span> Add Song / Tab
+            </a>
+            <a href="/admin/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 font-semibold rounded-xl text-sm transition-all">
+                <span>⚙</span> Django Admin
+            </a>
+        </div>
+    </div>
+
+    <!-- Instructor Platform KPIs -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Active Students -->
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+            <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
+                <span>Enrolled Students</span>
+                <span class="text-lg">👥</span>
+            </div>
+            <p class="text-3xl font-black mt-2 text-purple-600 dark:text-purple-400">{{ total_students }}</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Registered guitar students</p>
+        </div>
+
+        <!-- Total Practice Minutes Logged -->
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+            <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
+                <span>Total Practice Logged</span>
+                <span class="text-lg">⏱</span>
+            </div>
+            <p class="text-3xl font-black mt-2 text-gray-900 dark:text-white">{{ total_practice_mins }} <span class="text-sm font-medium text-gray-500">mins</span></p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Across {{ total_sessions }} student sessions</p>
+        </div>
+
+        <!-- Total Songs in Curriculum -->
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+            <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
+                <span>Song Repertoire</span>
+                <span class="text-lg">🎼</span>
+            </div>
+            <p class="text-3xl font-black mt-2 text-blue-600 dark:text-blue-400">{{ total_songs }}</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Published tabs and backing tracks</p>
+        </div>
+
+        <!-- Chords in Catalog -->
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+            <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
+                <span>Chord Catalog</span>
+                <span class="text-lg">🎸</span>
+            </div>
+            <p class="text-3xl font-black mt-2 text-green-600 dark:text-green-400">{{ total_chords }}</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Interactive chord charts</p>
+        </div>
+    </div>
+
+    <!-- Student Roster & Management -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between">
+            <div>
+                <h2 class="text-base font-bold text-gray-900 dark:text-white">Registered Students Roster</h2>
+                <p class="text-xs text-gray-500">Overview of student profiles, skill tiers, and practice targets</p>
+            </div>
+        </div>
+        {% if students %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700/40 text-gray-500">
+                        <tr>
+                            <th class="px-5 py-3">Student</th>
+                            <th class="px-5 py-3">Email</th>
+                            <th class="px-5 py-3">Skill Level</th>
+                            <th class="px-5 py-3">Weekly Goal</th>
+                            <th class="px-5 py-3">Contact</th>
+                            <th class="px-5 py-3">Joined Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                        {% for student in students %}
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-700/20">
+                                <td class="px-5 py-3.5 font-semibold text-gray-900 dark:text-white">
+                                    {{ student.user.first_name }} {{ student.user.last_name }}
+                                    <span class="block text-xs font-normal text-gray-400">@{{ student.user.username }}</span>
+                                </td>
+                                <td class="px-5 py-3.5 text-gray-600 dark:text-gray-300 text-xs">{{ student.user.email|default:"No email recorded" }}</td>
+                                <td class="px-5 py-3.5">
+                                    <span class="px-2 py-0.5 rounded text-xs font-semibold
+                                        {% if student.skill_level == 'Beginner' %}bg-green-100 text-green-800 dark:bg-green-900/60 dark:text-green-200
+                                        {% elif student.skill_level == 'Intermediate' %}bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200
+                                        {% else %}bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200{% endif %}">
+                                        {{ student.skill_level }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-3.5 font-medium text-gray-700 dark:text-gray-300">{{ student.weekly_goal_minutes }} mins/wk</td>
+                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 text-xs">{{ student.contact_number|default:"—" }}</td>
+                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 text-xs">{{ student.created_at|date:"M d, Y" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-8 text-center text-gray-400">
+                <p class="text-sm font-semibold">No students registered yet.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Student Practice Activity Feed -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-gray-200 dark:border-gray-700/60">
+            <h2 class="text-base font-bold text-gray-900 dark:text-white">Recent Student Practice Activity</h2>
+            <p class="text-xs text-gray-500">Live practice submissions from students</p>
+        </div>
+        {% if recent_activity %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700/40 text-gray-500">
+                        <tr>
+                            <th class="px-5 py-3">Student</th>
+                            <th class="px-5 py-3">Date</th>
+                            <th class="px-5 py-3">Duration</th>
+                            <th class="px-5 py-3">Focus Area</th>
+                            <th class="px-5 py-3">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                        {% for session in recent_activity %}
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-700/20">
+                                <td class="px-5 py-3.5 font-medium text-gray-900 dark:text-white">@{{ session.user.username }}</td>
+                                <td class="px-5 py-3.5 text-xs text-gray-500">{{ session.date|date:"M d, Y" }}</td>
+                                <td class="px-5 py-3.5 font-bold text-purple-600 dark:text-purple-400">{{ session.duration_minutes }} mins</td>
+                                <td class="px-5 py-3.5">
+                                    <span class="px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                                        {{ session.focus_area }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-3.5 text-xs text-gray-500 dark:text-gray-400">{{ session.notes|default:"—" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-8 text-center text-gray-400 text-xs">
+                No recent student practice logs recorded.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

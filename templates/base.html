@@ -22,23 +22,90 @@
     <div class="flex min-h-screen">
         {% if user.is_authenticated %}
             <!-- Sidebar: fixed to viewport, never scrolls -->
-            <aside class="w-56 bg-white dark:bg-gray-800 fixed top-0 left-0 h-screen hidden md:flex flex-col border-r border-gray-200 dark:border-gray-700 z-40 overflow-y-auto">
-                <div class="p-6 flex-shrink-0">
-                    <h1 class="text-2xl font-bold">FretMate</h1>
+            <aside class="w-60 bg-white dark:bg-gray-800 fixed top-0 left-0 h-screen hidden md:flex flex-col border-r border-gray-200 dark:border-gray-700 z-40 overflow-y-auto">
+                <!-- Brand Header -->
+                <div class="p-5 border-b border-gray-100 dark:border-gray-700/60 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🎸</span>
+                            <h1 class="text-xl font-black tracking-tight">FretMate</h1>
+                        </div>
+                        <span class="mt-1 inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full
+                            {% if user.profile.is_instructor %}bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200
+                            {% else %}bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200{% endif %}">
+                            {{ user.profile.get_role_display|default:"Guitarist" }}
+                        </span>
+                    </div>
                 </div>
-                <nav class="mt-2 flex-1">
-                    <a href="{% url 'dashboard' %}" class="block py-2.5 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 {% if request.resolver_match.url_name == 'dashboard' %}bg-gray-200 dark:bg-gray-700 font-semibold{% endif %}">Dashboard</a>
-                    <a href="{% url 'logger' %}" class="block py-2.5 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 {% if request.resolver_match.url_name == 'logger' %}bg-gray-200 dark:bg-gray-700 font-semibold{% endif %}">Practice Logger</a>
-                    <a href="{% url 'library' %}" class="block py-2.5 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 {% if request.resolver_match.url_name == 'library' %}bg-gray-200 dark:bg-gray-700 font-semibold{% endif %}">Chord Library</a>
-                    <a href="{% url 'songs' %}" class="block py-2.5 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 {% if request.resolver_match.url_name == 'songs' %}bg-gray-200 dark:bg-gray-700 font-semibold{% endif %}">Song Library</a>
-                    <a href="{% url 'tools' %}" class="block py-2.5 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 {% if request.resolver_match.url_name == 'tools' %}bg-gray-200 dark:bg-gray-700 font-semibold{% endif %}">Tuner & Metronome</a>
-                    <a href="{% url 'settings' %}" class="block py-2.5 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 {% if request.resolver_match.url_name == 'settings' %}bg-gray-200 dark:bg-gray-700 font-semibold{% endif %}">Settings</a>
+
+                <!-- Navigation Links -->
+                <nav class="p-3 space-y-1 flex-1 text-sm">
+                    {% if user.profile.is_instructor %}
+                        <!-- Instructor Navigation -->
+                        <div class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-gray-400">Instructor Portal</div>
+                        <a href="{% url 'dashboard' %}" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition {% if 'dashboard' in request.resolver_match.url_name %}bg-purple-50 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 font-bold{% endif %}">
+                            <span>📊</span> Dashboard
+                        </a>
+                        <a href="{% url 'songs' %}" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition {% if request.resolver_match.url_name == 'songs' %}bg-purple-50 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 font-bold{% endif %}">
+                            <span>🎼</span> Song Library
+                        </a>
+                        <a href="{% url 'library' %}" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition {% if request.resolver_match.url_name == 'library' %}bg-purple-50 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 font-bold{% endif %}">
+                            <span>🎸</span> Chord Catalog
+                        </a>
+                        <a href="{% url 'tools' %}" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition {% if request.resolver_match.url_name == 'tools' %}bg-purple-50 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 font-bold{% endif %}">
+                            <span>🎵</span> Tuner & Metronome
+                        </a>
+                        <a href="/admin/" target="_blank" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 text-gray-500 hover:text-gray-900 dark:hover:text-white transition">
+                            <span>⚙</span> Django Admin ↗
+                        </a>
+                    {% else %}
+                        <!-- Guitarist / Student Navigation -->
+                        <div class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-gray-400">Guitar Practice</div>
+                        <a href="{% url 'dashboard' %}" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition {% if 'dashboard' in request.resolver_match.url_name %}bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 font-bold{% endif %}">
+                            <span>📊</span> Dashboard
+                        </a>
+                        <a href="{% url 'logger' %}" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition {% if request.resolver_match.url_name == 'logger' %}bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 font-bold{% endif %}">
+                            <span>⏱</span> Practice Logger
+                        </a>
+                        <a href="{% url 'library' %}" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition {% if request.resolver_match.url_name == 'library' %}bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 font-bold{% endif %}">
+                            <span>🎸</span> Chord Library
+                        </a>
+                        <a href="{% url 'songs' %}" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition {% if request.resolver_match.url_name == 'songs' %}bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 font-bold{% endif %}">
+                            <span>🎼</span> Song Library
+                        </a>
+                        <a href="{% url 'tools' %}" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition {% if request.resolver_match.url_name == 'tools' %}bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 font-bold{% endif %}">
+                            <span>🎵</span> Tuner & Metronome
+                        </a>
+                    {% endif %}
+
+                    <div class="pt-3 border-t border-gray-100 dark:border-gray-700/60">
+                        <div class="px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-gray-400">Account</div>
+                        <a href="{% url 'profile' %}" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition {% if request.resolver_match.url_name == 'profile' %}bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-bold{% endif %}">
+                            <span>👤</span> User Profile
+                        </a>
+                    </div>
                 </nav>
+
+                <!-- User Footer & Logout -->
+                <div class="p-3 border-t border-gray-100 dark:border-gray-700/60 bg-gray-50/50 dark:bg-gray-900/30">
+                    <div class="px-2 py-1">
+                        <p class="text-xs font-bold text-gray-900 dark:text-white truncate">
+                            {{ user.first_name|default:user.username }} {{ user.last_name }}
+                        </p>
+                        <p class="text-[11px] text-gray-500 truncate">@{{ user.username }}</p>
+                    </div>
+                    <form method="post" action="{% url 'logout' %}" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full flex items-center justify-center gap-2 py-1.5 px-3 rounded-lg text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition">
+                            <span>🚪</span> Sign Out
+                        </button>
+                    </form>
+                </div>
             </aside>
         {% endif %}
 
         <!-- Main Content: offset by sidebar width so it doesn't hide under it -->
-        <main class="flex-1 p-8 {% if user.is_authenticated %}md:ml-56{% endif %}">
+        <main class="flex-1 p-6 md:p-8 {% if user.is_authenticated %}md:ml-60{% endif %}">
             {% if messages %}
                 <div class="max-w-7xl mx-auto space-y-3 mb-6">
                     {% for message in messages %}

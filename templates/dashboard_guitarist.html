@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="space-y-8 max-w-7xl mx-auto">
+    <!-- Header with Role Badge -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-gray-200 dark:border-gray-800">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-3xl font-black tracking-tight text-gray-900 dark:text-white">Guitarist Dashboard</h1>
+                <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 border border-blue-200 dark:border-blue-800">
+                    🎸 Guitarist
+                </span>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Welcome back, <span class="font-semibold text-gray-700 dark:text-gray-200">{{ user.first_name|default:user.username }}</span>! Track your daily guitar practice and chord progression.
+            </p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'logger' %}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-sm shadow transition-all active:scale-95">
+                <span>⏱</span> Log Practice Session
+            </a>
+            <a href="{% url 'tools' %}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 font-semibold rounded-xl text-sm transition-all">
+                <span>🎵</span> Tuner & Metronome
+            </a>
+        </div>
+    </div>
+
+    <!-- 4 KPI Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Total Practice Time -->
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+            <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
+                <span>Total Practice</span>
+                <span class="text-lg">⏳</span>
+            </div>
+            <p class="text-3xl font-black mt-2 text-gray-900 dark:text-white">{{ total_minutes }} <span class="text-sm font-medium text-gray-500">mins</span></p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">All-time practice logged</p>
+        </div>
+
+        <!-- Current Streak -->
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+            <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
+                <span>Daily Streak</span>
+                <span class="text-lg">🔥</span>
+            </div>
+            <p class="text-3xl font-black mt-2 text-amber-500">{{ streak }} <span class="text-sm font-medium text-gray-500">days</span></p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Keep playing daily to build streak</p>
+        </div>
+
+        <!-- Chords Mastered -->
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+            <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
+                <span>Chords Mastered</span>
+                <span class="text-lg">🎯</span>
+            </div>
+            <p class="text-3xl font-black mt-2 text-green-600 dark:text-green-400">{{ chords_mastered }} <span class="text-sm font-medium text-gray-500">/ {{ total_chords }}</span></p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">In your chord library</p>
+        </div>
+
+        <!-- Weekly Goal Completion -->
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+            <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
+                <span>Weekly Goal</span>
+                <span class="text-lg">📈</span>
+            </div>
+            <div class="flex items-baseline gap-2 mt-2">
+                <p class="text-3xl font-black text-blue-600 dark:text-blue-400">{{ goal_percent }}%</p>
+                <span class="text-xs text-gray-500">({{ weekly_minutes }} / {{ weekly_goal }}m)</span>
+            </div>
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full mt-2 overflow-hidden">
+                <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: {{ goal_percent }}%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 7-Day Trend Line Chart -->
+        <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-base font-bold text-gray-900 dark:text-white">Practice Trend (Last 7 Days)</h2>
+                <span class="text-xs text-gray-500 font-medium">Minutes per day</span>
+            </div>
+            <div class="h-64">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Focus Area Doughnut Chart -->
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm flex flex-col justify-between">
+            <div>
+                <h2 class="text-base font-bold text-gray-900 dark:text-white mb-1">Focus Distribution</h2>
+                <p class="text-xs text-gray-500 mb-4">Time spent by practice category</p>
+            </div>
+            <div class="h-56 relative flex items-center justify-center">
+                <canvas id="doughnutChart"></canvas>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-xs text-gray-600 dark:text-gray-300 pt-3 border-t border-gray-100 dark:border-gray-700/40">
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Chords: {{ focus_counts.Chords }}m</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Songs: {{ focus_counts.Songs }}m</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Scales: {{ focus_counts.Scales }}m</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Rhythm: {{ focus_counts.Rhythm }}m</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Sessions Table -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between">
+            <h2 class="text-base font-bold text-gray-900 dark:text-white">Recent Practice Sessions</h2>
+            <a href="{% url 'logger' %}" class="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline">View All →</a>
+        </div>
+        {% if recent_sessions %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700/40 text-gray-500">
+                        <tr>
+                            <th class="px-5 py-3">Date</th>
+                            <th class="px-5 py-3">Duration</th>
+                            <th class="px-5 py-3">Focus Area</th>
+                            <th class="px-5 py-3">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                        {% for session in recent_sessions %}
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-700/20">
+                                <td class="px-5 py-3.5 font-medium text-gray-900 dark:text-white">{{ session.date|date:"M d, Y" }}</td>
+                                <td class="px-5 py-3.5 text-blue-600 dark:text-blue-400 font-bold">{{ session.duration_minutes }} mins</td>
+                                <td class="px-5 py-3.5">
+                                    <span class="px-2 py-0.5 rounded text-xs font-semibold
+                                        {% if session.focus_area == 'Chords' %}bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200
+                                        {% elif session.focus_area == 'Songs' %}bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200
+                                        {% elif session.focus_area == 'Scales' %}bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200
+                                        {% else %}bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200{% endif %}">
+                                        {{ session.focus_area }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 text-xs">{{ session.notes|default:"—" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-8 text-center text-gray-400">
+                <p class="text-2xl mb-2">🎸</p>
+                <p class="text-sm font-semibold">No practice sessions logged yet.</p>
+                <p class="text-xs mt-1">Start by clicking "Log Practice Session" above to track your journey!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Line Chart (Practice Trend)
+    const ctxLine = document.getElementById('lineChart').getContext('2d');
+    new Chart(ctxLine, {
+        type: 'line',
+        data: {
+            labels: {{ days_labels|safe }},
+            datasets: [{
+                label: 'Minutes',
+                data: {{ days_data|safe }},
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                borderWidth: 2.5,
+                fill: true,
+                tension: 0.35,
+                pointBackgroundColor: '#3b82f6',
+                pointRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: 'rgba(156, 163, 175, 0.15)' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // Doughnut Chart (Focus Distribution)
+    const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+    const focusData = [
+        {{ focus_counts.Chords }},
+        {{ focus_counts.Songs }},
+        {{ focus_counts.Scales }},
+        {{ focus_counts.Rhythm }}
+    ];
+    const hasData = focusData.some(v => v > 0);
+
+    new Chart(ctxDoughnut, {
+        type: 'doughnut',
+        data: {
+            labels: ['Chords', 'Songs', 'Scales', 'Rhythm'],
+            datasets: [{
+                data: hasData ? focusData : [1, 1, 1, 1],
+                backgroundColor: hasData 
+                    ? ['#3b82f6', '#10b981', '#f59e0b', '#ef4444']
+                    : ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'],
+                borderWidth: 0,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '72%',
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: hasData }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,3 +1,4 @@
+from functools import wraps
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
@@ -5,14 +6,37 @@ from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.utils.crypto import get_random_string
 from django.views.decorators.http import require_POST
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UserProfileUpdateForm
 from .forms_session import PracticeSessionForm
 from .forms_song import SongForm
-from .models import PracticeSession, Chord, Tab, UserChordProgress
+from .models import PracticeSession, Chord, Tab, UserChordProgress, UserProfile
 from django.db.models import Sum, Count, Q
 from datetime import date, timedelta
 
 User = get_user_model()
+
+def role_required(allowed_roles):
+    """
+    Decorator to enforce Role-Based Access Control (RBAC).
+    Prevents unauthorized access across role boundaries (e.g. Guitarist typing Instructor URL).
+    """
+    def decorator(view_func):
+        @wraps(view_func)
+        @login_required
+        def _wrapped_view(request, *args, **kwargs):
+            profile = getattr(request.user, 'profile', None)
+            user_role = profile.role if profile else UserProfile.ROLE_GUITARIST
+            if user_role not in allowed_roles:
+                messages.error(
+                    request,
+                    f"Access Denied: You do not have permission to access the {allowed_roles[0].title()} Portal."
+                )
+                if user_role == UserProfile.ROLE_INSTRUCTOR:
+                    return redirect('dashboard_instructor')
+                return redirect('dashboard_guitarist')
+            return view_func(request, *args, **kwargs)
+        return _wrapped_view
+    return decorator
 
 def home(request):
     if request.user.is_authenticated:
@@ -29,19 +53,122 @@ def guest_login(request):
     return redirect('dashboard')
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            role_display = user.profile.get_role_display() if hasattr(user, 'profile') else 'Guitarist'
+            messages.success(request, f'Welcome to FretMate, {user.first_name}! Your {role_display} account was created successfully.')
             login(request, user)
             return redirect('dashboard')
+        else:
+            messages.error(request, 'Registration failed. Please review the errors below.')
     else:
         form = RegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
 
 @login_required
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    """Dispatcher: routes user to the dedicated dashboard for their specific role."""
+    profile = getattr(request.user, 'profile', None)
+    if profile and profile.is_instructor:
+        return redirect('dashboard_instructor')
+    return redirect('dashboard_guitarist')
+
+@role_required([UserProfile.ROLE_GUITARIST])
+def dashboard_guitarist(request):
+    user = request.user
+    total_minutes = PracticeSession.objects.filter(user=user).aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0
+    total_chords_mastered = UserChordProgress.objects.filter(user=user, status='Mastered').count()
+    total_chords = Chord.objects.count()
+
+    profile = getattr(user, 'profile', None)
+    weekly_goal = profile.weekly_goal_minutes if profile else 120
+
+    today = date.today()
+    monday = today - timedelta(days=today.weekday())
+    weekly_minutes = PracticeSession.objects.filter(user=user, date__gte=monday).aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0
+    goal_percent = min(100, int((weekly_minutes / weekly_goal) * 100)) if weekly_goal > 0 else 0
+
+    sessions_dates = set(PracticeSession.objects.filter(user=user).values_list('date', flat=True))
+    streak = 0
+    check_day = today
+    if check_day not in sessions_dates:
+        check_day = today - timedelta(days=1)
+    while check_day in sessions_dates:
+        streak += 1
+        check_day -= timedelta(days=1)
+
+    focus_counts = {
+        'Chords': PracticeSession.objects.filter(user=user, focus_area='Chords').aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0,
+        'Songs': PracticeSession.objects.filter(user=user, focus_area='Songs').aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0,
+        'Scales': PracticeSession.objects.filter(user=user, focus_area='Scales').aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0,
+        'Rhythm': PracticeSession.objects.filter(user=user, focus_area='Rhythm').aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0,
+    }
+
+    days_labels = []
+    days_data = []
+    for i in range(6, -1, -1):
+        day = today - timedelta(days=i)
+        days_labels.append(day.strftime('%a'))
+        day_mins = PracticeSession.objects.filter(user=user, date=day).aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0
+        days_data.append(day_mins)
+
+    recent_sessions = PracticeSession.objects.filter(user=user).order_by('-id')[:5]
+
+    return render(request, 'dashboard_guitarist.html', {
+        'total_minutes': total_minutes,
+        'streak': streak,
+        'chords_mastered': total_chords_mastered,
+        'total_chords': total_chords,
+        'weekly_goal': weekly_goal,
+        'weekly_minutes': weekly_minutes,
+        'goal_percent': goal_percent,
+        'focus_counts': focus_counts,
+        'days_labels': days_labels,
+        'days_data': days_data,
+        'recent_sessions': recent_sessions,
+    })
+
+@role_required([UserProfile.ROLE_INSTRUCTOR])
+def dashboard_instructor(request):
+    total_students = UserProfile.objects.filter(role=UserProfile.ROLE_GUITARIST).count()
+    total_songs = Tab.objects.count()
+    total_chords = Chord.objects.count()
+    total_practice_mins = PracticeSession.objects.aggregate(Sum('duration_minutes'))['duration_minutes__sum'] or 0
+    total_sessions = PracticeSession.objects.count()
+
+    students = UserProfile.objects.filter(role=UserProfile.ROLE_GUITARIST).select_related('user').order_by('-created_at')[:15]
+    recent_activity = PracticeSession.objects.select_related('user').order_by('-id')[:8]
+
+    return render(request, 'dashboard_instructor.html', {
+        'total_students': total_students,
+        'total_songs': total_songs,
+        'total_chords': total_chords,
+        'total_practice_mins': total_practice_mins,
+        'total_sessions': total_sessions,
+        'students': students,
+        'recent_activity': recent_activity,
+    })
+
+@login_required
+def profile_view(request):
+    if request.method == 'POST':
+        form = UserProfileUpdateForm(request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile details have been successfully updated!')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the errors in the profile form.')
+    else:
+        form = UserProfileUpdateForm(user=request.user)
+
+    return render(request, 'profile.html', {'form': form})
+
 
 @login_required
 def logger(request):
@@ -286,5 +413,4 @@ def tools(request):
 
 @login_required
 def settings(request):
-    # Simplified settings view for now
-    return render(request, 'settings.html')
+    return redirect('profile')

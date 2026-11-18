@@ -3,16 +3,49 @@ import re
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    SKILL_LEVELS = [('Beginner', 'Beginner'), ('Intermediate', 'Intermediate'), ('Advanced', 'Advanced')]
+    ROLE_GUITARIST = 'GUITARIST'
+    ROLE_INSTRUCTOR = 'INSTRUCTOR'
+    ROLE_CHOICES = [
+        (ROLE_GUITARIST, 'Guitarist'),
+        (ROLE_INSTRUCTOR, 'Instructor'),
+    ]
+
+    SKILL_LEVELS = [
+        ('Beginner', 'Beginner'),
+        ('Intermediate', 'Intermediate'),
+        ('Advanced', 'Advanced'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default=ROLE_GUITARIST)
+    contact_number = models.CharField(max_length=25, blank=True, default='')
+    bio = models.TextField(max_length=500, blank=True, default='')
     skill_level = models.CharField(max_length=20, choices=SKILL_LEVELS, default='Beginner')
     weekly_goal_minutes = models.IntegerField(default=120, validators=[MinValueValidator(10), MaxValueValidator(3000)])
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username} ({self.get_role_display()})"
+
+    @property
+    def is_instructor(self):
+        return self.role == self.ROLE_INSTRUCTOR
+
+    @property
+    def is_guitarist(self):
+        return self.role == self.ROLE_GUITARIST
+
+
+@receiver(post_save, sender=User)
+def create_or_save_user_profile(sender, instance, created, **kwargs):
+    if created:
+        role = UserProfile.ROLE_INSTRUCTOR if (instance.is_superuser or instance.is_staff) else UserProfile.ROLE_GUITARIST
+        UserProfile.objects.get_or_create(user=instance, defaults={'role': role})
+
 
 class Chord(models.Model):
     name = models.CharField(max_length=50, unique=True)

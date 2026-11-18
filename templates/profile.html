@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-8">
+    <!-- Header -->
+    <div class="border-b border-gray-200 dark:border-gray-800 pb-4">
+        <h1 class="text-3xl font-black tracking-tight text-gray-900 dark:text-white">User Profile</h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            View and manage your personal account information and practice preferences.
+        </p>
+    </div>
+
+    <!-- Profile Overview Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 p-6 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+            <!-- Avatar Initial -->
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-3xl font-black shadow-lg flex-shrink-0">
+                {{ user.first_name|default:user.username|slice:":1"|upper }}
+            </div>
+
+            <!-- Profile Meta -->
+            <div class="flex-1 text-center sm:text-left">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </h2>
+                    <span class="inline-block self-center sm:self-auto px-2.5 py-0.5 text-xs font-bold rounded-full
+                        {% if user.profile.is_instructor %}bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200
+                        {% else %}bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200{% endif %}">
+                        {{ user.profile.get_role_display|default:"Guitarist" }}
+                    </span>
+                </div>
+                <p class="text-sm text-gray-400 mt-0.5">@{{ user.username }}</p>
+
+                <!-- Quick info badges -->
+                <div class="flex flex-wrap gap-4 mt-4 text-xs text-gray-600 dark:text-gray-300 justify-center sm:justify-start">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-gray-400">📧</span>
+                        <span>{{ user.email|default:"No email set" }}</span>
+                    </div>
+                    {% if user.profile.contact_number %}
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-gray-400">📱</span>
+                        <span>{{ user.profile.contact_number }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-gray-400">📅</span>
+                        <span>Member since {{ user.date_joined|date:"M Y" }}</span>
+                    </div>
+                </div>
+
+                {% if user.profile.bio %}
+                <p class="mt-4 text-sm text-gray-600 dark:text-gray-300 italic bg-gray-50 dark:bg-gray-700/30 p-3 rounded-xl border border-gray-100 dark:border-gray-700/50">
+                    "{{ user.profile.bio }}"
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Form -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 p-6 md:p-8 shadow-sm">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Edit Profile Details</h2>
+        <p class="text-xs text-gray-500 mb-6">Update your personal information and practice preferences. Changes take effect immediately.</p>
+
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="p-4 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-200 text-sm">
+                    {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Name Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-1.5">First Name *</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ form.first_name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-1.5">Last Name *</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ form.last_name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Email & Contact Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-1.5">Email Address *</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ form.email.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-1.5">Contact Number</label>
+                    {{ form.contact_number }}
+                    {% if form.contact_number.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ form.contact_number.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Bio -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-1.5">Bio / Guitar Interests</label>
+                {{ form.bio }}
+                <p class="text-xs text-gray-400 mt-1">Briefly tell us about your musical journey (genres, guitars, goals).</p>
+                {% if form.bio.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ form.bio.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Skill & Goal Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-gray-100 dark:border-gray-700/60">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-1.5">Guitar Skill Level</label>
+                    {{ form.skill_level }}
+                    {% if form.skill_level.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ form.skill_level.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400 mb-1.5">Weekly Practice Target (Minutes)</label>
+                    {{ form.weekly_goal_minutes }}
+                    <p class="text-xs text-gray-400 mt-1">Recommended: 120 minutes per week (approx. 20 min/day)</p>
+                    {% if form.weekly_goal_minutes.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ form.weekly_goal_minutes.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="pt-4 flex items-center justify-end gap-3">
+                <a href="{% url 'dashboard' %}" class="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-sm font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                    Cancel
+                </a>
+                <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-xl shadow-lg transition active:scale-95">
+                    Save Profile Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

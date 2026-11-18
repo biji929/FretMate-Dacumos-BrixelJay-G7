@@ -25,6 +25,21 @@
             <p class="text-gray-400 text-sm mt-1">Your Guitar Practice Companion</p>
         </div>
 
+        <!-- Messages -->
+        {% if messages %}
+            <div class="space-y-2 mb-4">
+                {% for message in messages %}
+                    <div class="p-3 rounded-xl text-xs font-semibold border flex items-center justify-between shadow-sm
+                        {% if message.tags == 'success' %} bg-green-500/20 border-green-500/40 text-green-200
+                        {% elif message.tags == 'error' %} bg-red-500/20 border-red-500/40 text-red-200
+                        {% else %} bg-blue-500/20 border-blue-500/40 text-blue-200 {% endif %}">
+                        <span>{{ message }}</span>
+                        <button type="button" onclick="this.parentElement.remove()" class="text-xs opacity-60 hover:opacity-100 font-bold ml-2">✕</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <!-- Card -->
         <div class="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-8 shadow-2xl">
             {% block auth_content %}{% endblock %}

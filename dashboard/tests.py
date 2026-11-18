@@ -48,3 +48,80 @@ class FretMateTests(TestCase):
         })
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Tab.objects.filter(title='My New Song', artist='Awesome Band').exists())
+
+    def test_registration_with_email_and_role(self):
+        self.client.logout()
+        response = self.client.post(reverse('register'), {
+            'username': 'newguitarist',
+            'first_name': 'Carlos',
+            'last_name': 'Santana',
+            'email': 'carlos@example.com',
+            'role': UserProfile.ROLE_GUITARIST,
+            'password1': 'StrongP@ssw0rd123!',
+            'password2': 'StrongP@ssw0rd123!',
+        })
+        self.assertEqual(response.status_code, 302)
+        user = User.objects.get(username='newguitarist')
+        self.assertEqual(user.email, 'carlos@example.com')
+        self.assertEqual(user.first_name, 'Carlos')
+        self.assertEqual(user.profile.role, UserProfile.ROLE_GUITARIST)
+
+    def test_registration_duplicate_email_rejected(self):
+        User.objects.create_user(username='existing', email='unique@example.com', password='password123')
+        self.client.logout()
+        response = self.client.post(reverse('register'), {
+            'username': 'differentuser',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'email': 'unique@example.com',
+            'role': UserProfile.ROLE_GUITARIST,
+            'password1': 'StrongP@ssw0rd123!',
+            'password2': 'StrongP@ssw0rd123!',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(response.context['form'], 'email', 'An account with this email address already exists.')
+
+    def test_role_based_dashboard_dispatch(self):
+        # Guitarist user dispatch
+        self.user.profile.role = UserProfile.ROLE_GUITARIST
+        self.user.profile.save()
+        res_guitarist = self.client.get(reverse('dashboard'))
+        self.assertRedirects(res_guitarist, reverse('dashboard_guitarist'))
+
+        # Instructor user dispatch
+        self.user.profile.role = UserProfile.ROLE_INSTRUCTOR
+        self.user.profile.save()
+        res_instructor = self.client.get(reverse('dashboard'))
+        self.assertRedirects(res_instructor, reverse('dashboard_instructor'))
+
+    def test_role_url_protection_blocks_guitarist(self):
+        self.user.profile.role = UserProfile.ROLE_GUITARIST
+        self.user.profile.save()
+        # Guitarist attempts to access Instructor dashboard URL directly
+        response = self.client.get(reverse('dashboard_instructor'))
+        self.assertRedirects(response, reverse('dashboard_guitarist'))
+
+    def test_user_profile_view_and_edit(self):
+        # View profile
+        get_res = self.client.get(reverse('profile'))
+        self.assertEqual(get_res.status_code, 200)
+        self.assertTemplateUsed(get_res, 'profile.html')
+
+        # Edit profile details
+        post_res = self.client.post(reverse('profile'), {
+            'first_name': 'Brixel',
+            'last_name': 'Dacumos',
+            'email': 'biji.guitar@example.com',
+            'contact_number': '+63 912 345 6789',
+            'bio': 'Passionate acoustic and electric guitarist.',
+            'skill_level': 'Intermediate',
+            'weekly_goal_minutes': 180,
+        })
+        self.assertEqual(post_res.status_code, 302)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.first_name, 'Brixel')
+        self.assertEqual(self.user.last_name, 'Dacumos')
+        self.assertEqual(self.user.email, 'biji.guitar@example.com')
+        self.assertEqual(self.user.profile.contact_number, '+63 912 345 6789')
+        self.assertEqual(self.user.profile.skill_level, 'Intermediate')
+        self.assertEqual(self.user.profile.weekly_goal_minutes, 180)
