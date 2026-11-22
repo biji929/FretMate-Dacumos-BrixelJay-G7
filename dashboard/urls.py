@@ -18,5 +18,7 @@ urlpatterns = [
     path('logger/', views.logger, name='logger'),
     path('library/', views.library, name='library'),
     path('songs/', views.songs, name='songs'),
+    path('tuner/', views.tuner, name='tuner'),
+    path('metronome/', views.metronome, name='metronome'),
     path('tools/', views.tools, name='tools'),
 ]

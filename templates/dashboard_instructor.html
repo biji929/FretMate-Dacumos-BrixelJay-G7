@@ -7,7 +7,7 @@
             <div class="flex items-center gap-3">
                 <h1 class="text-3xl font-black tracking-tight text-gray-900 dark:text-white">Instructor Dashboard</h1>
                 <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200 border border-purple-200 dark:border-purple-800">
-                    🎓 Instructor Portal
+                    Instructor Portal
                 </span>
             </div>
             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -16,10 +16,10 @@
         </div>
         <div class="flex items-center gap-3">
             <a href="{% url 'songs' %}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl text-sm shadow transition-all active:scale-95">
-                <span>➕</span> Add Song / Tab
+                Add Song / Tab
             </a>
             <a href="/admin/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 font-semibold rounded-xl text-sm transition-all">
-                <span>⚙</span> Django Admin
+                Django Admin
             </a>
         </div>
     </div>
@@ -30,7 +30,6 @@
         <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
             <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
                 <span>Enrolled Students</span>
-                <span class="text-lg">👥</span>
             </div>
             <p class="text-3xl font-black mt-2 text-purple-600 dark:text-purple-400">{{ total_students }}</p>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Registered guitar students</p>
@@ -40,7 +39,6 @@
         <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
             <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
                 <span>Total Practice Logged</span>
-                <span class="text-lg">⏱</span>
             </div>
             <p class="text-3xl font-black mt-2 text-gray-900 dark:text-white">{{ total_practice_mins }} <span class="text-sm font-medium text-gray-500">mins</span></p>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Across {{ total_sessions }} student sessions</p>
@@ -50,7 +48,6 @@
         <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
             <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
                 <span>Song Repertoire</span>
-                <span class="text-lg">🎼</span>
             </div>
             <p class="text-3xl font-black mt-2 text-blue-600 dark:text-blue-400">{{ total_songs }}</p>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Published tabs and backing tracks</p>
@@ -60,7 +57,6 @@
         <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
             <div class="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">
                 <span>Chord Catalog</span>
-                <span class="text-lg">🎸</span>
             </div>
             <p class="text-3xl font-black mt-2 text-green-600 dark:text-green-400">{{ total_chords }}</p>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Interactive chord charts</p>

@@ -130,7 +130,8 @@ FretMateIM/
 │   ├── library.html               # Interactive chord & tab explorer
 │   ├── logger.html                # Practice logging interface
 │   ├── songs.html                 # Song repertoire with audio/video media
-│   ├── tools.html                 # Tuner & Metronome audio tools
+│   ├── tuner.html                 # Dedicated chromatic guitar tuner screen
+│   ├── metronome.html             # Dedicated digital metronome with time signatures
 │   └── registration/              # Login and Register pages
 │
 ├── static/                        # CSS, Web Audio JS (tuner.js, metronome.js), audio

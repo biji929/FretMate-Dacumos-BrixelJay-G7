@@ -1,0 +1,318 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="space-y-6 max-w-4xl mx-auto">
+    <!-- Header with Sub-Navigation Tabs -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-gray-200 dark:border-gray-800">
+        <div>
+            <h2 class="text-3xl font-extrabold tracking-tight">Chromatic Guitar Tuner</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-1">Real-time pitch detection running client-side through your microphone with target note snapping.</p>
+        </div>
+
+        <!-- Tool Switcher Tabs -->
+        <div class="inline-flex p-1 bg-gray-200 dark:bg-gray-800 rounded-xl text-xs font-bold">
+            <a href="{% url 'tuner' %}" class="px-4 py-2 rounded-lg bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm transition">
+                Guitar Tuner
+            </a>
+            <a href="{% url 'metronome' %}" class="px-4 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
+                Metronome
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Tuner Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 md:p-8 space-y-6">
+        <!-- Status & Mode Bar -->
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-xs uppercase font-bold tracking-wider text-gray-400">Status:</span>
+                <span id="tunerStatusBadge" class="text-xs px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-semibold">
+                    Inactive
+                </span>
+            </div>
+            <div class="text-xs text-gray-400 font-medium">
+                Standard Tuning (EADGBE)
+            </div>
+        </div>
+
+        <!-- Standard Guitar Strings Reference Chips -->
+        <div>
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Guitar Strings (Click to play reference tone)</div>
+            <div class="grid grid-cols-6 gap-2 sm:gap-3">
+                <button type="button" id="string-E2" data-freq="82.41" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                    <div class="text-[11px] text-gray-400 font-semibold">6th String</div>
+                    <div class="font-black text-base text-gray-800 dark:text-gray-200">E2</div>
+                    <div class="text-[10px] text-gray-400 font-mono">82.4 Hz</div>
+                </button>
+                <button type="button" id="string-A2" data-freq="110.00" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                    <div class="text-[11px] text-gray-400 font-semibold">5th String</div>
+                    <div class="font-black text-base text-gray-800 dark:text-gray-200">A2</div>
+                    <div class="text-[10px] text-gray-400 font-mono">110.0 Hz</div>
+                </button>
+                <button type="button" id="string-D3" data-freq="146.83" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                    <div class="text-[11px] text-gray-400 font-semibold">4th String</div>
+                    <div class="font-black text-base text-gray-800 dark:text-gray-200">D3</div>
+                    <div class="text-[10px] text-gray-400 font-mono">146.8 Hz</div>
+                </button>
+                <button type="button" id="string-G3" data-freq="196.00" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                    <div class="text-[11px] text-gray-400 font-semibold">3rd String</div>
+                    <div class="font-black text-base text-gray-800 dark:text-gray-200">G3</div>
+                    <div class="text-[10px] text-gray-400 font-mono">196.0 Hz</div>
+                </button>
+                <button type="button" id="string-B3" data-freq="246.94" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                    <div class="text-[11px] text-gray-400 font-semibold">2nd String</div>
+                    <div class="font-black text-base text-gray-800 dark:text-gray-200">B3</div>
+                    <div class="text-[10px] text-gray-400 font-mono">246.9 Hz</div>
+                </button>
+                <button type="button" id="string-E4" data-freq="329.63" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                    <div class="text-[11px] text-gray-400 font-semibold">1st String</div>
+                    <div class="font-black text-base text-gray-800 dark:text-gray-200">E4</div>
+                    <div class="text-[10px] text-gray-400 font-mono">329.6 Hz</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Central Tuner Visual Display -->
+        <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 text-center border border-gray-200 dark:border-gray-700/80 relative overflow-hidden">
+            <!-- Large Detected Note & Octave -->
+            <div class="flex items-baseline justify-center gap-1.5 min-h-[100px] items-center">
+                <span id="noteName" class="text-8xl md:text-9xl font-black font-mono tracking-tight text-gray-300 dark:text-gray-600 transition-colors duration-150">--</span>
+                <span id="octaveNum" class="text-3xl md:text-4xl font-bold font-mono text-gray-400 dark:text-gray-500"></span>
+            </div>
+
+            <!-- Direction Advice Badge -->
+            <div id="tuningAdvice" class="mt-3 text-base font-bold text-gray-500 dark:text-gray-400 h-6 transition-colors">
+                Click "Start Tuner" to enable microphone
+            </div>
+
+            <!-- Precision Cents Meter Gauge -->
+            <div class="mt-8 max-w-xl mx-auto px-4">
+                <div class="relative h-7 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden flex items-center shadow-inner">
+                    <!-- In-tune center green zone (±3 cents) -->
+                    <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-12 bg-green-500/25 border-x border-green-500/50"></div>
+                    <!-- Target center vertical line -->
+                    <div class="absolute left-1/2 -translate-x-1/2 w-1 h-full bg-green-600 dark:bg-green-400 z-10"></div>
+                    <!-- Smooth moving indicator needle -->
+                    <div id="centsNeedle" class="absolute top-1 bottom-1 w-2.5 rounded-full bg-blue-600 dark:bg-blue-400 transition-all duration-75 shadow-md" style="left: 50%; transform: translateX(-50%); opacity: 0;"></div>
+                </div>
+
+                <!-- Cents Ticks & Numerical Readout -->
+                <div class="flex justify-between items-center text-xs font-mono text-gray-400 mt-2 px-1">
+                    <span class="text-amber-600 dark:text-amber-400 font-semibold">-50c (Flat)</span>
+                    <span id="centsValue" class="text-sm font-bold text-gray-700 dark:text-gray-200 px-3 py-0.5 rounded bg-gray-200/60 dark:bg-gray-800">0c</span>
+                    <span class="text-red-600 dark:text-red-400 font-semibold">+50c (Sharp)</span>
+                </div>
+            </div>
+
+            <!-- Frequency Diagnostics (Current vs Target) -->
+            <div class="mt-6 pt-5 border-t border-gray-200 dark:border-gray-800 flex justify-center gap-8 text-xs font-mono text-gray-500 dark:text-gray-400">
+                <div>Detected: <span id="currentFreq" class="font-bold text-gray-900 dark:text-gray-100 text-sm">--</span> Hz</div>
+                <div>Target Note: <span id="targetFreq" class="font-bold text-gray-900 dark:text-gray-100 text-sm">--</span> Hz</div>
+            </div>
+        </div>
+
+        <!-- Start / Stop Button -->
+        <button id="startTuner" class="w-full py-4 px-6 rounded-xl font-bold text-base text-white bg-blue-600 hover:bg-blue-700 transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20 active:scale-[0.99] cursor-pointer">
+            <span id="tunerBtnText">Start Tuner</span>
+        </button>
+    </div>
+
+    <!-- Tuning Guidance Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+        <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-3">Guitar Tuning Tips</h3>
+        <ul class="space-y-2 text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+            <li class="flex items-start gap-2">
+                <span class="font-bold text-blue-600 dark:text-blue-400">-</span>
+                <span><strong>Always tune up to the note:</strong> If a string is sharp (+cents), tune it slightly below pitch and tune up to tension to ensure tuning stability.</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <span class="font-bold text-blue-600 dark:text-blue-400">-</span>
+                <span><strong>Mute other strings:</strong> Pluck one string firmly with your thumb or pick, and use your other fingers to silence neighboring strings for a pure fundamental frequency.</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <span class="font-bold text-blue-600 dark:text-blue-400">-</span>
+                <span><strong>Click string buttons above:</strong> Click any string button (E2, A2, D3, G3, B3, E4) to hear a pure reference tone for tuning by ear.</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script src="{% static 'js/tuner.js' %}"></script>
+<script>
+    const tuner = new GuitarTuner();
+    const startTunerBtn = document.getElementById('startTuner');
+    const tunerBtnText = document.getElementById('tunerBtnText');
+    const tunerStatusBadge = document.getElementById('tunerStatusBadge');
+    const noteNameEl = document.getElementById('noteName');
+    const octaveNumEl = document.getElementById('octaveNum');
+    const tuningAdviceEl = document.getElementById('tuningAdvice');
+    const centsNeedle = document.getElementById('centsNeedle');
+    const centsValue = document.getElementById('centsValue');
+    const currentFreqEl = document.getElementById('currentFreq');
+    const targetFreqEl = document.getElementById('targetFreq');
+    const stringBadges = document.querySelectorAll('.string-badge');
+
+    // Reference Tone Player
+    let refAudioCtx = null;
+    let activeOsc = null;
+    let activeGain = null;
+
+    function playReferenceTone(freq) {
+        if (!refAudioCtx) {
+            refAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (refAudioCtx.state === 'suspended') {
+            refAudioCtx.resume();
+        }
+
+        // Stop existing tone
+        if (activeOsc) {
+            try {
+                activeGain.gain.linearRampToValueAtTime(0.001, refAudioCtx.currentTime + 0.05);
+                activeOsc.stop(refAudioCtx.currentTime + 0.06);
+            } catch(e) {}
+            activeOsc = null;
+        }
+
+        const osc = refAudioCtx.createOscillator();
+        const gain = refAudioCtx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, refAudioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.3, refAudioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, refAudioCtx.currentTime + 2.0);
+
+        osc.connect(gain);
+        gain.connect(refAudioCtx.destination);
+
+        osc.start();
+        osc.stop(refAudioCtx.currentTime + 2.05);
+
+        activeOsc = osc;
+        activeGain = gain;
+    }
+
+    // Bind String Buttons for Reference Tones
+    stringBadges.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const freq = parseFloat(btn.dataset.freq);
+            if (!isNaN(freq)) {
+                playReferenceTone(freq);
+                stringBadges.forEach(b => b.classList.remove('ring-2', 'ring-blue-500'));
+                btn.classList.add('ring-2', 'ring-blue-500');
+                setTimeout(() => btn.classList.remove('ring-2', 'ring-blue-500'), 1500);
+            }
+        });
+    });
+
+    // Reset Tuner Display
+    function resetTunerDisplay() {
+        noteNameEl.innerText = '--';
+        noteNameEl.className = 'text-8xl md:text-9xl font-black font-mono tracking-tight text-gray-300 dark:text-gray-600 transition-colors duration-150';
+        octaveNumEl.innerText = '';
+        tuningAdviceEl.innerText = tuner.isListening ? 'Listening... Pluck a string' : 'Tuner is stopped';
+        tuningAdviceEl.className = 'mt-3 text-base font-bold text-gray-500 dark:text-gray-400 h-6 transition-colors';
+        centsNeedle.style.opacity = '0';
+        centsValue.innerText = '0c';
+        centsValue.className = 'text-sm font-bold text-gray-700 dark:text-gray-200 px-3 py-0.5 rounded bg-gray-200/60 dark:bg-gray-800';
+        currentFreqEl.innerText = '--';
+        targetFreqEl.innerText = '--';
+        stringBadges.forEach(b => b.classList.remove('ring-2', 'ring-green-500', 'bg-green-50', 'dark:bg-green-950/40'));
+    }
+
+    tuner.onSilent = () => {
+        if (tuner.isListening) {
+            tuningAdviceEl.innerText = 'Listening... Pluck a string';
+            tuningAdviceEl.className = 'mt-3 text-base font-bold text-gray-500 dark:text-gray-400 h-6 transition-colors';
+            centsNeedle.style.opacity = '0.3';
+        }
+    };
+
+    tuner.onNoteDetected = (data) => {
+        noteNameEl.innerText = data.note;
+        octaveNumEl.innerText = data.octave;
+        currentFreqEl.innerText = data.frequency.toFixed(1);
+        targetFreqEl.innerText = data.targetFreq.toFixed(1);
+
+        // Position needle (-50 to +50 cents mapped to 5% to 95%)
+        const clampedCents = Math.max(-50, Math.min(50, data.cents));
+        const percent = 50 + (clampedCents / 50) * 45;
+        centsNeedle.style.left = `${percent}%`;
+        centsNeedle.style.opacity = '1';
+        centsValue.innerText = `${data.cents > 0 ? '+' : ''}${data.cents}c`;
+
+        // Highlight matching standard string badge
+        stringBadges.forEach(b => b.classList.remove('ring-2', 'ring-green-500', 'bg-green-50', 'dark:bg-green-950/40'));
+        const matchedBadge = document.getElementById(`string-${data.note}${data.octave}`);
+        if (matchedBadge) {
+            matchedBadge.classList.add('ring-2', 'ring-green-500', 'bg-green-50', 'dark:bg-green-950/40');
+        }
+
+        // Color coding for In-tune vs Flat vs Sharp
+        if (Math.abs(data.cents) <= 3) {
+            // Perfect in tune
+            noteNameEl.className = 'text-8xl md:text-9xl font-black font-mono tracking-tight text-green-500 transition-colors duration-150';
+            tuningAdviceEl.innerText = 'In Tune';
+            tuningAdviceEl.className = 'mt-3 text-base font-bold text-green-600 dark:text-green-400 h-6 transition-colors';
+            centsNeedle.className = 'absolute top-1 bottom-1 w-2.5 rounded-full bg-green-500 transition-all duration-75 shadow-md';
+            centsValue.className = 'text-sm font-bold text-green-600 dark:text-green-400 px-3 py-0.5 rounded bg-green-50 dark:bg-green-950/40';
+        } else if (data.cents < -3) {
+            // Flat - Tune up
+            noteNameEl.className = 'text-8xl md:text-9xl font-black font-mono tracking-tight text-amber-500 transition-colors duration-150';
+            tuningAdviceEl.innerText = 'Tune Up (Too Flat)';
+            tuningAdviceEl.className = 'mt-3 text-base font-bold text-amber-600 dark:text-amber-400 h-6 transition-colors';
+            centsNeedle.className = 'absolute top-1 bottom-1 w-2.5 rounded-full bg-amber-500 transition-all duration-75 shadow-md';
+            centsValue.className = 'text-sm font-bold text-amber-600 dark:text-amber-400 px-3 py-0.5 rounded bg-amber-50 dark:bg-amber-950/40';
+        } else {
+            // Sharp - Tune down
+            noteNameEl.className = 'text-8xl md:text-9xl font-black font-mono tracking-tight text-red-500 transition-colors duration-150';
+            tuningAdviceEl.innerText = 'Tune Down (Too Sharp)';
+            tuningAdviceEl.className = 'mt-3 text-base font-bold text-red-600 dark:text-red-400 h-6 transition-colors';
+            centsNeedle.className = 'absolute top-1 bottom-1 w-2.5 rounded-full bg-red-500 transition-all duration-75 shadow-md';
+            centsValue.className = 'text-sm font-bold text-red-600 dark:text-red-400 px-3 py-0.5 rounded bg-red-50 dark:bg-red-950/40';
+        }
+    };
+
+    tuner.onError = (err) => {
+        alert(err.message || 'Microphone access denied or audio device error.');
+        resetTunerDisplay();
+        tunerStatusBadge.innerText = 'Error';
+        tunerStatusBadge.className = 'text-xs px-3 py-1 rounded-full bg-red-100 text-red-700 dark:bg-red-900/60 dark:text-red-300 font-semibold';
+        tunerBtnText.innerText = 'Start Tuner';
+        startTunerBtn.classList.replace('bg-red-600', 'bg-blue-600');
+        startTunerBtn.classList.replace('hover:bg-red-700', 'hover:bg-blue-700');
+    };
+
+    // Toggle Button Click Handler
+    startTunerBtn.addEventListener('click', async () => {
+        if (!tuner.isListening) {
+            tunerBtnText.innerText = 'Connecting...';
+            try {
+                await tuner.start();
+                tunerBtnText.innerText = 'Stop Tuner';
+                startTunerBtn.classList.replace('bg-blue-600', 'bg-red-600');
+                startTunerBtn.classList.replace('hover:bg-blue-700', 'hover:bg-red-700');
+                tunerStatusBadge.innerText = 'Listening';
+                tunerStatusBadge.className = 'text-xs px-3 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/60 dark:text-green-300 font-semibold animate-pulse';
+                tuningAdviceEl.innerText = 'Listening... Pluck a string';
+            } catch(e) {
+                tunerBtnText.innerText = 'Start Tuner';
+            }
+        } else {
+            tuner.stop();
+            tunerBtnText.innerText = 'Start Tuner';
+            startTunerBtn.classList.replace('bg-red-600', 'bg-blue-600');
+            startTunerBtn.classList.replace('hover:bg-red-700', 'hover:bg-blue-700');
+            tunerStatusBadge.innerText = 'Inactive';
+            tunerStatusBadge.className = 'text-xs px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-semibold';
+            resetTunerDisplay();
+        }
+    });
+
+    window.addEventListener('beforeunload', () => {
+        if (tuner.isListening) tuner.stop();
+    });
+</script>
+{% endblock %}

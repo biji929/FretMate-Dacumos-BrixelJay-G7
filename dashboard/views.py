@@ -484,8 +484,16 @@ def songs(request):
     })
 
 @login_required
+def tuner(request):
+    return render(request, 'tuner.html')
+
+@login_required
+def metronome(request):
+    return render(request, 'metronome.html')
+
+@login_required
 def tools(request):
-    return render(request, 'tools.html')
+    return redirect('tuner')
 
 @login_required
 def settings(request):

@@ -34,18 +34,18 @@
                 <!-- Quick info badges -->
                 <div class="flex flex-wrap gap-4 mt-4 text-xs text-gray-600 dark:text-gray-300 justify-center sm:justify-start">
                     <div class="flex items-center gap-1.5">
-                        <span class="text-gray-400">📧</span>
+                        <span class="text-gray-400 font-semibold">Email:</span>
                         <span>{{ user.email|default:"No email set" }}</span>
                     </div>
                     {% if user.profile.contact_number %}
                     <div class="flex items-center gap-1.5">
-                        <span class="text-gray-400">📱</span>
+                        <span class="text-gray-400 font-semibold">Phone:</span>
                         <span>{{ user.profile.contact_number }}</span>
                     </div>
                     {% endif %}
                     <div class="flex items-center gap-1.5">
-                        <span class="text-gray-400">📅</span>
-                        <span>Member since {{ user.date_joined|date:"M Y" }}</span>
+                        <span class="text-gray-400 font-semibold">Joined:</span>
+                        <span>{{ user.date_joined|date:"M Y" }}</span>
                     </div>
                 </div>
 
