@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from dashboard.models import UserProfile, Chord, Tab, PracticeSession, UserChordProgress
+from dashboard.management.commands.populate_media import SONG_MEDIA
 from django.utils import timezone
 from datetime import timedelta
 import random
@@ -374,7 +375,7 @@ SONGS_CATALOG = [
         'difficulty': 'Easy',
         'key': 'G',
         'youtube_url': 'https://www.youtube.com/watch?v=bx1Bh8ZvH84',
-        'audio_url': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+        'audio_url': '/static/audio/acoustic_guitar_in_the_sun.mp3',
         'chords': ['E Minor', 'G Major', 'D Major', 'A Major', 'C Major'],
         'content': """Capo: 2nd Fret | Strumming: D-D-D-D-DU (Down Down Down Down Up Down Up)
 
@@ -1250,6 +1251,10 @@ class Command(BaseCommand):
         # 6. Seed All Songs from SONGS_CATALOG
         created_songs = 0
         for sdata in SONGS_CATALOG:
+            media = SONG_MEDIA.get(sdata['title'], {})
+            yt_url = sdata.get('youtube_url') or media.get('youtube', '')
+            audio_url = sdata.get('audio_url') or media.get('audio', '/static/audio/acoustic_guitar_in_the_sun.mp3')
+
             tab, created = Tab.objects.update_or_create(
                 title=sdata['title'],
                 artist=sdata['artist'],
@@ -1258,8 +1263,8 @@ class Command(BaseCommand):
                     'difficulty': sdata['difficulty'],
                     'key': sdata['key'],
                     'content': sdata['content'].strip(),
-                    'youtube_url': sdata.get('youtube_url', ''),
-                    'audio_url': sdata.get('audio_url', ''),
+                    'youtube_url': yt_url,
+                    'audio_url': audio_url,
                 }
             )
             # Associate real chord instances
