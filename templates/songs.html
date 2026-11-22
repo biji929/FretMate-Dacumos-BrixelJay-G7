@@ -14,7 +14,7 @@
                 {{ total_songs }} Songs in Library
             </span>
             <button id="toggleAddSongFormBtn" type="button" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold shadow-md transition flex items-center gap-2">
-                <span id="addBtnIcon">➕</span> <span id="addBtnText">Add Song</span>
+                <span id="addBtnIcon">+</span> <span id="addBtnText">Add Song</span>
             </button>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-700">
             <div>
                 <h3 class="text-xl font-black text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                    <span>🎸</span> Add New Song to Library
+                    Add New Song to Library
                 </h3>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Enter song details, pick chords to render diagrams, and format your tab sheet.</p>
             </div>
@@ -84,7 +84,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700/60">
                 <div>
                     <label for="{{ form.youtube_url.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-200 mb-1.5 flex items-center gap-1.5">
-                        <span class="text-red-500">📺</span> YouTube Video / Lesson Link <span class="text-[10px] text-gray-400 font-normal lowercase">(optional)</span>
+                        YouTube Video / Lesson Link <span class="text-[10px] text-gray-400 font-normal lowercase">(optional)</span>
                     </label>
                     {{ form.youtube_url }}
                     {% if form.youtube_url.errors %}<p class="text-red-500 text-xs mt-1">{{ form.youtube_url.errors.0 }}</p>{% endif %}
@@ -92,7 +92,7 @@
                 </div>
                 <div>
                     <label for="{{ form.audio_url.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-200 mb-1.5 flex items-center gap-1.5">
-                        <span class="text-emerald-500">🔊</span> MP3 Audio Track Link <span class="text-[10px] text-gray-400 font-normal lowercase">(optional)</span>
+                        MP3 Audio Track Link <span class="text-[10px] text-gray-400 font-normal lowercase">(optional)</span>
                     </label>
                     {{ form.audio_url }}
                     {% if form.audio_url.errors %}<p class="text-red-500 text-xs mt-1">{{ form.audio_url.errors.0 }}</p>{% endif %}
@@ -149,7 +149,7 @@
                     Cancel
                 </button>
                 <button type="submit" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md transition flex items-center gap-2 cursor-pointer">
-                    <span>💾</span> <span>Save Song to Library</span>
+                    Save Song to Library
                 </button>
             </div>
         </form>
@@ -160,8 +160,7 @@
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
             <!-- Search Bar -->
             <div class="w-full md:w-96 relative">
-                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 text-sm">🔍</span>
-                <input type="text" id="songSearch" placeholder="Search by song title, artist, or lyrics..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <input type="text" id="songSearch" placeholder="Search by song title, artist, or lyrics..." class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
             </div>
 
             <!-- Genre Filter Pills -->
@@ -213,8 +212,8 @@
             <!-- Card Header -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-2xl flex-shrink-0">
-                        🎵
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 flex items-center justify-center font-mono font-bold text-xs text-blue-600 dark:text-blue-400 flex-shrink-0">
+                        TAB
                     </div>
                     <div>
                         <h3 class="text-xl font-black text-gray-900 dark:text-gray-100 tracking-tight">{{ song.title }}</h3>
@@ -238,16 +237,16 @@
                     </span>
                     {% if song.youtube_url %}
                         <span class="text-xs font-bold px-2 py-1 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center gap-1 border border-red-200 dark:border-red-800/60" title="YouTube video attached">
-                            <span>▶</span> <span>Video</span>
+                            Video
                         </span>
                     {% endif %}
                     {% if song.audio_url %}
                         <span class="text-xs font-bold px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center gap-1 border border-emerald-200 dark:border-emerald-800/60" title="MP3 audio track attached">
-                            <span>🔊</span> <span>MP3</span>
+                            MP3
                         </span>
                     {% endif %}
                     <button type="button" class="toggle-song-btn ml-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5 cursor-pointer" data-song-id="{{ song.id }}">
-                        <span>🎸 Play Song</span> <span class="arrow-icon">▼</span>
+                        <span>Play Song</span> <span class="arrow-icon">▼</span>
                     </button>
                     <button type="button" class="present-song-btn px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5 cursor-pointer"
                         data-song-id="{{ song.id }}"
@@ -257,7 +256,7 @@
                         data-difficulty="{{ song.difficulty }}"
                         data-youtube-id="{{ song.youtube_embed_id|default:'' }}"
                         data-audio-url="{{ song.audio_url|default:'' }}">
-                        <span>🎬</span> <span>Present</span>
+                        Present
                     </button>
                 </div>
             </div>
@@ -280,7 +279,7 @@
                 <div class="bg-gray-50 dark:bg-gray-900/80 p-4 rounded-2xl border border-gray-200 dark:border-gray-700/80 space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-                            <span>🖼️</span> Chord Shapes for this song:
+                            Chord Shapes for this song:
                         </span>
                         <span class="text-[11px] text-gray-400">Follow finger numbers 1, 2, 3, 4</span>
                     </div>
@@ -303,9 +302,9 @@
                     <div class="bg-gray-900 rounded-2xl p-3 border border-gray-700/80 shadow-md">
                         <div class="flex items-center justify-between mb-2 px-1">
                             <span class="text-xs font-bold text-red-400 flex items-center gap-1.5">
-                                <span>📺</span> <span>YouTube Video / Lesson</span>
+                                YouTube Video / Lesson
                             </span>
-                            <a href="{{ song.youtube_url }}" target="_blank" rel="noopener" class="text-[11px] text-gray-400 hover:text-white underline">Open on YouTube ↗</a>
+                            <a href="{{ song.youtube_url }}" target="_blank" rel="noopener" class="text-[11px] text-gray-400 hover:text-white underline">Open on YouTube</a>
                         </div>
                         <div class="aspect-video w-full rounded-xl overflow-hidden bg-black">
                             <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/{{ song.youtube_embed_id }}" title="{{ song.title }} video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
@@ -317,7 +316,7 @@
                     <div class="bg-gray-900 rounded-2xl p-4 border border-gray-700/80 shadow-md flex flex-col justify-center space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
-                                <span>🔊</span> <span>MP3 Audio Track</span>
+                                MP3 Audio Track
                             </span>
                             <span class="text-[11px] text-gray-400 font-mono">Play along</span>
                         </div>
@@ -358,7 +357,6 @@
         </div>
         {% empty %}
         <div class="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-200 dark:border-gray-700">
-            <p class="text-4xl mb-3">🔍</p>
             <h4 class="text-lg font-bold text-gray-900 dark:text-gray-100">No songs found matching your search.</h4>
             <p class="text-sm text-gray-400 mt-1">Try searching for another song, artist, or clearing your filters.</p>
             <a href="{% url 'songs' %}" class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold">View All Songs</a>
@@ -374,7 +372,7 @@
     <div id="presenterHUD" class="flex items-center justify-between px-6 py-3 bg-black/60 backdrop-blur border-b border-white/10 flex-shrink-0">
         <!-- Song Info -->
         <div class="flex items-center gap-4 min-w-0">
-            <span class="text-2xl">🎸</span>
+            <span class="font-mono font-bold text-xs px-2.5 py-1 rounded-lg bg-blue-600 text-white">TAB</span>
             <div class="min-w-0">
                 <h2 id="presenterTitle" class="text-lg font-black tracking-tight leading-none truncate"></h2>
                 <p id="presenterArtist" class="text-xs text-gray-400 font-semibold mt-0.5 truncate"></p>
@@ -393,13 +391,13 @@
             <!-- Zoom -->
             <span class="text-gray-500 mx-1">|</span>
             <span class="text-gray-500">Zoom:</span>
-            <button id="presenterZoomOut" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer">🔍-</button>
+            <button id="presenterZoomOut" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer">-</button>
             <span id="presenterZoomLabel" class="px-2 text-gray-300">100%</span>
-            <button id="presenterZoomIn"  class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer">🔍+</button>
+            <button id="presenterZoomIn"  class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer">+</button>
 
             <!-- Autoscroll -->
             <span class="text-gray-500 mx-1">|</span>
-            <button id="presenterScrollBtn" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer flex items-center gap-1.5">▶ Auto Scroll</button>
+            <button id="presenterScrollBtn" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer flex items-center gap-1.5">Auto Scroll</button>
             <button id="presenterSpeed1" class="px-2 py-1 rounded bg-white/20 text-white cursor-pointer">1x</button>
             <button id="presenterSpeed2" class="px-2 py-1 rounded bg-white/10 text-gray-400 hover:bg-white/20 cursor-pointer">2x</button>
             <button id="presenterSpeed3" class="px-2 py-1 rounded bg-white/10 text-gray-400 hover:bg-white/20 cursor-pointer">3x</button>
@@ -417,7 +415,7 @@
     <div id="presenterMediaBar" class="hidden flex flex-wrap items-center justify-between px-6 py-2.5 bg-black/70 border-b border-white/10 gap-4 flex-shrink-0">
         <div id="presenterYoutubeWrap" class="hidden flex items-center gap-3">
             <span class="text-red-400 font-bold text-xs flex items-center gap-1.5 flex-shrink-0">
-                <span>📺</span> <span>Lesson / Video:</span>
+                Lesson / Video:
             </span>
             <div class="h-32 aspect-video rounded-lg overflow-hidden bg-black shadow-lg border border-white/10">
                 <iframe id="presenterYoutubeFrame" class="w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -425,7 +423,7 @@
         </div>
         <div id="presenterAudioWrap" class="hidden flex items-center gap-3 flex-1 max-w-md">
             <span class="text-emerald-400 font-bold text-xs flex items-center gap-1.5 flex-shrink-0">
-                <span>🔊</span> <span>MP3 Track:</span>
+                MP3 Track:
             </span>
             <audio id="presenterAudioPlayer" controls class="w-full h-8 rounded-lg"></audio>
         </div>
@@ -470,7 +468,7 @@
             document.getElementById('songTitleInput').focus();
         } else {
             addSongContainer.classList.add('hidden');
-            addBtnIcon.innerText = '➕';
+            addBtnIcon.innerText = '+';
             addBtnText.innerText = 'Add Song';
             toggleAddSongBtn.classList.replace('bg-gray-700', 'bg-blue-600');
         }
@@ -771,7 +769,7 @@
     });
 
     /* =========================================================================
-       🎬 FULLSCREEN SONG PRESENTER
+       FULLSCREEN SONG PRESENTER
        ========================================================================= */
     (function() {
         const overlay      = document.getElementById('songPresenter');

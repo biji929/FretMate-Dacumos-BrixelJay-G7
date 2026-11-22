@@ -13,7 +13,7 @@
         <!-- ================= LOG FORM CARD ================= -->
         <div class="lg:col-span-3 bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow border border-gray-200 dark:border-gray-700">
             <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                <span>📝</span> Log Practice Session
+                Log Practice Session
             </h3>
 
             <form id="loggerForm" class="space-y-5">
@@ -58,7 +58,7 @@
 
                 <!-- Submit Button -->
                 <button type="submit" id="submitBtn" class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow transition flex items-center justify-center gap-2">
-                    <span>💾</span> <span id="submitBtnText">Save Practice Session</span>
+                    <span id="submitBtnText">Save Practice Session</span>
                 </button>
             </form>
         </div>
@@ -66,7 +66,7 @@
         <!-- ================= RECENT SESSIONS SIDEBAR ================= -->
         <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-200 dark:border-gray-700 flex flex-col">
             <h3 class="text-xl font-bold mb-4 flex items-center justify-between">
-                <span class="flex items-center gap-2"><span>🕒</span> Recent History</span>
+                <span>Recent History</span>
                 <span class="text-xs font-normal text-gray-400">Last 10</span>
             </h3>
 
@@ -85,7 +85,7 @@
                                 <span class="text-xs text-gray-400">{{ session.date|date:"M d, Y"|default:"Today" }}</span>
                             </div>
                             <div class="font-bold text-gray-900 dark:text-gray-100 text-sm">
-                                ⏱️ {{ session.duration_minutes }} minutes
+                                {{ session.duration_minutes }} minutes
                             </div>
                             {% if session.notes %}
                                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 italic line-clamp-2">"{{ session.notes }}"</p>
@@ -94,7 +94,6 @@
                     {% endfor %}
                 {% else %}
                     <div id="emptyState" class="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">
-                        <p class="text-2xl mb-2">🎸</p>
                         <p>No practice sessions logged yet.</p>
                         <p class="text-xs mt-1">Fill out the form to log your first session!</p>
                     </div>
@@ -181,7 +180,7 @@
                             <span class="text-xs text-gray-400">${result.session.date}</span>
                         </div>
                         <div class="font-bold text-gray-900 dark:text-gray-100 text-sm">
-                            ⏱️ ${result.session.duration_minutes} minutes
+                            ${result.session.duration_minutes} minutes
                         </div>
                         ${result.session.notes ? `<p class="text-xs text-gray-500 dark:text-gray-400 mt-1 italic line-clamp-2">"${result.session.notes}"</p>` : ''}
                     `;
