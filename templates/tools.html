@@ -94,44 +94,67 @@
         </div>
 
         <!-- ================= METRONOME SECTION ================= -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 p-6 flex flex-col justify-between">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 p-6 flex flex-col justify-between space-y-5">
             <div>
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold flex items-center gap-2">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <h3 class="text-xl font-bold">
                         Metronome
                     </h3>
-                    <!-- Time Signature Select -->
-                    <div class="flex items-center gap-1 text-sm">
-                        <label for="timeSigSelect" class="text-xs text-gray-500 dark:text-gray-400 font-medium">Time:</label>
-                        <select id="timeSigSelect" class="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded px-2 py-1 text-sm font-semibold">
-                            <option value="2">2/4</option>
-                            <option value="3">3/4</option>
-                            <option value="4" selected>4/4</option>
-                            <option value="6">6/8</option>
+
+                    <!-- Time Signature Dropdown -->
+                    <div class="flex items-center gap-2 text-sm">
+                        <label for="timeSigSelect" class="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider">Meter:</label>
+                        <select id="timeSigSelect" class="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg px-2.5 py-1 text-xs font-bold focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+                            <option value="4/4" selected>4/4 (Common Time)</option>
+                            <option value="3/4">3/4 (Waltz)</option>
+                            <option value="2/4">2/4 (March)</option>
+                            <option value="6/8">6/8 (Compound Duple)</option>
+                            <option value="5/4">5/4 (Odd Meter)</option>
+                            <option value="7/8">7/8 (Complex Meter)</option>
+                            <option value="12/8">12/8 (Blues Shuffle)</option>
                         </select>
                     </div>
                 </div>
 
+                <!-- Quick Time Signature Pills -->
+                <div class="flex flex-wrap items-center gap-1.5 mb-5 pb-3 border-b border-gray-100 dark:border-gray-700/60">
+                    <span class="text-[11px] font-semibold text-gray-400 mr-1 uppercase tracking-wider">Presets:</span>
+                    <button type="button" class="sig-pill px-2.5 py-1 text-xs font-bold rounded-lg transition bg-blue-600 text-white shadow-sm" data-sig="4/4">4/4</button>
+                    <button type="button" class="sig-pill px-2.5 py-1 text-xs font-bold rounded-lg transition bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600" data-sig="3/4">3/4</button>
+                    <button type="button" class="sig-pill px-2.5 py-1 text-xs font-bold rounded-lg transition bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600" data-sig="2/4">2/4</button>
+                    <button type="button" class="sig-pill px-2.5 py-1 text-xs font-bold rounded-lg transition bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600" data-sig="6/8">6/8</button>
+                    <button type="button" class="sig-pill px-2.5 py-1 text-xs font-bold rounded-lg transition bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600" data-sig="5/4">5/4</button>
+                    <button type="button" class="sig-pill px-2.5 py-1 text-xs font-bold rounded-lg transition bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600" data-sig="12/8">12/8</button>
+                </div>
+
                 <!-- Tempo Display & Beat Dots -->
-                <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700 mb-6">
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700 mb-5">
                     <div class="flex items-baseline justify-center gap-2">
                         <span id="bpmVal" class="text-6xl font-black font-mono tracking-tight text-gray-900 dark:text-gray-100">120</span>
                         <span class="text-xl font-bold text-gray-400 uppercase">BPM</span>
                     </div>
-                    <div id="tempoName" class="text-sm font-medium text-blue-600 dark:text-blue-400 mt-1">
+                    <div id="tempoName" class="text-sm font-bold text-blue-600 dark:text-blue-400 mt-1">
                         Moderato
                     </div>
 
+                    <!-- Recommended tempo indicator for selected time signature -->
+                    <div class="mt-2 flex items-center justify-center gap-2 text-xs">
+                        <span id="sigDescription" class="text-gray-500 dark:text-gray-400">4 quarter beats per measure</span>
+                        <button type="button" id="applySuggestedTempoBtn" class="text-blue-600 dark:text-blue-400 hover:underline font-bold text-[11px] cursor-pointer">
+                            (Set 120 BPM)
+                        </button>
+                    </div>
+
                     <!-- Beat Visualizer Dots -->
-                    <div id="beatIndicators" class="flex justify-center items-center gap-3 mt-6">
+                    <div id="beatIndicators" class="flex flex-wrap justify-center items-center gap-2.5 mt-6 min-h-[44px]">
                         <!-- Populated dynamically based on time signature -->
                     </div>
                 </div>
 
                 <!-- BPM Slider & Step Buttons -->
-                <div class="space-y-4 mb-6">
+                <div class="space-y-4 mb-5">
                     <div class="flex items-center gap-4">
-                        <input type="range" id="bpmRange" min="40" max="220" value="120" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                        <input type="range" id="bpmRange" min="40" max="240" value="120" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-600">
                     </div>
 
                     <!-- Quick BPM Adjustments & Tap Tempo -->
@@ -142,7 +165,7 @@
                             <button type="button" class="bpm-btn px-2.5 py-1 text-xs font-semibold rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition" data-step="1">+1</button>
                             <button type="button" class="bpm-btn px-2.5 py-1 text-xs font-semibold rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition" data-step="5">+5</button>
                         </div>
-                        <button id="tapTempoBtn" type="button" class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300">
+                        <button id="tapTempoBtn" type="button" class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300 cursor-pointer">
                             Tap Tempo
                         </button>
                     </div>
@@ -150,7 +173,7 @@
             </div>
 
             <!-- Metronome Action Button -->
-            <button id="startMetronome" class="w-full py-3 px-4 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700 transition flex items-center justify-center gap-2 shadow">
+            <button id="startMetronome" class="w-full py-3 px-4 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700 transition flex items-center justify-center gap-2 shadow cursor-pointer">
                 <span id="metronomeBtnText">Start Metronome</span>
             </button>
         </div>
@@ -281,37 +304,63 @@
     /* =========================================================================
        METRONOME INITIALIZATION & UI BINDINGS
        ========================================================================= */
-    const metronome = new Metronome(120, 4);
+    const TIME_SIGNATURE_PRESETS = {
+        '4/4': { num: 4, den: 4, defaultBpm: 120, name: 'Common Time', desc: '4 quarter beats (Pop, Rock, Blues)' },
+        '3/4': { num: 3, den: 4, defaultBpm: 96,  name: 'Waltz Meter', desc: '3 quarter beats (ONE-two-three)' },
+        '2/4': { num: 2, den: 4, defaultBpm: 104, name: 'March Meter', desc: '2 quarter beats (ONE-two, Polka)' },
+        '6/8': { num: 6, den: 8, defaultBpm: 168, name: 'Compound Duple', desc: '6 eighth notes (Slow Blues, Ballad)' },
+        '5/4': { num: 5, den: 4, defaultBpm: 144, name: 'Odd Meter', desc: '5 beats (3+2 jazz subdivision)' },
+        '7/8': { num: 7, den: 8, defaultBpm: 180, name: 'Complex Meter', desc: '7 eighth notes (Prog Rock, Balkan)' },
+        '12/8':{ num: 12, den: 8, defaultBpm: 160, name: 'Blues Shuffle', desc: '12 eighth notes (Slow Blues Shuffle)' }
+    };
+
+    const metronome = new Metronome(120, 4, 4);
     const startMetronomeBtn = document.getElementById('startMetronome');
     const metronomeBtnText = document.getElementById('metronomeBtnText');
     const bpmRange = document.getElementById('bpmRange');
     const bpmVal = document.getElementById('bpmVal');
     const tempoNameEl = document.getElementById('tempoName');
     const timeSigSelect = document.getElementById('timeSigSelect');
+    const sigDescription = document.getElementById('sigDescription');
+    const applySuggestedTempoBtn = document.getElementById('applySuggestedTempoBtn');
+    const sigPills = document.querySelectorAll('.sig-pill');
     const beatIndicators = document.getElementById('beatIndicators');
     const tapTempoBtn = document.getElementById('tapTempoBtn');
 
-    // Build visual beat dots
-    function renderBeatDots(beats) {
+    // Build visual beat dots with number labels
+    function renderBeatDots(numerator, denominator) {
         beatIndicators.innerHTML = '';
-        for (let i = 0; i < beats; i++) {
+        for (let i = 0; i < numerator; i++) {
+            const beatBox = document.createElement('div');
+            beatBox.id = `beat-box-${i}`;
+            beatBox.className = 'flex flex-col items-center gap-1';
+
             const dot = document.createElement('div');
             dot.id = `beat-dot-${i}`;
             dot.className = 'w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-700 transition-all duration-75';
-            beatIndicators.appendChild(dot);
+
+            const num = document.createElement('span');
+            num.className = 'text-[10px] font-mono font-bold text-gray-400';
+            num.innerText = (i + 1);
+
+            beatBox.appendChild(dot);
+            beatBox.appendChild(num);
+            beatIndicators.appendChild(beatBox);
         }
     }
-    renderBeatDots(4);
+    renderBeatDots(4, 4);
 
-    // Audio beat callback syncs UI flash
-    metronome.onBeat = (beatNumber, isAccent) => {
-        const dots = beatIndicators.querySelectorAll('div');
+    // Audio beat callback syncs UI flash with accent levels
+    metronome.onBeat = (beatNumber, accentLevel) => {
+        const dots = beatIndicators.querySelectorAll('[id^="beat-dot-"]');
         dots.forEach((dot, idx) => {
             if (idx === beatNumber) {
-                if (isAccent) {
-                    dot.className = 'w-5 h-5 rounded-full bg-blue-500 scale-125 shadow-md shadow-blue-500/50 transition-all duration-75';
+                if (accentLevel === 'primary') {
+                    dot.className = 'w-5 h-5 rounded-full bg-blue-500 scale-125 shadow-md shadow-blue-500/60 ring-2 ring-blue-300 transition-all duration-75';
+                } else if (accentLevel === 'secondary') {
+                    dot.className = 'w-4 h-4 rounded-full bg-amber-500 scale-110 shadow-sm shadow-amber-500/50 ring-1 ring-amber-300 transition-all duration-75';
                 } else {
-                    dot.className = 'w-4 h-4 rounded-full bg-green-500 scale-110 shadow-sm shadow-green-500/50 transition-all duration-75';
+                    dot.className = 'w-4 h-4 rounded-full bg-green-500 scale-105 shadow-sm shadow-green-500/50 transition-all duration-75';
                 }
             } else {
                 dot.className = 'w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-700 transition-all duration-150';
@@ -320,7 +369,7 @@
     };
 
     function updateBpm(newBpm) {
-        const clamped = Math.max(40, Math.min(240, parseInt(newBpm, 10)));
+        const clamped = Math.max(30, Math.min(260, parseInt(newBpm, 10)));
         metronome.setBpm(clamped);
         bpmRange.value = clamped;
         bpmVal.innerText = clamped;
@@ -337,12 +386,56 @@
         });
     });
 
-    // Time signature changes
+    // Handle Time Signature Change and apply recommended tempo
+    function applyTimeSignature(sigKey, autoAdjustTempo = false) {
+        const preset = TIME_SIGNATURE_PRESETS[sigKey] || TIME_SIGNATURE_PRESETS['4/4'];
+
+        // Update Metronome internal timing
+        metronome.setTimeSignature(preset.num, preset.den);
+        renderBeatDots(preset.num, preset.den);
+
+        // Update dropdown and description
+        if (timeSigSelect) timeSigSelect.value = sigKey;
+        if (sigDescription) sigDescription.innerText = `${preset.desc}`;
+        if (applySuggestedTempoBtn) {
+            applySuggestedTempoBtn.innerText = `(Set ${preset.defaultBpm} BPM)`;
+            applySuggestedTempoBtn.dataset.suggestedBpm = preset.defaultBpm;
+        }
+
+        // Highlight active pill
+        sigPills.forEach(pill => {
+            if (pill.dataset.sig === sigKey) {
+                pill.className = 'sig-pill px-2.5 py-1 text-xs font-bold rounded-lg transition bg-blue-600 text-white shadow-sm';
+            } else {
+                pill.className = 'sig-pill px-2.5 py-1 text-xs font-bold rounded-lg transition bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600';
+            }
+        });
+
+        // Optionally set recommended tempo automatically
+        if (autoAdjustTempo) {
+            updateBpm(preset.defaultBpm);
+        }
+    }
+
+    // Time signature dropdown change
     timeSigSelect.addEventListener('change', (e) => {
-        const beats = parseInt(e.target.value, 10);
-        metronome.setBeatsPerMeasure(beats);
-        renderBeatDots(beats);
+        applyTimeSignature(e.target.value, false);
     });
+
+    // Preset pills click
+    sigPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+            applyTimeSignature(pill.dataset.sig, true);
+        });
+    });
+
+    // Apply recommended tempo shortcut button
+    if (applySuggestedTempoBtn) {
+        applySuggestedTempoBtn.addEventListener('click', () => {
+            const sug = parseInt(applySuggestedTempoBtn.dataset.suggestedBpm || '120', 10);
+            updateBpm(sug);
+        });
+    }
 
     // Start / Stop Toggle
     startMetronomeBtn.addEventListener('click', () => {
@@ -357,7 +450,7 @@
             startMetronomeBtn.classList.replace('hover:bg-red-700', 'hover:bg-green-700');
             metronomeBtnText.innerText = 'Start Metronome';
             // Reset beat dots
-            const dots = beatIndicators.querySelectorAll('div');
+            const dots = beatIndicators.querySelectorAll('[id^="beat-dot-"]');
             dots.forEach(d => d.className = 'w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-700 transition-all duration-75');
         }
     });
