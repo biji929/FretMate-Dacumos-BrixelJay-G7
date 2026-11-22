@@ -1230,7 +1230,10 @@ class Command(BaseCommand):
         if user_created:
             user.set_password('password')
             user.save()
-            UserProfile.objects.create(user=user, skill_level='Intermediate', weekly_goal_minutes=150)
+        UserProfile.objects.update_or_create(
+            user=user,
+            defaults={'skill_level': 'Intermediate', 'weekly_goal_minutes': 150}
+        )
 
         # 4. Seed User Progress for Chords
         for i, (name, chord) in enumerate(chord_instances.items()):
