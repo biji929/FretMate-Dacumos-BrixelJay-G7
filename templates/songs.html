@@ -7,13 +7,13 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h2 class="text-3xl font-extrabold tracking-tight">Song Library</h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-1">Play, practice, or add guitar songs with chords, lyrics, and chord diagrams.</p>
+            <p class="text-zinc-500 dark:text-zinc-400 mt-1">Play, practice, or add guitar songs with chords, lyrics, and chord diagrams.</p>
         </div>
         <div class="flex items-center gap-3">
-            <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-mono">
+            <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 font-mono">
                 {{ total_songs }} Songs in Library
             </span>
-            <button id="toggleAddSongFormBtn" type="button" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold shadow-md hover:shadow transition duration-150 flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+            <button id="toggleAddSongFormBtn" type="button" class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold shadow-md hover:shadow transition duration-150 flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
                 <svg id="addBtnIcon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
                 <span id="addBtnText">Add Song</span>
             </button>
@@ -21,15 +21,15 @@
     </div>
 
     <!-- ================= ADD SONG FORM DRAWER / CARD ================= -->
-    <div id="addSongContainer" class="{% if not form.errors %}hidden{% endif %} bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border-2 border-blue-500/50 dark:border-blue-500/40 space-y-6 transition-all">
-        <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-700">
+    <div id="addSongContainer" class="{% if not form.errors %}hidden{% endif %} bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-2xl shadow-xl border-2 border-rose-500/50 dark:border-rose-500/40 space-y-6 transition-all">
+        <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-zinc-800">
             <div>
-                <h3 class="text-xl font-black text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <h3 class="text-xl font-black text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                     Add New Song to Library
                 </h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Enter song details, pick chords to render diagrams, and format your tab sheet.</p>
+                <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">Enter song details, pick chords to render diagrams, and format your tab sheet.</p>
             </div>
-            <button type="button" id="closeAddSongBtn" class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition cursor-pointer" aria-label="Close form">
+            <button type="button" id="closeAddSongBtn" class="p-1.5 rounded-lg text-zinc-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-zinc-100 dark:hover:bg-gray-700 transition cursor-pointer" aria-label="Close form">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
             </button>
         </div>
@@ -40,7 +40,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Title -->
                 <div>
-                    <label for="{{ form.title.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-200 mb-1.5">
+                    <label for="{{ form.title.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-gray-200 mb-1.5">
                         Song Title <span class="text-red-500">*</span>
                     </label>
                     {{ form.title }}
@@ -49,7 +49,7 @@
 
                 <!-- Artist -->
                 <div>
-                    <label for="{{ form.artist.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-200 mb-1.5">
+                    <label for="{{ form.artist.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-gray-200 mb-1.5">
                         Artist / Band <span class="text-red-500">*</span>
                     </label>
                     {{ form.artist }}
@@ -60,7 +60,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Genre -->
                 <div>
-                    <label for="{{ form.genre.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-200 mb-1.5">
+                    <label for="{{ form.genre.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-gray-200 mb-1.5">
                         Genre <span class="text-red-500">*</span>
                     </label>
                     {{ form.genre }}
@@ -68,7 +68,7 @@
 
                 <!-- Difficulty -->
                 <div>
-                    <label for="{{ form.difficulty.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-200 mb-1.5">
+                    <label for="{{ form.difficulty.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-gray-200 mb-1.5">
                         Difficulty
                     </label>
                     {{ form.difficulty }}
@@ -76,7 +76,7 @@
 
                 <!-- Key -->
                 <div>
-                    <label for="{{ form.key.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-200 mb-1.5">
+                    <label for="{{ form.key.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-gray-200 mb-1.5">
                         Key (e.g. C, G, Em, Am)
                     </label>
                     {{ form.key }}
@@ -84,32 +84,32 @@
             </div>
 
             <!-- YouTube Link (Optional) -->
-            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700/60">
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800/60">
                 <div>
-                    <label for="{{ form.youtube_url.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-200 mb-1.5 flex items-center gap-1.5">
-                        YouTube Video / Lesson Link <span class="text-[10px] text-gray-400 font-normal lowercase">(optional)</span>
+                    <label for="{{ form.youtube_url.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-gray-200 mb-1.5 flex items-center gap-1.5">
+                        YouTube Video / Lesson Link <span class="text-[10px] text-zinc-400 font-normal lowercase">(optional)</span>
                     </label>
                     {{ form.youtube_url }}
                     {% if form.youtube_url.errors %}<p class="text-red-500 text-xs mt-1">{{ form.youtube_url.errors.0 }}</p>{% endif %}
-                    <p class="text-[10px] text-gray-400 mt-1">Paste any standard YouTube or youtu.be URL to embed the backing track video or lesson.</p>
+                    <p class="text-[10px] text-zinc-400 mt-1">Paste any standard YouTube or youtu.be URL to embed the backing track video or lesson.</p>
                 </div>
             </div>
 
             <!-- Interactive Chords Picker -->
             <div>
                 <div class="flex items-center justify-between mb-1.5">
-                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-200">
-                        Chords Used <span class="text-xs font-normal text-gray-400 lowercase">(Click chords to attach their visual diagrams)</span>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-gray-200">
+                        Chords Used <span class="text-xs font-normal text-zinc-400 lowercase">(Click chords to attach their visual diagrams)</span>
                     </label>
-                    <span id="selectedChordsCount" class="text-xs text-blue-600 dark:text-blue-400 font-semibold">0 chords selected</span>
+                    <span id="selectedChordsCount" class="text-xs text-rose-600 dark:text-rose-400 font-semibold">0 chords selected</span>
                 </div>
 
                 <!-- Visual clickable chord tags filterable -->
-                <div class="p-3.5 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 space-y-2.5">
-                    <input type="text" id="chordPickerFilter" placeholder="Filter chords (e.g., C, Em, G, Bm)..." class="w-full px-3.5 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-xs text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <div class="p-3.5 bg-gray-50 dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-2.5">
+                    <input type="text" id="chordPickerFilter" placeholder="Filter chords (e.g., C, Em, G, Bm)..." class="w-full px-3.5 py-2 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-rose-500">
                     <div id="chordChipsContainer" class="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto pr-1">
                         {% for c in all_chords %}
-                            <button type="button" class="chord-chip px-2.5 py-1 rounded-lg text-xs font-bold border transition text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:border-blue-500 cursor-pointer" data-chord-id="{{ c.id }}" data-chord-name="{{ c.name|lower }}">
+                            <button type="button" class="chord-chip px-2.5 py-1 rounded-lg text-xs font-bold border transition text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700 hover:border-rose-500 cursor-pointer" data-chord-id="{{ c.id }}" data-chord-name="{{ c.name|lower }}">
                                 + {{ c.name }}
                             </button>
                         {% endfor %}
@@ -125,25 +125,25 @@
             <!-- Content / Lyrics & Tablature -->
             <div>
                 <div class="flex items-center justify-between mb-1.5">
-                    <label for="{{ form.content.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-200">
+                    <label for="{{ form.content.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-gray-200">
                         Lyrics & Chords Sheet <span class="text-red-500">*</span>
                     </label>
                     <div class="flex gap-2 text-xs">
-                        <button type="button" id="insertVerseTemplate" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold cursor-pointer">+ Verse Template</button>
-                        <span class="text-gray-300 dark:text-gray-600">|</span>
-                        <button type="button" id="insertChorusTemplate" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold cursor-pointer">+ Chorus Template</button>
+                        <button type="button" id="insertVerseTemplate" class="text-rose-600 dark:text-rose-400 hover:underline font-semibold cursor-pointer">+ Verse Template</button>
+                        <span class="text-zinc-300 dark:text-gray-600">|</span>
+                        <button type="button" id="insertChorusTemplate" class="text-rose-600 dark:text-rose-400 hover:underline font-semibold cursor-pointer">+ Chorus Template</button>
                     </div>
                 </div>
                 {{ form.content }}
                 {% if form.content.errors %}<p class="text-red-500 text-xs mt-1">{{ form.content.errors.0 }}</p>{% endif %}
-                <p class="text-[11px] text-gray-400 mt-1">Tip: Place chord names directly on the line above the corresponding lyric words using spaces.</p>
+                <p class="text-[11px] text-zinc-400 mt-1">Tip: Place chord names directly on the line above the corresponding lyric words using spaces.</p>
             </div>
 
-            <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
-                <button type="button" id="cancelAddSongBtn" class="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-bold text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition cursor-pointer">
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-zinc-800">
+                <button type="button" id="cancelAddSongBtn" class="px-5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-gray-200 font-bold text-sm hover:bg-zinc-100 dark:hover:bg-gray-700 transition cursor-pointer">
                     Cancel
                 </button>
-                <button type="submit" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md transition flex items-center gap-2 cursor-pointer">
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow-md transition flex items-center gap-2 cursor-pointer">
                     Save Song to Library
                 </button>
             </div>
@@ -151,47 +151,47 @@
     </div>
 
     <!-- Search & Filter Controls -->
-    <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow border border-gray-200 dark:border-gray-700 space-y-4">
+    <div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl shadow border border-zinc-200 dark:border-zinc-800 space-y-4">
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
             <!-- Search Bar -->
             <div class="w-full md:w-96 relative">
-                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
                 </div>
-                <input type="text" id="songSearch" placeholder="Search by song title, artist, or lyrics..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <input type="text" id="songSearch" placeholder="Search by song title, artist, or lyrics..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-rose-500 transition">
             </div>
 
             <!-- Genre Filter Pills -->
             <div class="flex flex-wrap items-center gap-1.5">
-                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mr-1">Genre:</span>
-                <a href="?{% if selected_difficulty %}difficulty={{ selected_difficulty }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-3 py-1 text-xs font-bold rounded-lg transition {% if not selected_genre %}bg-blue-600 text-white shadow-sm{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600{% endif %}">All</a>
-                <a href="?genre=Acoustic{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-3 py-1 text-xs font-bold rounded-lg transition {% if selected_genre == 'Acoustic' %}bg-blue-600 text-white shadow-sm{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600{% endif %}">Acoustic</a>
-                <a href="?genre=Rock{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-3 py-1 text-xs font-bold rounded-lg transition {% if selected_genre == 'Rock' %}bg-blue-600 text-white shadow-sm{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600{% endif %}">Rock</a>
-                <a href="?genre=Pop{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-3 py-1 text-xs font-bold rounded-lg transition {% if selected_genre == 'Pop' %}bg-blue-600 text-white shadow-sm{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600{% endif %}">Pop</a>
-                <a href="?genre=Jazz{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-3 py-1 text-xs font-bold rounded-lg transition {% if selected_genre == 'Jazz' %}bg-blue-600 text-white shadow-sm{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600{% endif %}">Jazz</a>
+                <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider mr-1">Genre:</span>
+                <a href="?{% if selected_difficulty %}difficulty={{ selected_difficulty }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-3 py-1 text-xs font-bold rounded-lg transition {% if not selected_genre %}bg-rose-600 text-white shadow-sm{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700{% endif %}">All</a>
+                <a href="?genre=Acoustic{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-3 py-1 text-xs font-bold rounded-lg transition {% if selected_genre == 'Acoustic' %}bg-rose-600 text-white shadow-sm{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700{% endif %}">Acoustic</a>
+                <a href="?genre=Rock{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-3 py-1 text-xs font-bold rounded-lg transition {% if selected_genre == 'Rock' %}bg-rose-600 text-white shadow-sm{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700{% endif %}">Rock</a>
+                <a href="?genre=Pop{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-3 py-1 text-xs font-bold rounded-lg transition {% if selected_genre == 'Pop' %}bg-rose-600 text-white shadow-sm{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700{% endif %}">Pop</a>
+                <a href="?genre=Jazz{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-3 py-1 text-xs font-bold rounded-lg transition {% if selected_genre == 'Jazz' %}bg-rose-600 text-white shadow-sm{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700{% endif %}">Jazz</a>
             </div>
         </div>
 
         <!-- Secondary Filters (Difficulty & Key) -->
-        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-100 dark:border-gray-700/60 text-xs">
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-100 dark:border-zinc-800/60 text-xs">
             <!-- Difficulty Filter -->
             <div class="flex items-center gap-2">
-                <span class="font-bold text-gray-400 uppercase tracking-wider">Level:</span>
-                <a href="?{% if selected_genre %}genre={{ selected_genre }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 rounded-md {% if not selected_difficulty %}font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/40{% else %}text-gray-600 dark:text-gray-300 hover:text-gray-900{% endif %}">All</a>
-                <a href="?difficulty=Easy{% if selected_genre %}&genre={{ selected_genre }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 rounded-md {% if selected_difficulty == 'Easy' %}font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/40{% else %}text-gray-600 dark:text-gray-300 hover:text-gray-900{% endif %}">Easy</a>
-                <a href="?difficulty=Medium{% if selected_genre %}&genre={{ selected_genre }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 rounded-md {% if selected_difficulty == 'Medium' %}font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/40{% else %}text-gray-600 dark:text-gray-300 hover:text-gray-900{% endif %}">Medium</a>
-                <a href="?difficulty=Hard{% if selected_genre %}&genre={{ selected_genre }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 rounded-md {% if selected_difficulty == 'Hard' %}font-bold text-rose-600 bg-rose-50 dark:bg-rose-900/40{% else %}text-gray-600 dark:text-gray-300 hover:text-gray-900{% endif %}">Hard</a>
+                <span class="font-bold text-zinc-400 uppercase tracking-wider">Level:</span>
+                <a href="?{% if selected_genre %}genre={{ selected_genre }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 rounded-md {% if not selected_difficulty %}font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40{% else %}text-gray-600 dark:text-zinc-300 hover:text-zinc-900{% endif %}">All</a>
+                <a href="?difficulty=Easy{% if selected_genre %}&genre={{ selected_genre }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 rounded-md {% if selected_difficulty == 'Easy' %}font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/40{% else %}text-gray-600 dark:text-zinc-300 hover:text-zinc-900{% endif %}">Easy</a>
+                <a href="?difficulty=Medium{% if selected_genre %}&genre={{ selected_genre }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 rounded-md {% if selected_difficulty == 'Medium' %}font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/40{% else %}text-gray-600 dark:text-zinc-300 hover:text-zinc-900{% endif %}">Medium</a>
+                <a href="?difficulty=Hard{% if selected_genre %}&genre={{ selected_genre }}{% endif %}{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 rounded-md {% if selected_difficulty == 'Hard' %}font-bold text-rose-600 bg-rose-50 dark:bg-rose-900/40{% else %}text-gray-600 dark:text-zinc-300 hover:text-zinc-900{% endif %}">Hard</a>
             </div>
 
             <!-- Key Filter -->
             <div class="flex items-center gap-1.5 flex-wrap">
-                <span class="font-bold text-gray-400 uppercase tracking-wider">Key:</span>
-                <a href="?{% if selected_genre %}genre={{ selected_genre }}{% endif %}{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}" class="px-2 py-0.5 rounded {% if not selected_key %}bg-gray-200 dark:bg-gray-700 font-bold{% else %}text-gray-500 hover:text-gray-900{% endif %}">Any</a>
+                <span class="font-bold text-zinc-400 uppercase tracking-wider">Key:</span>
+                <a href="?{% if selected_genre %}genre={{ selected_genre }}{% endif %}{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}" class="px-2 py-0.5 rounded {% if not selected_key %}bg-gray-200 dark:bg-zinc-800 font-bold{% else %}text-zinc-500 hover:text-zinc-900{% endif %}">Any</a>
                 {% for k in available_keys %}
-                    <a href="?key={{ k }}{% if selected_genre %}&genre={{ selected_genre }}{% endif %}{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}" class="px-2 py-0.5 rounded {% if selected_key == k %}bg-blue-600 text-white font-bold{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200{% endif %}">{{ k }}</a>
+                    <a href="?key={{ k }}{% if selected_genre %}&genre={{ selected_genre }}{% endif %}{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}" class="px-2 py-0.5 rounded {% if selected_key == k %}bg-rose-600 text-white font-bold{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200{% endif %}">{{ k }}</a>
                 {% endfor %}
                 {% if selected_genre or selected_difficulty or selected_key %}
-                    <a href="{% url 'songs' %}" class="text-blue-500 underline ml-2">Reset</a>
+                    <a href="{% url 'songs' %}" class="text-rose-500 underline ml-2">Reset</a>
                 {% endif %}
             </div>
         </div>
@@ -200,7 +200,7 @@
     <!-- Song List Grid -->
     <div id="songsGrid" class="space-y-4">
         {% for song in songs %}
-        <div class="song-card bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-200 dark:border-gray-700 p-6 transition-all hover:border-blue-400 dark:hover:border-blue-500" data-title="{{ song.title|lower }}" data-artist="{{ song.artist|lower }}" data-content="{{ song.content|lower }}">
+        <div class="song-card bg-white dark:bg-zinc-900 rounded-2xl shadow border border-zinc-200 dark:border-zinc-800 p-6 transition-all hover:border-rose-400 dark:hover:border-rose-500" data-title="{{ song.title|lower }}" data-artist="{{ song.artist|lower }}" data-content="{{ song.content|lower }}">
             <!-- Hidden chord JSON for presenter -->
             <script type="application/json" class="song-chords-data" id="song-chords-{{ song.id }}">
                 [{% for chord in song.associated_chords.all %}{"name":"{{ chord.name }}","diagram":{{ chord.diagram_json|safe }}}{% if not forloop.last %},{% endif %}{% endfor %}]
@@ -210,21 +210,21 @@
             <!-- Card Header -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 flex items-center justify-center font-mono font-bold text-xs text-blue-600 dark:text-blue-400 flex-shrink-0">
+                    <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 flex items-center justify-center font-mono font-bold text-xs text-rose-600 dark:text-rose-400 flex-shrink-0">
                         TAB
                     </div>
                     <div>
-                        <h3 class="text-xl font-black text-gray-900 dark:text-gray-100 tracking-tight">{{ song.title }}</h3>
-                        <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">by {{ song.artist }}</p>
+                        <h3 class="text-xl font-black text-zinc-900 dark:text-zinc-100 tracking-tight">{{ song.title }}</h3>
+                        <p class="text-sm font-semibold text-zinc-500 dark:text-zinc-400">by {{ song.artist }}</p>
                     </div>
                 </div>
 
                 <!-- Badges & Action -->
                 <div class="flex flex-wrap items-center gap-2">
-                    <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                    <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
                         {{ song.genre }}
                     </span>
-                    <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300">
+                    <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300">
                         Key of {{ song.key }}
                     </span>
                     <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full
@@ -239,7 +239,7 @@
                             Video
                         </span>
                     {% endif %}
-                    <button type="button" class="toggle-song-btn ml-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md hover:shadow transition duration-150 flex items-center gap-1.5 cursor-pointer" data-song-id="{{ song.id }}">
+                    <button type="button" class="toggle-song-btn ml-2 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-md hover:shadow transition duration-150 flex items-center gap-1.5 cursor-pointer" data-song-id="{{ song.id }}">
                         <span>Play Song</span> <svg class="arrow-icon w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
                     </button>
                     <button type="button" class="present-song-btn px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold shadow-md hover:shadow transition duration-150 flex items-center gap-1.5 cursor-pointer"
@@ -256,32 +256,32 @@
             </div>
 
             <!-- Chords Preview Pill Bar -->
-            <div class="flex flex-wrap items-center gap-1.5 mt-4 pt-3 border-t border-gray-100 dark:border-gray-700/60">
-                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mr-1">Chords Used:</span>
+            <div class="flex flex-wrap items-center gap-1.5 mt-4 pt-3 border-t border-gray-100 dark:border-zinc-800/60">
+                <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider mr-1">Chords Used:</span>
                 {% for chord in song.associated_chords.all %}
-                    <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-gray-100 dark:bg-gray-700/70 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-600">
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-zinc-100 dark:bg-zinc-800/70 text-gray-800 dark:text-gray-200 border border-zinc-200 dark:border-zinc-700">
                         {{ chord.name }}
                     </span>
                 {% empty %}
-                    <span class="text-xs text-gray-400">Standard chords</span>
+                    <span class="text-xs text-zinc-400">Standard chords</span>
                 {% endfor %}
             </div>
 
             <!-- Expandable Song Sheet & Chord Pictures -->
-            <div id="sheet-{{ song.id }}" class="song-sheet hidden mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 space-y-4">
+            <div id="sheet-{{ song.id }}" class="song-sheet hidden mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
                 <!-- Chord Pictures Strip for This Song -->
-                <div class="bg-gray-50 dark:bg-gray-900/80 p-4 rounded-2xl border border-gray-200 dark:border-gray-700/80 space-y-3">
+                <div class="bg-gray-50 dark:bg-zinc-950/80 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800/80 space-y-3">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <span class="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
                             Chord Shapes for this song:
                         </span>
-                        <span class="text-[11px] text-gray-400">Follow finger numbers 1, 2, 3, 4</span>
+                        <span class="text-[11px] text-zinc-400">Follow finger numbers 1, 2, 3, 4</span>
                     </div>
 
                     <div class="flex flex-wrap gap-4 overflow-x-auto py-2">
                         {% for chord in song.associated_chords.all %}
-                        <div class="chord-card bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col items-center">
-                            <span class="font-extrabold text-sm text-gray-900 dark:text-gray-100 mb-1">{{ chord.name }}</span>
+                        <div class="chord-card bg-white dark:bg-zinc-900 rounded-xl p-3 shadow-sm border border-zinc-200 dark:border-zinc-800 flex flex-col items-center">
+                            <span class="font-extrabold text-sm text-zinc-900 dark:text-zinc-100 mb-1">{{ chord.name }}</span>
                             <div class="chord-diagram-container flex justify-center py-1"></div>
                             <script type="application/json" class="chord-data">{{ chord.diagram_json|safe }}</script>
                         </div>
@@ -297,7 +297,7 @@
                             <span class="text-xs font-bold text-red-400 flex items-center gap-1.5">
                                 YouTube Video / Lesson
                             </span>
-                            <a href="{{ song.youtube_url }}" target="_blank" rel="noopener" class="text-[11px] text-gray-400 hover:text-white underline">Open on YouTube</a>
+                            <a href="{{ song.youtube_url }}" target="_blank" rel="noopener" class="text-[11px] text-zinc-400 hover:text-white underline">Open on YouTube</a>
                         </div>
                         <div class="aspect-video w-full rounded-xl overflow-hidden bg-black">
                             <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/{{ song.youtube_embed_id }}" title="{{ song.title }} video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
@@ -309,21 +309,21 @@
                 <!-- Sheet Viewer: sticky controls + scrollable content -->
                 <div class="rounded-2xl border border-stone-800 overflow-hidden shadow-inner" style="height:520px; display:flex; flex-direction:column;">
                     <!-- Sticky Controls Bar -->
-                    <div class="sheet-controls flex flex-wrap items-center justify-between bg-gray-100 dark:bg-gray-700/80 px-3 py-2 text-xs flex-shrink-0 border-b border-gray-200 dark:border-gray-700 gap-y-1">
+                    <div class="sheet-controls flex flex-wrap items-center justify-between bg-zinc-100 dark:bg-zinc-800/80 px-3 py-2 text-xs flex-shrink-0 border-b border-zinc-200 dark:border-zinc-800 gap-y-1">
                         <div class="flex items-center gap-2">
-                            <button type="button" class="autoscroll-btn px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold border border-gray-200 dark:border-gray-600 transition flex items-center gap-1.5 cursor-pointer">
+                            <button type="button" class="autoscroll-btn px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold border border-zinc-200 dark:border-zinc-700 transition flex items-center gap-1.5 cursor-pointer">
                                 <svg class="autoscroll-icon w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> <span class="autoscroll-label">Auto Scroll</span>
                             </button>
-                            <span class="text-gray-400">Speed:</span>
-                            <button type="button" class="speed-btn px-2 py-1 rounded bg-white dark:bg-gray-800 font-bold cursor-pointer" data-speed="1">1x</button>
-                            <button type="button" class="speed-btn px-2 py-1 rounded text-gray-500 hover:bg-white dark:hover:bg-gray-800 font-bold cursor-pointer" data-speed="2">2x</button>
-                            <button type="button" class="speed-btn px-2 py-1 rounded text-gray-500 hover:bg-white dark:hover:bg-gray-800 font-bold cursor-pointer" data-speed="3">3x</button>
+                            <span class="text-zinc-400">Speed:</span>
+                            <button type="button" class="speed-btn px-2 py-1 rounded bg-white dark:bg-zinc-900 font-bold cursor-pointer" data-speed="1">1x</button>
+                            <button type="button" class="speed-btn px-2 py-1 rounded text-zinc-500 hover:bg-white dark:hover:bg-gray-800 font-bold cursor-pointer" data-speed="2">2x</button>
+                            <button type="button" class="speed-btn px-2 py-1 rounded text-zinc-500 hover:bg-white dark:hover:bg-gray-800 font-bold cursor-pointer" data-speed="3">3x</button>
                         </div>
 
                         <div class="flex items-center gap-1 font-mono">
-                            <span class="text-gray-400">Text Size:</span>
-                            <button type="button" class="font-down px-2 py-1 rounded bg-white dark:bg-gray-800 font-bold cursor-pointer">A-</button>
-                            <button type="button" class="font-up px-2 py-1 rounded bg-white dark:bg-gray-800 font-bold cursor-pointer">A+</button>
+                            <span class="text-zinc-400">Text Size:</span>
+                            <button type="button" class="font-down px-2 py-1 rounded bg-white dark:bg-zinc-900 font-bold cursor-pointer">A-</button>
+                            <button type="button" class="font-up px-2 py-1 rounded bg-white dark:bg-zinc-900 font-bold cursor-pointer">A+</button>
                         </div>
                     </div>
 
@@ -333,57 +333,57 @@
             </div>
         </div>
         {% empty %}
-        <div class="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-200 dark:border-gray-700">
-            <h4 class="text-lg font-bold text-gray-900 dark:text-gray-100">No songs found matching your search.</h4>
-            <p class="text-sm text-gray-400 mt-1">Try searching for another song, artist, or clearing your filters.</p>
-            <a href="{% url 'songs' %}" class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold">View All Songs</a>
+        <div class="text-center py-16 bg-white dark:bg-zinc-900 rounded-2xl shadow border border-zinc-200 dark:border-zinc-800">
+            <h4 class="text-lg font-bold text-zinc-900 dark:text-zinc-100">No songs found matching your search.</h4>
+            <p class="text-sm text-zinc-400 mt-1">Try searching for another song, artist, or clearing your filters.</p>
+            <a href="{% url 'songs' %}" class="inline-block mt-4 px-4 py-2 bg-rose-600 text-white rounded-lg text-sm font-bold">View All Songs</a>
         </div>
         {% endfor %}
     </div>
 </div>
 
 <!-- ===================== FULLSCREEN PRESENTER OVERLAY ===================== -->
-<div id="songPresenter" class="fixed inset-0 z-[9999] hidden flex-col bg-gray-950 text-white" style="display:none;">
+<div id="songPresenter" class="fixed inset-0 z-[9999] hidden flex-col bg-zinc-950 text-white" style="display:none;">
 
     <!-- Top HUD Bar -->
     <div id="presenterHUD" class="flex items-center justify-between px-6 py-3 bg-black/60 backdrop-blur border-b border-white/10 flex-shrink-0">
         <!-- Song Info -->
         <div class="flex items-center gap-4 min-w-0">
-            <span class="font-mono font-bold text-xs px-2.5 py-1 rounded-lg bg-blue-600 text-white">TAB</span>
+            <span class="font-mono font-bold text-xs px-2.5 py-1 rounded-lg bg-rose-600 text-white">TAB</span>
             <div class="min-w-0">
                 <h2 id="presenterTitle" class="text-lg font-black tracking-tight leading-none truncate"></h2>
-                <p id="presenterArtist" class="text-xs text-gray-400 font-semibold mt-0.5 truncate"></p>
+                <p id="presenterArtist" class="text-xs text-zinc-400 font-semibold mt-0.5 truncate"></p>
             </div>
-            <span id="presenterKey" class="text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-700/60 border border-indigo-500/40 text-indigo-200 ml-2"></span>
+            <span id="presenterKey" class="text-xs font-bold px-2.5 py-1 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-200 ml-2"></span>
             <span id="presenterDifficulty" class="text-xs font-bold px-2.5 py-1 rounded-full bg-purple-700/60 border border-purple-500/40 text-purple-200"></span>
         </div>
 
         <!-- Controls -->
         <div class="flex items-center gap-2 flex-shrink-0 text-xs font-bold">
             <!-- Text Size -->
-            <span class="text-gray-500 mr-1">Text:</span>
+            <span class="text-zinc-500 mr-1">Text:</span>
             <button id="presenterFontDown" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer">A-</button>
             <button id="presenterFontUp"   class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer">A+</button>
 
             <!-- Zoom -->
-            <span class="text-gray-500 mx-1">|</span>
-            <span class="text-gray-500">Zoom:</span>
+            <span class="text-zinc-500 mx-1">|</span>
+            <span class="text-zinc-500">Zoom:</span>
             <button id="presenterZoomOut" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer">-</button>
-            <span id="presenterZoomLabel" class="px-2 text-gray-300">100%</span>
+            <span id="presenterZoomLabel" class="px-2 text-zinc-300">100%</span>
             <button id="presenterZoomIn"  class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer">+</button>
 
             <!-- Autoscroll -->
-            <span class="text-gray-500 mx-1">|</span>
+            <span class="text-zinc-500 mx-1">|</span>
             <button id="presenterScrollBtn" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer flex items-center gap-1.5">
                 <svg id="presenterScrollIcon" class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 <span id="presenterScrollText">Auto Scroll</span>
             </button>
             <button id="presenterSpeed1" class="px-2 py-1 rounded bg-white/20 text-white cursor-pointer">1x</button>
-            <button id="presenterSpeed2" class="px-2 py-1 rounded bg-white/10 text-gray-400 hover:bg-white/20 cursor-pointer">2x</button>
-            <button id="presenterSpeed3" class="px-2 py-1 rounded bg-white/10 text-gray-400 hover:bg-white/20 cursor-pointer">3x</button>
+            <button id="presenterSpeed2" class="px-2 py-1 rounded bg-white/10 text-zinc-400 hover:bg-white/20 cursor-pointer">2x</button>
+            <button id="presenterSpeed3" class="px-2 py-1 rounded bg-white/10 text-zinc-400 hover:bg-white/20 cursor-pointer">3x</button>
 
             <!-- Close -->
-            <span class="text-gray-500 mx-1">|</span>
+            <span class="text-zinc-500 mx-1">|</span>
             <button id="presenterClose" class="px-3 py-1.5 rounded-lg bg-red-700/70 hover:bg-red-600 transition cursor-pointer flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
                 <span>Exit</span>
@@ -441,14 +441,14 @@
             addSongContainer.classList.remove('hidden');
             if (addBtnIcon) addBtnIcon.classList.add('rotate-45');
             addBtnText.innerText = 'Close Form';
-            toggleAddSongBtn.classList.replace('bg-blue-600', 'bg-gray-700');
+            toggleAddSongBtn.classList.replace('bg-rose-600', 'bg-gray-700');
             const titleInput = document.getElementById('songTitleInput');
             if (titleInput) titleInput.focus();
         } else {
             addSongContainer.classList.add('hidden');
             if (addBtnIcon) addBtnIcon.classList.remove('rotate-45');
             addBtnText.innerText = 'Add Song';
-            toggleAddSongBtn.classList.replace('bg-gray-700', 'bg-blue-600');
+            toggleAddSongBtn.classList.replace('bg-gray-700', 'bg-rose-600');
         }
     }
 
@@ -480,12 +480,12 @@
             if (opt) {
                 opt.selected = !opt.selected;
                 if (opt.selected) {
-                    chip.classList.remove('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border-gray-300', 'dark:border-gray-600');
-                    chip.classList.add('bg-blue-600', 'text-white', 'border-blue-600', 'shadow-sm');
+                    chip.classList.remove('bg-white', 'dark:bg-zinc-900', 'text-zinc-700', 'dark:text-zinc-300', 'border-zinc-300', 'dark:border-zinc-700');
+                    chip.classList.add('bg-rose-600', 'text-white', 'border-rose-600', 'shadow-sm');
                     chip.innerText = `✓ ${chip.dataset.chordName.toUpperCase()}`;
                 } else {
-                    chip.classList.remove('bg-blue-600', 'text-white', 'border-blue-600', 'shadow-sm');
-                    chip.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border-gray-300', 'dark:border-gray-600');
+                    chip.classList.remove('bg-rose-600', 'text-white', 'border-rose-600', 'shadow-sm');
+                    chip.classList.add('bg-white', 'dark:bg-zinc-900', 'text-zinc-700', 'dark:text-zinc-300', 'border-zinc-300', 'dark:border-zinc-700');
                     chip.innerText = `+ ${chip.dataset.chordName.toUpperCase()}`;
                 }
                 updateSelectedChordsCount();
@@ -568,7 +568,7 @@
 
         // Base fret indicator
         if (baseFret > 1) {
-            svg += `<text x="${startX - 6}" y="${startY + 14}" text-anchor="end" class="fill-blue-600 dark:fill-blue-400 text-[10px] font-black font-mono">${baseFret}fr</text>`;
+            svg += `<text x="${startX - 6}" y="${startY + 14}" text-anchor="end" class="fill-rose-600 dark:fill-rose-400 text-[10px] font-black font-mono">${baseFret}fr</text>`;
         }
 
         // Muted (X) and Open (O)
@@ -599,7 +599,7 @@
                     if (minStr < maxStr) {
                         const x1 = startX + minStr * stringSpacing;
                         const x2 = startX + maxStr * stringSpacing;
-                        svg += `<line x1="${x1}" y1="${barreY}" x2="${x2}" y2="${barreY}" class="stroke-blue-600 dark:stroke-blue-500" stroke-width="11" stroke-linecap="round" />`;
+                        svg += `<line x1="${x1}" y1="${barreY}" x2="${x2}" y2="${barreY}" class="stroke-rose-600 dark:stroke-rose-500" stroke-width="11" stroke-linecap="round" />`;
                     }
                 }
             });
@@ -616,7 +616,7 @@
                     const cx = startX + i * stringSpacing;
                     const cy = startY + (relFret - 0.5) * fretSpacing;
 
-                    svg += `<circle cx="${cx}" cy="${cy}" r="6.5" class="fill-blue-600 dark:fill-blue-500" />`;
+                    svg += `<circle cx="${cx}" cy="${cy}" r="6.5" class="fill-rose-600 dark:fill-rose-500" />`;
                     if (finger > 0) {
                         svg += `<text x="${cx}" y="${cy + 3}" text-anchor="middle" class="fill-white font-black text-[8px] pointer-events-none">${finger}</text>`;
                     }
@@ -653,12 +653,12 @@
             if (sheet.classList.contains('hidden')) {
                 sheet.classList.remove('hidden');
                 if (arrow) arrow.classList.add('rotate-180');
-                btn.classList.replace('bg-blue-600', 'bg-gray-800');
+                btn.classList.replace('bg-rose-600', 'bg-gray-800');
                 initChordDiagramsInside(sheet);
             } else {
                 sheet.classList.add('hidden');
                 if (arrow) arrow.classList.remove('rotate-180');
-                btn.classList.replace('bg-gray-800', 'bg-blue-600');
+                btn.classList.replace('bg-gray-800', 'bg-rose-600');
             }
         });
     });
@@ -713,12 +713,12 @@
             const label = autoscrollBtn.querySelector('.autoscroll-label');
             const icon = autoscrollBtn.querySelector('.autoscroll-icon');
             if (isScrolling) {
-                autoscrollBtn.classList.add('bg-blue-600', 'text-white');
+                autoscrollBtn.classList.add('bg-rose-600', 'text-white');
                 if (label) label.innerText = 'Pause Scroll';
                 if (icon) icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
                 startScroll();
             } else {
-                autoscrollBtn.classList.remove('bg-blue-600', 'text-white');
+                autoscrollBtn.classList.remove('bg-rose-600', 'text-white');
                 if (label) label.innerText = 'Auto Scroll';
                 if (icon) icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
                 clearInterval(scrollInterval);
@@ -729,9 +729,9 @@
         speedButtons.forEach(sBtn => {
             sBtn.addEventListener('click', () => {
                 speed = parseInt(sBtn.dataset.speed, 10);
-                speedButtons.forEach(b => b.classList.replace('bg-blue-600', 'bg-white'));
-                speedButtons.forEach(b => b.classList.replace('text-white', 'text-gray-500'));
-                sBtn.classList.add('bg-blue-600', 'text-white');
+                speedButtons.forEach(b => b.classList.replace('bg-rose-600', 'bg-white'));
+                speedButtons.forEach(b => b.classList.replace('text-white', 'text-zinc-500'));
+                sBtn.classList.add('bg-rose-600', 'text-white');
                 if (isScrolling) startScroll();
             });
         });
@@ -863,7 +863,7 @@
                 try {
                     const chords = JSON.parse(chordsScript.textContent);
                     if (chords.length === 0) {
-                        chordsStrip.innerHTML = '<span class="text-xs text-gray-500 italic">No chord diagrams attached</span>';
+                        chordsStrip.innerHTML = '<span class="text-xs text-zinc-500 italic">No chord diagrams attached</span>';
                     }
                     chords.forEach(chord => {
                         const wrapper = document.createElement('div');
@@ -919,7 +919,7 @@
             svg.setAttribute('width', W); svg.setAttribute('height', H);
             svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
 
-            const fg = '#e5e7eb', bg='transparent', dotC='#a78bfa', dotTxt='#fff', openC='#a78bfa', mutedC='#ef4444';
+            const fg = '#e5e7eb', bg='transparent', dotC='#f43f5e', dotTxt='#fff', openC='#f43f5e', mutedC='#ef4444';
 
             // Grid
             for (let f=0; f<=fretRows; f++) {
@@ -1049,7 +1049,7 @@
             btn.addEventListener('click', () => {
                 scrollSpeed = i + 1;
                 [sp1, sp2, sp3].forEach(b => {
-                    b.className = 'px-2 py-1 rounded bg-white/10 text-gray-400 hover:bg-white/20 cursor-pointer text-xs font-bold';
+                    b.className = 'px-2 py-1 rounded bg-white/10 text-zinc-400 hover:bg-white/20 cursor-pointer text-xs font-bold';
                 });
                 btn.className = 'px-2 py-1 rounded bg-white/20 text-white cursor-pointer text-xs font-bold';
                 if (isScrolling) startScroll();

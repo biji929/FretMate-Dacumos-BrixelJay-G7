@@ -4,19 +4,19 @@
 {% block content %}
 <div class="space-y-6 max-w-4xl mx-auto">
     <!-- Header with Sub-Navigation Tabs -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-gray-200 dark:border-gray-800">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-200 dark:border-gray-800">
         <div>
             <h2 class="text-3xl font-extrabold tracking-tight">Chromatic Guitar Tuner</h2>
             <p class="text-gray-500 dark:text-gray-400 mt-1">Real-time pitch detection running client-side through your microphone with target note snapping.</p>
         </div>
 
         <!-- Tool Switcher Tabs -->
-        <div class="inline-flex p-1 bg-slate-200 dark:bg-slate-800 rounded-xl text-xs font-bold">
-            <a href="{% url 'tuner' %}" class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs transition">
+        <div class="inline-flex p-1 bg-zinc-200 dark:bg-zinc-900 rounded-xl text-xs font-bold">
+            <a href="{% url 'tuner' %}" class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white dark:bg-zinc-800 text-rose-600 dark:text-rose-400 shadow-xs transition">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.348 14.652a3.75 3.75 0 0 1 0-5.304m5.304 0a3.75 3.75 0 0 1 0 5.304m-7.425 2.121a6.75 6.75 0 0 1 0-9.546m9.546 0a6.75 6.75 0 0 1 0 9.546M12 12h.008v.008H12V12Z" /></svg>
                 Guitar Tuner
             </a>
-            <a href="{% url 'metronome' %}" class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">
+            <a href="{% url 'metronome' %}" class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
                 Metronome
             </a>
@@ -24,7 +24,7 @@
     </div>
 
     <!-- Main Tuner Card -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 md:p-8 space-y-6">
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 p-6 md:p-8 space-y-6">
         <!-- Status & Mode Bar -->
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -42,32 +42,32 @@
         <div>
             <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Guitar Strings (Click to play reference tone)</div>
             <div class="grid grid-cols-6 gap-2 sm:gap-3">
-                <button type="button" id="string-E2" data-freq="82.41" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                <button type="button" id="string-E2" data-freq="82.41" class="string-badge text-center py-2.5 px-1 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-rose-400 dark:hover:border-rose-500 transition-all cursor-pointer">
                     <div class="text-[11px] text-gray-400 font-semibold">6th String</div>
                     <div class="font-black text-base text-gray-800 dark:text-gray-200">E2</div>
                     <div class="text-[10px] text-gray-400 font-mono">82.4 Hz</div>
                 </button>
-                <button type="button" id="string-A2" data-freq="110.00" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                <button type="button" id="string-A2" data-freq="110.00" class="string-badge text-center py-2.5 px-1 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-rose-400 dark:hover:border-rose-500 transition-all cursor-pointer">
                     <div class="text-[11px] text-gray-400 font-semibold">5th String</div>
                     <div class="font-black text-base text-gray-800 dark:text-gray-200">A2</div>
                     <div class="text-[10px] text-gray-400 font-mono">110.0 Hz</div>
                 </button>
-                <button type="button" id="string-D3" data-freq="146.83" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                <button type="button" id="string-D3" data-freq="146.83" class="string-badge text-center py-2.5 px-1 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-rose-400 dark:hover:border-rose-500 transition-all cursor-pointer">
                     <div class="text-[11px] text-gray-400 font-semibold">4th String</div>
                     <div class="font-black text-base text-gray-800 dark:text-gray-200">D3</div>
                     <div class="text-[10px] text-gray-400 font-mono">146.8 Hz</div>
                 </button>
-                <button type="button" id="string-G3" data-freq="196.00" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                <button type="button" id="string-G3" data-freq="196.00" class="string-badge text-center py-2.5 px-1 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-rose-400 dark:hover:border-rose-500 transition-all cursor-pointer">
                     <div class="text-[11px] text-gray-400 font-semibold">3rd String</div>
                     <div class="font-black text-base text-gray-800 dark:text-gray-200">G3</div>
                     <div class="text-[10px] text-gray-400 font-mono">196.0 Hz</div>
                 </button>
-                <button type="button" id="string-B3" data-freq="246.94" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                <button type="button" id="string-B3" data-freq="246.94" class="string-badge text-center py-2.5 px-1 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-rose-400 dark:hover:border-rose-500 transition-all cursor-pointer">
                     <div class="text-[11px] text-gray-400 font-semibold">2nd String</div>
                     <div class="font-black text-base text-gray-800 dark:text-gray-200">B3</div>
                     <div class="text-[10px] text-gray-400 font-mono">246.9 Hz</div>
                 </button>
-                <button type="button" id="string-E4" data-freq="329.63" class="string-badge text-center py-2.5 px-1 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer">
+                <button type="button" id="string-E4" data-freq="329.63" class="string-badge text-center py-2.5 px-1 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-rose-400 dark:hover:border-rose-500 transition-all cursor-pointer">
                     <div class="text-[11px] text-gray-400 font-semibold">1st String</div>
                     <div class="font-black text-base text-gray-800 dark:text-gray-200">E4</div>
                     <div class="text-[10px] text-gray-400 font-mono">329.6 Hz</div>
@@ -76,7 +76,7 @@
         </div>
 
         <!-- Central Tuner Visual Display -->
-        <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 text-center border border-gray-200 dark:border-gray-700/80 relative overflow-hidden">
+        <div class="bg-zinc-50 dark:bg-zinc-950 rounded-2xl p-8 text-center border border-zinc-200 dark:border-zinc-800/80 relative overflow-hidden">
             <!-- Large Detected Note & Octave -->
             <div class="flex items-baseline justify-center gap-1.5 min-h-[100px] items-center">
                 <span id="noteName" class="text-8xl md:text-9xl font-black font-mono tracking-tight text-gray-300 dark:text-gray-600 transition-colors duration-150">--</span>
@@ -90,51 +90,51 @@
 
             <!-- Precision Cents Meter Gauge -->
             <div class="mt-8 max-w-xl mx-auto px-4">
-                <div class="relative h-7 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden flex items-center shadow-inner">
+                <div class="relative h-7 bg-gray-200 dark:bg-zinc-900 rounded-full overflow-hidden flex items-center shadow-inner">
                     <!-- In-tune center green zone (±3 cents) -->
                     <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-12 bg-green-500/25 border-x border-green-500/50"></div>
                     <!-- Target center vertical line -->
                     <div class="absolute left-1/2 -translate-x-1/2 w-1 h-full bg-green-600 dark:bg-green-400 z-10"></div>
                     <!-- Smooth moving indicator needle -->
-                    <div id="centsNeedle" class="absolute top-1 bottom-1 w-2.5 rounded-full bg-blue-600 dark:bg-blue-400 transition-all duration-75 shadow-md" style="left: 50%; transform: translateX(-50%); opacity: 0;"></div>
+                    <div id="centsNeedle" class="absolute top-1 bottom-1 w-2.5 rounded-full bg-rose-600 dark:bg-rose-400 transition-all duration-75 shadow-md" style="left: 50%; transform: translateX(-50%); opacity: 0;"></div>
                 </div>
 
                 <!-- Cents Ticks & Numerical Readout -->
                 <div class="flex justify-between items-center text-xs font-mono text-gray-400 mt-2 px-1">
                     <span class="text-amber-600 dark:text-amber-400 font-semibold">-50c (Flat)</span>
-                    <span id="centsValue" class="text-sm font-bold text-gray-700 dark:text-gray-200 px-3 py-0.5 rounded bg-gray-200/60 dark:bg-gray-800">0c</span>
+                    <span id="centsValue" class="text-sm font-bold text-gray-700 dark:text-gray-200 px-3 py-0.5 rounded bg-gray-200/60 dark:bg-zinc-900">0c</span>
                     <span class="text-red-600 dark:text-red-400 font-semibold">+50c (Sharp)</span>
                 </div>
             </div>
 
             <!-- Frequency Diagnostics (Current vs Target) -->
-            <div class="mt-6 pt-5 border-t border-gray-200 dark:border-gray-800 flex justify-center gap-8 text-xs font-mono text-gray-500 dark:text-gray-400">
+            <div class="mt-6 pt-5 border-t border-zinc-200 dark:border-gray-800 flex justify-center gap-8 text-xs font-mono text-gray-500 dark:text-gray-400">
                 <div>Detected: <span id="currentFreq" class="font-bold text-gray-900 dark:text-gray-100 text-sm">--</span> Hz</div>
                 <div>Target Note: <span id="targetFreq" class="font-bold text-gray-900 dark:text-gray-100 text-sm">--</span> Hz</div>
             </div>
         </div>
 
         <!-- Start / Stop Button -->
-        <button id="startTuner" class="w-full py-4 px-6 rounded-xl font-bold text-base text-white bg-blue-600 hover:bg-blue-700 transition flex items-center justify-center gap-2.5 shadow-lg shadow-blue-600/20 active:scale-[0.99] cursor-pointer">
+        <button id="startTuner" class="w-full py-4 px-6 rounded-xl font-bold text-base text-white bg-rose-600 hover:bg-rose-700 transition flex items-center justify-center gap-2.5 shadow-lg shadow-rose-600/20 active:scale-[0.99] cursor-pointer">
             <svg id="tunerBtnIcon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0V12a3 3 0 0 1-3 3Z" /></svg>
             <span id="tunerBtnText">Start Tuner</span>
         </button>
     </div>
 
     <!-- Tuning Guidance Card -->
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 p-6 shadow-xs">
-        <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-3">Guitar Tuning Tips</h3>
-        <ul class="space-y-2.5 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 shadow-xs">
+        <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider mb-3">Guitar Tuning Tips</h3>
+        <ul class="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
             <li class="flex items-start gap-2.5">
-                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+                <svg class="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
                 <span><strong>Always tune up to the note:</strong> If a string is sharp (+cents), tune it slightly below pitch and tune up to tension to ensure tuning stability.</span>
             </li>
             <li class="flex items-start gap-2.5">
-                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+                <svg class="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
                 <span><strong>Mute other strings:</strong> Pluck one string firmly with your thumb or pick, and use your other fingers to silence neighboring strings for a pure fundamental frequency.</span>
             </li>
             <li class="flex items-start gap-2.5">
-                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+                <svg class="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
                 <span><strong>Click string buttons above:</strong> Click any string button (E2, A2, D3, G3, B3, E4) to hear a pure reference tone for tuning by ear.</span>
             </li>
         </ul>
@@ -203,9 +203,9 @@
             const freq = parseFloat(btn.dataset.freq);
             if (!isNaN(freq)) {
                 playReferenceTone(freq);
-                stringBadges.forEach(b => b.classList.remove('ring-2', 'ring-blue-500'));
-                btn.classList.add('ring-2', 'ring-blue-500');
-                setTimeout(() => btn.classList.remove('ring-2', 'ring-blue-500'), 1500);
+                stringBadges.forEach(b => b.classList.remove('ring-2', 'ring-rose-500'));
+                btn.classList.add('ring-2', 'ring-rose-500');
+                setTimeout(() => btn.classList.remove('ring-2', 'ring-rose-500'), 1500);
             }
         });
     });
@@ -219,7 +219,7 @@
         tuningAdviceEl.className = 'mt-3 text-base font-bold text-gray-500 dark:text-gray-400 h-6 transition-colors';
         centsNeedle.style.opacity = '0';
         centsValue.innerText = '0c';
-        centsValue.className = 'text-sm font-bold text-gray-700 dark:text-gray-200 px-3 py-0.5 rounded bg-gray-200/60 dark:bg-gray-800';
+        centsValue.className = 'text-sm font-bold text-gray-700 dark:text-gray-200 px-3 py-0.5 rounded bg-gray-200/60 dark:bg-zinc-900';
         currentFreqEl.innerText = '--';
         targetFreqEl.innerText = '--';
         stringBadges.forEach(b => b.classList.remove('ring-2', 'ring-green-500', 'bg-green-50', 'dark:bg-green-950/40'));
@@ -284,8 +284,8 @@
         tunerStatusBadge.innerText = 'Error';
         tunerStatusBadge.className = 'text-xs px-3 py-1 rounded-full bg-red-100 text-red-700 dark:bg-red-900/60 dark:text-red-300 font-semibold';
         tunerBtnText.innerText = 'Start Tuner';
-        startTunerBtn.classList.replace('bg-red-600', 'bg-blue-600');
-        startTunerBtn.classList.replace('hover:bg-red-700', 'hover:bg-blue-700');
+        startTunerBtn.classList.replace('bg-red-600', 'bg-rose-600');
+        startTunerBtn.classList.replace('hover:bg-red-700', 'hover:bg-rose-700');
     };
 
     const tunerBtnIcon = document.getElementById('tunerBtnIcon');
@@ -297,9 +297,9 @@
             try {
                 await tuner.start();
                 tunerBtnText.innerText = 'Stop Tuner';
-                startTunerBtn.classList.replace('bg-blue-600', 'bg-rose-600');
-                startTunerBtn.classList.replace('hover:bg-blue-700', 'hover:bg-rose-700');
-                startTunerBtn.classList.replace('shadow-blue-600/20', 'shadow-rose-600/20');
+                startTunerBtn.classList.replace('bg-rose-600', 'bg-rose-600');
+                startTunerBtn.classList.replace('hover:bg-rose-700', 'hover:bg-rose-700');
+                startTunerBtn.classList.replace('shadow-rose-600/20', 'shadow-rose-600/20');
                 if (tunerBtnIcon) tunerBtnIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />';
                 tunerStatusBadge.innerText = 'Listening';
                 tunerStatusBadge.className = 'text-xs px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300 font-semibold animate-pulse';
@@ -311,9 +311,9 @@
         } else {
             tuner.stop();
             tunerBtnText.innerText = 'Start Tuner';
-            startTunerBtn.classList.replace('bg-rose-600', 'bg-blue-600');
-            startTunerBtn.classList.replace('hover:bg-rose-700', 'hover:bg-blue-700');
-            startTunerBtn.classList.replace('shadow-rose-600/20', 'shadow-blue-600/20');
+            startTunerBtn.classList.replace('bg-rose-600', 'bg-rose-600');
+            startTunerBtn.classList.replace('hover:bg-rose-700', 'hover:bg-rose-700');
+            startTunerBtn.classList.replace('shadow-rose-600/20', 'shadow-rose-600/20');
             if (tunerBtnIcon) tunerBtnIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0V12a3 3 0 0 1-3 3Z" />';
             tunerStatusBadge.innerText = 'Inactive';
             tunerStatusBadge.className = 'text-xs px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-semibold';

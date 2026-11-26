@@ -2,29 +2,29 @@
 {% block content %}
 <div class="space-y-8 max-w-7xl mx-auto">
     <!-- Header with Role Badge -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-gray-200 dark:border-gray-800">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-zinc-200 dark:border-zinc-800">
         <div>
             <div class="flex items-center gap-3">
-                <h1 class="text-3xl font-black tracking-tight text-gray-900 dark:text-white">Guitarist Dashboard</h1>
-                <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 border border-blue-200 dark:border-blue-800">
+                <h1 class="text-3xl font-black tracking-tight text-zinc-900 dark:text-white">Guitarist Dashboard</h1>
+                <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-900/50">
                     Guitarist
                 </span>
             </div>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Welcome back, <span class="font-semibold text-gray-700 dark:text-gray-200">{{ user.first_name|default:user.username }}</span>! Track your daily guitar practice and chord progression.
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                Welcome back, <span class="font-semibold text-zinc-700 dark:text-zinc-200">{{ user.first_name|default:user.username }}</span>! Track your daily guitar practice and chord progression.
             </p>
         </div>
         <div class="flex items-center gap-2.5">
-            <a href="{% url 'logger' %}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm shadow-sm hover:shadow transition duration-200 active:scale-95 cursor-pointer">
+            <a href="{% url 'logger' %}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-semibold rounded-xl text-sm shadow-sm hover:shadow-md hover:shadow-rose-600/20 transition duration-200 active:scale-95 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                 Log Practice Session
             </a>
-            <a href="{% url 'tuner' %}" class="inline-flex items-center gap-2 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-100 font-semibold rounded-xl text-sm border border-slate-200 dark:border-slate-600 transition duration-200 cursor-pointer">
-                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.348 14.652a3.75 3.75 0 0 1 0-5.304m5.304 0a3.75 3.75 0 0 1 0 5.304m-7.425 2.121a6.75 6.75 0 0 1 0-9.546m9.546 0a6.75 6.75 0 0 1 0 9.546M12 12h.008v.008H12V12Z" /></svg>
+            <a href="{% url 'tuner' %}" class="inline-flex items-center gap-2 px-3.5 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-100 font-semibold rounded-xl text-sm border border-zinc-200 dark:border-zinc-700 transition duration-200 cursor-pointer">
+                <svg class="w-4 h-4 text-rose-600 dark:text-rose-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.348 14.652a3.75 3.75 0 0 1 0-5.304m5.304 0a3.75 3.75 0 0 1 0 5.304m-7.425 2.121a6.75 6.75 0 0 1 0-9.546m9.546 0a6.75 6.75 0 0 1 0 9.546M12 12h.008v.008H12V12Z" /></svg>
                 Tuner
             </a>
-            <a href="{% url 'metronome' %}" class="inline-flex items-center gap-2 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-100 font-semibold rounded-xl text-sm border border-slate-200 dark:border-slate-600 transition duration-200 cursor-pointer">
-                <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+            <a href="{% url 'metronome' %}" class="inline-flex items-center gap-2 px-3.5 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-100 font-semibold rounded-xl text-sm border border-zinc-200 dark:border-zinc-700 transition duration-200 cursor-pointer">
+                <svg class="w-4 h-4 text-red-500 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
                 Metronome
             </a>
         </div>
@@ -33,56 +33,56 @@
     <!-- 4 KPI Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <!-- Total Practice Time -->
-        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md transition duration-200">
+        <div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-rose-500/30 transition duration-200">
             <div class="flex items-center justify-between">
-                <span class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Total Practice</span>
-                <div class="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Total Practice</span>
+                <div class="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/50 flex items-center justify-center text-rose-600 dark:text-rose-400">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
                 </div>
             </div>
-            <p class="text-3xl font-black mt-2 text-slate-900 dark:text-white">{{ total_minutes }} <span class="text-sm font-medium text-slate-500">mins</span></p>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">All-time practice logged</p>
+            <p class="text-3xl font-black mt-2 text-zinc-900 dark:text-white">{{ total_minutes }} <span class="text-sm font-medium text-zinc-500">mins</span></p>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">All-time practice logged</p>
         </div>
 
         <!-- Current Streak -->
-        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md transition duration-200">
+        <div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-amber-500/30 transition duration-200">
             <div class="flex items-center justify-between">
-                <span class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Daily Streak</span>
+                <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Daily Streak</span>
                 <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" /></svg>
                 </div>
             </div>
-            <p class="text-3xl font-black mt-2 text-amber-500">{{ streak }} <span class="text-sm font-medium text-slate-500">days</span></p>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Keep playing daily to build streak</p>
+            <p class="text-3xl font-black mt-2 text-amber-500">{{ streak }} <span class="text-sm font-medium text-zinc-500">days</span></p>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Keep playing daily to build streak</p>
         </div>
 
         <!-- Chords Mastered -->
-        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md transition duration-200">
+        <div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-emerald-500/30 transition duration-200">
             <div class="flex items-center justify-between">
-                <span class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Chords Mastered</span>
+                <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Chords Mastered</span>
                 <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
                 </div>
             </div>
-            <p class="text-3xl font-black mt-2 text-emerald-600 dark:text-emerald-400">{{ chords_mastered }} <span class="text-sm font-medium text-slate-500">/ {{ total_chords }}</span></p>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">In your chord library</p>
+            <p class="text-3xl font-black mt-2 text-emerald-600 dark:text-emerald-400">{{ chords_mastered }} <span class="text-sm font-medium text-zinc-500">/ {{ total_chords }}</span></p>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">In your chord library</p>
         </div>
 
         <!-- Weekly Goal Completion -->
-        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md transition duration-200">
+        <div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-rose-500/30 transition duration-200">
             <div class="flex items-center justify-between">
-                <span class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Weekly Goal</span>
-                <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Weekly Goal</span>
+                <div class="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/50 flex items-center justify-center text-rose-600 dark:text-rose-400">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>
                 </div>
             </div>
             <div class="flex items-baseline gap-2 mt-2">
-                <p class="text-3xl font-black text-blue-600 dark:text-blue-400">{{ goal_percent }}%</p>
-                <span class="text-xs text-slate-500">({{ weekly_minutes }} / {{ weekly_goal }}m)</span>
+                <p class="text-3xl font-black text-rose-600 dark:text-rose-400">{{ goal_percent }}%</p>
+                <span class="text-xs text-zinc-500">({{ weekly_minutes }} / {{ weekly_goal }}m)</span>
             </div>
             <!-- Progress Bar -->
-            <div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full mt-2 overflow-hidden">
-                <div class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: {{ goal_percent }}%"></div>
+            <div class="w-full bg-zinc-100 dark:bg-zinc-800 h-2.5 rounded-full mt-2 overflow-hidden">
+                <div class="bg-gradient-to-r from-rose-600 to-red-500 h-2.5 rounded-full transition-all duration-500" style="width: {{ goal_percent }}%"></div>
             </div>
         </div>
     </div>
@@ -90,10 +90,10 @@
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- 7-Day Trend Line Chart -->
-        <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+        <div class="lg:col-span-2 bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-base font-bold text-gray-900 dark:text-white">Practice Trend (Last 7 Days)</h2>
-                <span class="text-xs text-gray-500 font-medium">Minutes per day</span>
+                <h2 class="text-base font-bold text-zinc-900 dark:text-white">Practice Trend (Last 7 Days)</h2>
+                <span class="text-xs text-zinc-500 font-medium">Minutes per day</span>
             </div>
             <div class="h-64">
                 <canvas id="lineChart"></canvas>
@@ -101,33 +101,33 @@
         </div>
 
         <!-- Focus Area Doughnut Chart -->
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm flex flex-col justify-between">
+        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-between">
             <div>
-                <h2 class="text-base font-bold text-gray-900 dark:text-white mb-1">Focus Distribution</h2>
-                <p class="text-xs text-gray-500 mb-4">Time spent by practice category</p>
+                <h2 class="text-base font-bold text-zinc-900 dark:text-white mb-1">Focus Distribution</h2>
+                <p class="text-xs text-zinc-500 mb-4">Time spent by practice category</p>
             </div>
             <div class="h-56 relative flex items-center justify-center">
                 <canvas id="doughnutChart"></canvas>
             </div>
-            <div class="grid grid-cols-2 gap-2 text-xs text-gray-600 dark:text-gray-300 pt-3 border-t border-gray-100 dark:border-gray-700/40">
-                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Chords: {{ focus_counts.Chords }}m</div>
-                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Songs: {{ focus_counts.Songs }}m</div>
+            <div class="grid grid-cols-2 gap-2 text-xs text-zinc-600 dark:text-zinc-300 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Chords: {{ focus_counts.Chords }}m</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Songs: {{ focus_counts.Songs }}m</div>
                 <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Scales: {{ focus_counts.Scales }}m</div>
-                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Rhythm: {{ focus_counts.Rhythm }}m</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Rhythm: {{ focus_counts.Rhythm }}m</div>
             </div>
         </div>
     </div>
 
     <!-- Recent Sessions Table -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm overflow-hidden">
-        <div class="p-5 border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between">
-            <h2 class="text-base font-bold text-gray-900 dark:text-white">Recent Practice Sessions</h2>
-            <a href="{% url 'logger' %}" class="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline">View All →</a>
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+            <h2 class="text-base font-bold text-zinc-900 dark:text-white">Recent Practice Sessions</h2>
+            <a href="{% url 'logger' %}" class="text-xs text-rose-600 dark:text-rose-400 font-semibold hover:underline">View All →</a>
         </div>
         {% if recent_sessions %}
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
-                    <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700/40 text-gray-500">
+                    <thead class="text-xs uppercase bg-zinc-50 dark:bg-zinc-800/60 text-zinc-500">
                         <tr>
                             <th class="px-5 py-3">Date</th>
                             <th class="px-5 py-3">Duration</th>
@@ -135,28 +135,28 @@
                             <th class="px-5 py-3">Notes</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                    <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
                         {% for session in recent_sessions %}
-                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-700/20">
-                                <td class="px-5 py-3.5 font-medium text-gray-900 dark:text-white">{{ session.date|date:"M d, Y" }}</td>
-                                <td class="px-5 py-3.5 text-blue-600 dark:text-blue-400 font-bold">{{ session.duration_minutes }} mins</td>
+                            <tr class="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30">
+                                <td class="px-5 py-3.5 font-medium text-zinc-900 dark:text-white">{{ session.date|date:"M d, Y" }}</td>
+                                <td class="px-5 py-3.5 text-rose-600 dark:text-rose-400 font-bold">{{ session.duration_minutes }} mins</td>
                                 <td class="px-5 py-3.5">
                                     <span class="px-2 py-0.5 rounded text-xs font-semibold
-                                        {% if session.focus_area == 'Chords' %}bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200
-                                        {% elif session.focus_area == 'Songs' %}bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200
-                                        {% elif session.focus_area == 'Scales' %}bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200
-                                        {% else %}bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200{% endif %}">
+                                        {% if session.focus_area == 'Chords' %}bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-900/40
+                                        {% elif session.focus_area == 'Songs' %}bg-red-100 text-red-800 dark:bg-red-950/60 dark:text-red-300 border border-red-200 dark:border-red-900/40
+                                        {% elif session.focus_area == 'Scales' %}bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-900/40
+                                        {% else %}bg-orange-100 text-orange-800 dark:bg-orange-950/60 dark:text-orange-300 border border-orange-200 dark:border-orange-900/40{% endif %}">
                                         {{ session.focus_area }}
                                     </span>
                                 </td>
-                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 text-xs">{{ session.notes|default:"—" }}</td>
+                                <td class="px-5 py-3.5 text-zinc-500 dark:text-zinc-400 text-xs">{{ session.notes|default:"—" }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         {% else %}
-            <div class="p-8 text-center text-gray-400">
+            <div class="p-8 text-center text-zinc-400">
                 <p class="text-sm font-semibold">No practice sessions logged yet.</p>
                 <p class="text-xs mt-1">Start by clicking "Log Practice Session" above to track your journey!</p>
             </div>
@@ -175,12 +175,12 @@
             datasets: [{
                 label: 'Minutes',
                 data: {{ days_data|safe }},
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                borderColor: '#e11d48',
+                backgroundColor: 'rgba(225, 29, 72, 0.12)',
                 borderWidth: 2.5,
                 fill: true,
                 tension: 0.35,
-                pointBackgroundColor: '#3b82f6',
+                pointBackgroundColor: '#e11d48',
                 pointRadius: 4,
             }]
         },
@@ -189,7 +189,7 @@
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                y: { beginAtZero: true, grid: { color: 'rgba(156, 163, 175, 0.15)' } },
+                y: { beginAtZero: true, grid: { color: 'rgba(156, 163, 175, 0.12)' } },
                 x: { grid: { display: false } }
             }
         }
@@ -212,8 +212,8 @@
             datasets: [{
                 data: hasData ? focusData : [1, 1, 1, 1],
                 backgroundColor: hasData 
-                    ? ['#3b82f6', '#10b981', '#f59e0b', '#ef4444']
-                    : ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'],
+                    ? ['#e11d48', '#ef4444', '#f59e0b', '#f97316']
+                    : ['#27272a', '#27272a', '#27272a', '#27272a'],
                 borderWidth: 0,
             }]
         },

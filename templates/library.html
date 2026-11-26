@@ -7,20 +7,20 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h2 class="text-3xl font-extrabold tracking-tight">Guitar Chord Library & Keys</h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-1">Explore all 12 keys with the Nashville Number System and chord picture charts.</p>
+            <p class="text-zinc-500 dark:text-zinc-400 mt-1">Explore all 12 keys with the Nashville Number System and chord picture charts.</p>
         </div>
 
         <!-- Section Navigation Switcher -->
-        <div class="flex rounded-xl bg-slate-200 dark:bg-slate-700/80 p-1 self-start md:self-auto shadow-inner">
-            <button id="tabBtnKeys" class="px-4 py-2 text-sm font-bold rounded-lg bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+        <div class="flex rounded-xl bg-zinc-200 dark:bg-zinc-800 p-1 self-start md:self-auto shadow-inner">
+            <button id="tabBtnKeys" class="px-4 py-2 text-sm font-bold rounded-lg bg-white dark:bg-zinc-800 text-rose-600 dark:text-rose-400 shadow-xs transition flex items-center gap-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5M6 3.75v16.5m4-16.5v16.5m4-16.5v16.5m4-16.5v16.5" /></svg>
                 Keys & Number System
             </button>
-            <button id="tabBtnAllChords" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition flex items-center gap-1.5 cursor-pointer">
+            <button id="tabBtnAllChords" class="px-4 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition flex items-center gap-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25Z" /></svg>
                 All Chords ({{ chords|length }})
             </button>
-            <a href="{% url 'songs' %}" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition flex items-center gap-1.5 cursor-pointer">
+            <a href="{% url 'songs' %}" class="px-4 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition flex items-center gap-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .57-.723V7.05a.75.75 0 0 0-.54-.722l-8.25 2.357a.75.75 0 0 0-.54.722v6.623a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .57-.723V9Z" /></svg>
                 Song Library ({{ tabs|length }})
             </a>
@@ -30,16 +30,16 @@
     <!-- ================= 1. KEYS & NUMBER SYSTEM SECTION ================= -->
     <div id="keysSection" class="space-y-6">
         <!-- Key Selector Bar (All 12 Keys) -->
-        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-xs border border-slate-200 dark:border-slate-700/80 space-y-3">
+        <div class="bg-white dark:bg-zinc-800 p-5 rounded-2xl shadow-xs border border-zinc-200 dark:border-zinc-800 space-y-3">
             <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Select Musical Key:</span>
-                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">12 Keys Available</span>
+                <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Select Musical Key:</span>
+                <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400">12 Keys Available</span>
             </div>
             <div class="flex flex-wrap gap-2">
                 {% for key in available_keys %}
                 <a href="?key={{ key }}" class="px-3.5 py-1.5 rounded-xl text-sm font-bold transition flex items-center gap-1.5 cursor-pointer
-                    {% if key == selected_key %} bg-blue-600 text-white shadow-md shadow-blue-500/30 scale-105
-                    {% else %} bg-slate-100 dark:bg-slate-700/60 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 {% endif %}">
+                    {% if key == selected_key %} bg-rose-600 text-white shadow-md shadow-rose-600/30 scale-105
+                    {% else %} bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 {% endif %}">
                     <span>Key of</span> <span class="text-base font-black">{{ key }}</span>
                 </a>
                 {% endfor %}
@@ -47,14 +47,14 @@
         </div>
 
         <!-- Key Info & Number System Formula Banner -->
-        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-6 rounded-2xl shadow-lg">
+        <div class="bg-gradient-to-r from-rose-900 via-rose-800 to-zinc-900 border border-rose-600/30 text-white p-6 rounded-2xl shadow-lg">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <div class="inline-block px-3 py-1 rounded-full bg-white/20 text-xs font-bold uppercase tracking-wider mb-2">
                         Diatonic Scale Harmonization
                     </div>
                     <h3 class="text-2xl md:text-3xl font-black">Key of {{ selected_key }} Major</h3>
-                    <p class="text-blue-100 text-sm mt-1">Number System scale degrees (1 through 7): Major, Minor, and Diminished chords.</p>
+                    <p class="text-rose-200 text-sm mt-1">Number System scale degrees (1 through 7): Major, Minor, and Diminished chords.</p>
                 </div>
                 <!-- Mini Quick Reference Strip -->
                 <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20 font-mono text-xs flex flex-wrap gap-2.5">
@@ -70,22 +70,22 @@
         <!-- 7 Diatonic Chords (1 to 7) Picture Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
             {% for item in key_chords %}
-            <div class="chord-card bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-200 dark:border-gray-700 p-4 flex flex-col justify-between hover:shadow-xl hover:border-blue-400 dark:hover:border-blue-500 transition-all group" data-degree="{{ item.degree }}">
+            <div class="chord-card bg-white dark:bg-zinc-900 rounded-2xl shadow border border-zinc-200 dark:border-zinc-800 p-4 flex flex-col justify-between hover:shadow-xl hover:border-rose-400 dark:hover:border-rose-500 transition-all group" data-degree="{{ item.degree }}">
                 <div>
                     <!-- Top Degree Badge & Roman Numeral -->
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-1.5">
                             <span class="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm text-white shadow-sm
-                                {% if item.degree == 1 %} bg-blue-600
-                                {% elif item.degree == 4 or item.degree == 5 %} bg-indigo-600
+                                {% if item.degree == 1 %} bg-rose-600
+                                {% elif item.degree == 4 or item.degree == 5 %} bg-red-600
                                 {% elif item.degree == 7 %} bg-rose-600
                                 {% else %} bg-emerald-600 {% endif %}">
                                 {{ item.degree }}
                             </span>
-                            <span class="font-bold text-xs text-gray-500 dark:text-gray-400 font-serif">({{ item.roman }})</span>
+                            <span class="font-bold text-xs text-zinc-500 dark:text-zinc-400 font-serif">({{ item.roman }})</span>
                         </div>
                         <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full
-                            {% if 'Major' in item.name %} bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300
+                            {% if 'Major' in item.name %} bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300
                             {% elif 'Minor' in item.name %} bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300
                             {% else %} bg-rose-50 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 {% endif %}">
                             {{ item.function }}
@@ -93,12 +93,12 @@
                     </div>
 
                     <!-- Chord Name -->
-                    <h4 class="font-extrabold text-lg text-gray-900 dark:text-gray-100 text-center tracking-tight mb-2">
+                    <h4 class="font-extrabold text-lg text-zinc-900 dark:text-zinc-100 text-center tracking-tight mb-2">
                         {{ item.name }}
                     </h4>
 
                     <!-- SVG Chord Diagram Picture Container -->
-                    <div class="chord-diagram-container flex justify-center py-2 bg-stone-50 dark:bg-gray-900/90 rounded-xl border border-stone-200 dark:border-gray-700/80 shadow-inner my-1">
+                    <div class="chord-diagram-container flex justify-center py-2 bg-stone-50 dark:bg-zinc-950/90 rounded-xl border border-stone-200 dark:border-zinc-800/80 shadow-inner my-1">
                         <!-- Rendered by JS using chord-data JSON -->
                     </div>
 
@@ -108,7 +108,7 @@
                 </div>
 
                 <!-- Footer Frets Reference -->
-                <div class="pt-2 mt-2 border-t border-gray-100 dark:border-gray-700/60 text-center font-mono text-[11px] text-gray-400">
+                <div class="pt-2 mt-2 border-t border-gray-100 dark:border-zinc-800/60 text-center font-mono text-[11px] text-zinc-400">
                     {% if item.chord %}
                         Frets: {% for f in item.chord.diagram_data.frets %}{% if f == -1 %}x{% else %}{{ f }}{% endif %}{% if not forloop.last %} {% endif %}{% endfor %}
                     {% else %}
@@ -120,19 +120,19 @@
         </div>
 
         <!-- Common Progressions in this Key -->
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border border-gray-200 dark:border-gray-700">
+        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow border border-zinc-200 dark:border-zinc-800">
             <h4 class="text-lg font-bold mb-4 flex items-center gap-2">
                 Common Progressions in Key of {{ selected_key }}
             </h4>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {% for prog in common_progressions %}
-                <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 flex flex-col justify-between">
+                <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between">
                     <div>
-                        <div class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">{{ prog.formula }}</div>
-                        <div class="font-bold text-sm text-gray-900 dark:text-gray-100 mt-0.5">{{ prog.name }}</div>
+                        <div class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider">{{ prog.formula }}</div>
+                        <div class="font-bold text-sm text-zinc-900 dark:text-zinc-100 mt-0.5">{{ prog.name }}</div>
                         <div class="flex flex-wrap gap-1.5 mt-3">
                             {% for c in prog.chords %}
-                                <span class="px-2.5 py-1 rounded bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-extrabold text-gray-800 dark:text-gray-200 shadow-sm">
+                                <span class="px-2.5 py-1 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-extrabold text-gray-800 dark:text-gray-200 shadow-sm">
                                     {{ c }}
                                 </span>
                             {% endfor %}
@@ -147,25 +147,25 @@
     <!-- ================= 2. ALL CHORDS SECTION ================= -->
     <div id="allChordsSection" class="hidden space-y-6">
         <!-- Filter Bar -->
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow border border-gray-200 dark:border-gray-700 flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div class="bg-white dark:bg-zinc-900 p-4 rounded-xl shadow border border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row gap-4 items-center justify-between">
             <div class="w-full md:w-80 relative">
-                <input type="text" id="chordSearch" placeholder="Search any chord (e.g., C, Dm, F#m, Bdim)..." class="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" id="chordSearch" placeholder="Search any chord (e.g., C, Dm, F#m, Bdim)..." class="w-full px-4 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
             </div>
 
             <!-- Genre & Difficulty Filter Pills -->
             <div class="flex flex-wrap items-center gap-2">
-                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Genre:</span>
-                <a href="?genre=Acoustic{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_genre == 'Acoustic' %}bg-blue-600 text-white{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300{% endif %}">Acoustic</a>
-                <a href="?genre=Rock{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_genre == 'Rock' %}bg-blue-600 text-white{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300{% endif %}">Rock</a>
-                <a href="?genre=Pop{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_genre == 'Pop' %}bg-blue-600 text-white{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300{% endif %}">Pop</a>
-                <a href="?genre=Jazz{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_genre == 'Jazz' %}bg-blue-600 text-white{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300{% endif %}">Jazz</a>
+                <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Genre:</span>
+                <a href="?genre=Acoustic{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_genre == 'Acoustic' %}bg-rose-600 text-white{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300{% endif %}">Acoustic</a>
+                <a href="?genre=Rock{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_genre == 'Rock' %}bg-rose-600 text-white{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300{% endif %}">Rock</a>
+                <a href="?genre=Pop{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_genre == 'Pop' %}bg-rose-600 text-white{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300{% endif %}">Pop</a>
+                <a href="?genre=Jazz{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_genre == 'Jazz' %}bg-rose-600 text-white{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300{% endif %}">Jazz</a>
 
-                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-2">Level:</span>
-                <a href="?difficulty=Easy{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_difficulty == 'Easy' %}bg-emerald-600 text-white{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300{% endif %}">Easy</a>
-                <a href="?difficulty=Medium{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_difficulty == 'Medium' %}bg-amber-600 text-white{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300{% endif %}">Medium</a>
-                <a href="?difficulty=Hard{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_difficulty == 'Hard' %}bg-rose-600 text-white{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300{% endif %}">Hard</a>
+                <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-2">Level:</span>
+                <a href="?difficulty=Easy{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_difficulty == 'Easy' %}bg-emerald-600 text-white{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300{% endif %}">Easy</a>
+                <a href="?difficulty=Medium{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_difficulty == 'Medium' %}bg-amber-600 text-white{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300{% endif %}">Medium</a>
+                <a href="?difficulty=Hard{% if selected_key %}&key={{ selected_key }}{% endif %}" class="px-2.5 py-1 text-xs font-medium rounded-full {% if selected_difficulty == 'Hard' %}bg-rose-600 text-white{% else %}bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300{% endif %}">Hard</a>
                 {% if selected_genre or selected_difficulty %}
-                    <a href="?key={{ selected_key }}" class="px-2.5 py-1 text-xs text-blue-500 underline ml-1">Clear</a>
+                    <a href="?key={{ selected_key }}" class="px-2.5 py-1 text-xs text-rose-500 underline ml-1">Clear</a>
                 {% endif %}
             </div>
         </div>
@@ -173,11 +173,11 @@
         <!-- All Chords Grid -->
         <div id="allChordsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {% for chord in chords %}
-            <div class="chord-card bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-200 dark:border-gray-700 p-5 flex flex-col justify-between hover:shadow-lg transition-all" data-chord-name="{{ chord.name|lower }}">
+            <div class="chord-card bg-white dark:bg-zinc-900 rounded-2xl shadow border border-zinc-200 dark:border-zinc-800 p-5 flex flex-col justify-between hover:shadow-lg transition-all" data-chord-name="{{ chord.name|lower }}">
                 <div>
                     <div class="flex items-start justify-between mb-3">
                         <div>
-                            <h4 class="font-extrabold text-xl text-gray-900 dark:text-gray-100 tracking-tight">{{ chord.name }}</h4>
+                            <h4 class="font-extrabold text-xl text-zinc-900 dark:text-zinc-100 tracking-tight">{{ chord.name }}</h4>
                             <div class="flex gap-1.5 mt-1">
                                 <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full
                                     {% if chord.difficulty == 'Easy' %} bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300
@@ -185,7 +185,7 @@
                                     {% else %} bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300 {% endif %}">
                                     {{ chord.difficulty }}
                                 </span>
-                                <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                                <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300">
                                     {{ chord.genre }}
                                 </span>
                             </div>
@@ -194,12 +194,12 @@
                         <!-- Interactive Learning / Mastered Toggle Buttons -->
                         <div class="chord-progress-controls flex items-center gap-1" data-chord-id="{{ chord.id }}">
                             <button type="button" onclick="setChordStatus({{ chord.id }}, 'Learning')"
-                                class="progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition {% if chord.id in learning_ids %}bg-blue-600 text-white border-blue-600 shadow-sm{% else %}bg-transparent text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 border-gray-200 dark:border-gray-700{% endif %}"
+                                class="progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition {% if chord.id in learning_ids %}bg-rose-600 text-white border-rose-600 shadow-sm{% else %}bg-transparent text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 border-zinc-200 dark:border-zinc-800{% endif %}"
                                 title="Toggle Learning status">
                                 ⏳ Learning
                             </button>
                             <button type="button" onclick="setChordStatus({{ chord.id }}, 'Mastered')"
-                                class="progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition {% if chord.id in mastered_ids %}bg-emerald-600 text-white border-emerald-600 shadow-sm{% else %}bg-transparent text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 border-gray-200 dark:border-gray-700{% endif %}"
+                                class="progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition {% if chord.id in mastered_ids %}bg-emerald-600 text-white border-emerald-600 shadow-sm{% else %}bg-transparent text-zinc-500 hover:text-emerald-600 dark:hover:text-emerald-400 border-zinc-200 dark:border-zinc-800{% endif %}"
                                 title="Toggle Mastered status">
                                 ✓ Mastered
                             </button>
@@ -207,11 +207,11 @@
                     </div>
 
                     <!-- Fretboard SVG Container -->
-                    <div class="chord-diagram-container flex justify-center py-2 bg-stone-50 dark:bg-gray-900/90 rounded-xl border border-stone-200 dark:border-gray-700/80 shadow-inner my-2"></div>
+                    <div class="chord-diagram-container flex justify-center py-2 bg-stone-50 dark:bg-zinc-950/90 rounded-xl border border-stone-200 dark:border-zinc-800/80 shadow-inner my-2"></div>
                     <script type="application/json" class="chord-data">{{ chord.diagram_json|safe }}</script>
                 </div>
 
-                <div class="pt-3 border-t border-gray-100 dark:border-gray-700/60 flex items-center justify-between text-xs text-gray-400 font-mono">
+                <div class="pt-3 border-t border-gray-100 dark:border-zinc-800/60 flex items-center justify-between text-xs text-zinc-400 font-mono">
                     <span>E A D G B e</span>
                     <span>Frets: {% for f in chord.diagram_data.frets %}{% if f == -1 %}x{% else %}{{ f }}{% endif %}{% if not forloop.last %} {% endif %}{% endfor %}</span>
                 </div>
@@ -224,30 +224,30 @@
     <div id="tabsSection" class="hidden space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {% for tab in tabs %}
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-200 dark:border-gray-700 p-6 flex flex-col justify-between">
+            <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow border border-zinc-200 dark:border-zinc-800 p-6 flex flex-col justify-between">
                 <div>
                     <div class="flex items-start justify-between mb-3">
                         <div>
-                            <h4 class="font-extrabold text-2xl text-gray-900 dark:text-gray-100">{{ tab.title }}</h4>
-                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">by {{ tab.artist }}</p>
+                            <h4 class="font-extrabold text-2xl text-zinc-900 dark:text-zinc-100">{{ tab.title }}</h4>
+                            <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">by {{ tab.artist }}</p>
                         </div>
-                        <span class="text-xs uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+                        <span class="text-xs uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300">
                             {{ tab.genre }}
                         </span>
                     </div>
 
                     <div class="mb-4">
-                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1.5">Chords in this Song:</span>
+                        <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider block mb-1.5">Chords in this Song:</span>
                         <div class="flex flex-wrap gap-1.5">
                             {% for c in tab.associated_chords.all %}
-                                <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-600">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-zinc-100 dark:bg-zinc-800 text-gray-800 dark:text-gray-200 border border-zinc-200 dark:border-gray-600">
                                     {{ c.name }}
                                 </span>
                             {% endfor %}
                         </div>
                     </div>
 
-                    <div class="bg-gray-900 text-gray-100 p-4 rounded-xl font-mono text-xs whitespace-pre overflow-x-auto max-h-72 leading-relaxed border border-gray-800 shadow-inner">
+                    <div class="bg-gray-900 text-zinc-100 p-4 rounded-xl font-mono text-xs whitespace-pre overflow-x-auto max-h-72 leading-relaxed border border-gray-800 shadow-inner">
 {{ tab.content }}
                     </div>
                 </div>
@@ -303,7 +303,7 @@
 
         // 3. Fret position badge if higher up the neck (e.g. 2fr, 4fr)
         if (baseFret > 1) {
-            svg += `<text x="${startX - 7}" y="${startY + 17}" text-anchor="end" class="fill-blue-600 dark:fill-blue-400 text-[11px] font-black font-mono">${baseFret}fr</text>`;
+            svg += `<text x="${startX - 7}" y="${startY + 17}" text-anchor="end" class="fill-rose-600 dark:fill-rose-400 text-[11px] font-black font-mono">${baseFret}fr</text>`;
         }
 
         // 4. Muted (X) and Open (O) string markers above the nut
@@ -334,7 +334,7 @@
                     if (minStr < maxStr) {
                         const x1 = startX + minStr * stringSpacing;
                         const x2 = startX + maxStr * stringSpacing;
-                        svg += `<line x1="${x1}" y1="${barreY}" x2="${x2}" y2="${barreY}" class="stroke-blue-600 dark:stroke-blue-500" stroke-width="13" stroke-linecap="round" />`;
+                        svg += `<line x1="${x1}" y1="${barreY}" x2="${x2}" y2="${barreY}" class="stroke-rose-600 dark:stroke-rose-500" stroke-width="13" stroke-linecap="round" />`;
                     }
                 }
             });
@@ -352,7 +352,7 @@
                     const cy = startY + (relFret - 0.5) * fretSpacing;
 
                     // Dot circle
-                    svg += `<circle cx="${cx}" cy="${cy}" r="7.5" class="fill-blue-600 dark:fill-blue-500 drop-shadow-sm" />`;
+                    svg += `<circle cx="${cx}" cy="${cy}" r="7.5" class="fill-rose-600 dark:fill-rose-500 drop-shadow-sm" />`;
 
                     // Finger number text
                     if (finger > 0) {
@@ -405,10 +405,10 @@
         activeSection.classList.remove('hidden');
 
         [tabBtnKeys, tabBtnAllChords, tabBtnTabs].forEach(b => {
-            b.className = 'px-4 py-2 text-sm font-medium rounded-lg text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition flex items-center gap-1.5';
+            b.className = 'px-4 py-2 text-sm font-medium rounded-lg text-gray-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition flex items-center gap-1.5';
         });
 
-        activeBtn.className = 'px-4 py-2 text-sm font-bold rounded-lg bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow transition flex items-center gap-1.5';
+        activeBtn.className = 'px-4 py-2 text-sm font-bold rounded-lg bg-white dark:bg-zinc-900 text-rose-600 dark:text-rose-400 shadow transition flex items-center gap-1.5';
         initAllChordDiagrams();
     }
 
@@ -436,7 +436,7 @@
         const masteredBtn = container.querySelector('.progress-btn-mastered');
 
         let isCurrentlyActive = false;
-        if (targetStatus === 'Learning' && learningBtn.classList.contains('bg-blue-600')) isCurrentlyActive = true;
+        if (targetStatus === 'Learning' && learningBtn.classList.contains('bg-rose-600')) isCurrentlyActive = true;
         if (targetStatus === 'Mastered' && masteredBtn.classList.contains('bg-emerald-600')) isCurrentlyActive = true;
 
         const newStatus = isCurrentlyActive ? 'None' : targetStatus;
@@ -456,14 +456,14 @@
         .then(data => {
             if (data.status === 'success') {
                 if (newStatus === 'Learning') {
-                    learningBtn.className = 'progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-blue-600 text-white border-blue-600 shadow-sm';
-                    masteredBtn.className = 'progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 border-gray-200 dark:border-gray-700';
+                    learningBtn.className = 'progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-rose-600 text-white border-rose-600 shadow-sm';
+                    masteredBtn.className = 'progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-zinc-500 hover:text-emerald-600 dark:hover:text-emerald-400 border-zinc-200 dark:border-zinc-800';
                 } else if (newStatus === 'Mastered') {
                     masteredBtn.className = 'progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-emerald-600 text-white border-emerald-600 shadow-sm';
-                    learningBtn.className = 'progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 border-gray-200 dark:border-gray-700';
+                    learningBtn.className = 'progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 border-zinc-200 dark:border-zinc-800';
                 } else {
-                    learningBtn.className = 'progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 border-gray-200 dark:border-gray-700';
-                    masteredBtn.className = 'progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 border-gray-200 dark:border-gray-700';
+                    learningBtn.className = 'progress-btn-learning px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 border-zinc-200 dark:border-zinc-800';
+                    masteredBtn.className = 'progress-btn-mastered px-2 py-0.5 text-[11px] font-bold rounded-md border transition bg-transparent text-zinc-500 hover:text-emerald-600 dark:hover:text-emerald-400 border-zinc-200 dark:border-zinc-800';
                 }
             }
         })

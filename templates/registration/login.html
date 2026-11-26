@@ -2,69 +2,69 @@
 {% block page_title %}Login{% endblock %}
 
 {% block auth_content %}
-<h2 class="text-2xl font-black mb-1">Welcome back</h2>
-<p class="text-gray-400 text-sm mb-6">Log in to continue your practice.</p>
+<h2 class="text-2xl font-black mb-1 text-white">Welcome back</h2>
+<p class="text-zinc-400 text-sm mb-6">Log in to continue your practice.</p>
 
 <form method="post" class="space-y-4">
     {% csrf_token %}
 
     <!-- Non-field errors -->
     {% if form.non_field_errors %}
-        <div class="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+        <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm">
             {% for error in form.non_field_errors %}{{ error }}{% endfor %}
         </div>
     {% endif %}
 
     {% for field in form %}
-        <div class="flex flex-col gap-1">
-            <label class="text-xs font-bold uppercase tracking-wider text-gray-300">{{ field.label }}</label>
+        <div class="flex flex-col gap-1.5">
+            <label class="text-xs font-bold uppercase tracking-wider text-zinc-300">{{ field.label }}</label>
             {{ field }}
             {% if field.errors %}
-                <p class="text-red-400 text-xs">{{ field.errors.0 }}</p>
+                <p class="text-rose-400 text-xs mt-0.5">{{ field.errors.0 }}</p>
             {% endif %}
         </div>
     {% endfor %}
 
     <button type="submit"
-        class="w-full mt-2 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95">
+        class="w-full mt-2 py-3 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold rounded-xl shadow-lg shadow-rose-600/30 transition-all active:scale-95 cursor-pointer">
         Log In
     </button>
 </form>
 
 <div class="relative flex items-center justify-center my-5">
-    <div class="border-t border-white/10 w-full"></div>
-    <span class="absolute bg-transparent px-3 text-xs text-gray-500">OR</span>
+    <div class="border-t border-zinc-800 w-full"></div>
+    <span class="absolute bg-zinc-900 px-3 text-xs text-zinc-500 font-semibold">OR</span>
 </div>
 
 <form action="{% url 'guest_login' %}" method="post">
     {% csrf_token %}
     <button type="submit"
-        class="w-full py-2.5 bg-white/10 hover:bg-white/20 text-gray-200 font-semibold rounded-xl transition-all active:scale-95">
-         Continue as Guest
+        class="w-full py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700/80 hover:border-zinc-600 font-semibold rounded-xl transition-all active:scale-95 cursor-pointer">
+        Continue as Guest
     </button>
 </form>
 
-<p class="mt-6 text-center text-sm text-gray-500">
+<p class="mt-6 text-center text-sm text-zinc-400">
     Don't have an account?
-    <a href="{% url 'register' %}" class="text-blue-400 hover:text-blue-300 font-semibold underline underline-offset-2">Register here</a>
+    <a href="{% url 'register' %}" class="text-rose-400 hover:text-rose-300 font-semibold underline underline-offset-2">Register here</a>
 </p>
 
 <style>
     input[type="text"], input[type="password"] {
         width: 100%;
         padding: 0.625rem 0.875rem;
-        background: rgba(255,255,255,0.07);
-        border: 1px solid rgba(255,255,255,0.15);
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.12);
         border-radius: 0.75rem;
         color: white;
         font-size: 0.9rem;
         outline: none;
-        transition: border-color 0.2s;
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
     input[type="text"]:focus, input[type="password"]:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        border-color: #f43f5e;
+        box-shadow: 0 0 0 3px rgba(244,63,94,0.25);
     }
-    input::placeholder { color: #6b7280; }
+    input::placeholder { color: #71717a; }
 </style>
 {% endblock %}

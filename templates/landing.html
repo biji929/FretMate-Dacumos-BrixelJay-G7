@@ -22,7 +22,7 @@
         }
     </script>
 </head>
-<body class="min-h-screen font-sans bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-blue-600 selection:text-white antialiased relative overflow-x-hidden">
+<body class="min-h-screen font-sans bg-zinc-950 text-zinc-100 flex flex-col justify-between selection:bg-rose-600 selection:text-white antialiased relative overflow-x-hidden">
 
     <!-- Realistic Minimal Studio Photo Background -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -31,41 +31,43 @@
              alt="Minimal Guitar Studio Background"
              class="w-full h-full object-cover object-center filter brightness-95 contrast-105 select-none pointer-events-none">
 
-        <!-- Cinematic Minimalist Studio Vignette & Contrast Overlays -->
-        <div class="absolute inset-0 bg-slate-950/75 mix-blend-multiply"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-slate-950/85"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/40 to-slate-950/85"></div>
+        <!-- Electric Crimson & Obsidian Studio Vignette -->
+        <div class="absolute inset-0 bg-zinc-950/75 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/85"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-zinc-950/95 via-zinc-950/40 to-zinc-950/85"></div>
+        <!-- Subtle Crimson stage ambient backlight -->
+        <div class="absolute top-1/4 -right-20 w-[500px] h-[500px] bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
     </div>
 
     <!-- Top Navigation Bar -->
-    <header class="relative z-20 w-full border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-md">
+    <header class="relative z-20 w-full border-b border-zinc-800/80 bg-zinc-950/70 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
-            <a href="{% url 'home' %}" class="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xl p-1">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-200">
+            <a href="{% url 'home' %}" class="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 rounded-xl p-1">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 via-red-600 to-amber-500 flex items-center justify-center font-bold text-white shadow-lg shadow-rose-600/30 group-hover:scale-105 transition-transform duration-200">
                     FM
                 </div>
                 <div>
                     <span class="text-lg font-extrabold tracking-tight text-white flex items-center gap-1.5">
                         FretMate
                     </span>
-                    <span class="block text-[10px] font-semibold tracking-wider uppercase text-blue-400">Guitar Companion</span>
+                    <span class="block text-[10px] font-semibold tracking-wider uppercase text-rose-400">Guitar Companion</span>
                 </div>
             </a>
 
             <div class="flex items-center gap-3">
                 {% if request.user.is_authenticated %}
-                    <a href="{% url 'dashboard' %}" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold shadow-md hover:shadow-lg transition-all duration-150 flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                    <a href="{% url 'dashboard' %}" class="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-sm font-bold shadow-md hover:shadow-lg hover:shadow-rose-600/20 transition-all duration-150 flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
                         <span>Dashboard</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
                     </a>
-                    <a href="{% url 'logout' %}" class="px-3 py-2 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 text-sm font-semibold transition-all duration-150 cursor-pointer">
+                    <a href="{% url 'logout' %}" class="px-3 py-2 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 text-sm font-semibold transition-all duration-150 cursor-pointer">
                         Sign Out
                     </a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="px-4 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 text-sm font-semibold transition-all duration-150 cursor-pointer">
+                    <a href="{% url 'login' %}" class="px-4 py-2 rounded-xl text-zinc-300 hover:text-white hover:bg-zinc-800/80 text-sm font-semibold transition-all duration-150 cursor-pointer">
                         Sign In
                     </a>
-                    <a href="{% url 'register' %}" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold shadow-md hover:shadow-lg transition-all duration-150 cursor-pointer">
+                    <a href="{% url 'register' %}" class="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-sm font-bold shadow-md hover:shadow-lg hover:shadow-rose-600/20 transition-all duration-150 cursor-pointer">
                         Get Started
                     </a>
                 {% endif %}
@@ -77,39 +79,39 @@
     <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-16 sm:py-24 max-w-5xl mx-auto text-center">
 
         <!-- Eyebrow Pill -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-semibold mb-6 shadow-sm">
-            <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z"/></svg>
-            <span>Modern Practice Suite for Guitarists & Instructors</span>
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs font-semibold mb-6 shadow-sm">
+            <svg class="w-3.5 h-3.5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z"/></svg>
+            <span>High-Energy Practice Suite for Guitarists & Instructors</span>
         </div>
 
         <!-- Main Headline -->
         <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
-            Master Guitar Faster With <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">Structured Practice</span>
+            Master Guitar Faster With <span class="bg-gradient-to-r from-rose-500 via-red-400 to-amber-400 bg-clip-text text-transparent">Structured Practice</span>
         </h1>
 
         <!-- Subtitle -->
-        <p class="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+        <p class="text-base sm:text-xl text-zinc-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
             Track daily practice routines, master chord fingerings with visual diagrams, rehearse songs with auto-scrolling sheets, and fine-tune your technique in one unified workspace.
         </p>
 
         <!-- CTA Buttons -->
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full max-w-md mx-auto mb-16">
             {% if request.user.is_authenticated %}
-                <a href="{% url 'dashboard' %}" class="w-full sm:w-auto flex-1 px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base shadow-lg shadow-blue-600/30 transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                <a href="{% url 'dashboard' %}" class="w-full sm:w-auto flex-1 px-8 py-3.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-base shadow-lg shadow-rose-600/30 transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
                     <span>Go to Dashboard</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
                 </a>
-                <a href="{% url 'songs' %}" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700 font-semibold text-base transition-all duration-150 cursor-pointer">
+                <a href="{% url 'songs' %}" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 font-semibold text-base transition-all duration-150 cursor-pointer">
                     Browse Songs
                 </a>
             {% else %}
-                <a href="{% url 'register' %}" class="w-full sm:w-auto flex-1 px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base shadow-lg shadow-blue-600/30 transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                <a href="{% url 'register' %}" class="w-full sm:w-auto flex-1 px-8 py-3.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-base shadow-lg shadow-rose-600/30 transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
                     <span>Create Free Account</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
                 </a>
                 <form action="{% url 'guest_login' %}" method="post" class="w-full sm:w-auto">
                     {% csrf_token %}
-                    <button type="submit" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700 font-semibold text-base transition-all duration-150 cursor-pointer">
+                    <button type="submit" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 font-semibold text-base transition-all duration-150 cursor-pointer">
                         Instant Guest Access
                     </button>
                 </form>
@@ -119,54 +121,54 @@
         <!-- 4 Key Feature Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full text-left">
             <!-- Feature 1: Song Library -->
-            <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-sm hover:border-slate-700 transition duration-150">
-                <div class="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center mb-3.5">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z"/></svg>
+            <div class="p-5 rounded-2xl bg-zinc-900/70 border border-zinc-800 backdrop-blur-md hover:border-rose-500/40 hover:shadow-lg hover:shadow-rose-950/20 transition duration-200">
+                <div class="w-10 h-10 rounded-xl bg-rose-600/20 text-rose-400 flex items-center justify-center mb-3.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z"/></svg>
                 </div>
                 <h2 class="text-base font-bold text-white mb-1.5">Song Repertoire</h2>
-                <p class="text-xs text-slate-400 leading-relaxed">Interactive chord sheets, autoscroll controls, YouTube lesson integration, and full-screen presenter mode.</p>
+                <p class="text-xs text-zinc-400 leading-relaxed">Interactive chord sheets, autoscroll controls, YouTube lesson integration, and full-screen presenter mode.</p>
             </div>
 
             <!-- Feature 2: Chord Catalog -->
-            <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-sm hover:border-slate-700 transition duration-150">
-                <div class="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center mb-3.5">
+            <div class="p-5 rounded-2xl bg-zinc-900/70 border border-zinc-800 backdrop-blur-md hover:border-red-500/40 hover:shadow-lg hover:shadow-red-950/20 transition duration-200">
+                <div class="w-10 h-10 rounded-xl bg-red-600/20 text-red-400 flex items-center justify-center mb-3.5">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/></svg>
                 </div>
                 <h2 class="text-base font-bold text-white mb-1.5">Chord Catalog</h2>
-                <p class="text-xs text-slate-400 leading-relaxed">Visual SVG fretboard diagrams with exact finger placements, barres, Nashville numbers, and key transpositions.</p>
+                <p class="text-xs text-zinc-400 leading-relaxed">Visual SVG fretboard diagrams with exact finger placements, barres, Nashville numbers, and key transpositions.</p>
             </div>
 
             <!-- Feature 3: Practice Logger -->
-            <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-sm hover:border-slate-700 transition duration-150">
-                <div class="w-10 h-10 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center mb-3.5">
+            <div class="p-5 rounded-2xl bg-zinc-900/70 border border-zinc-800 backdrop-blur-md hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-950/20 transition duration-200">
+                <div class="w-10 h-10 rounded-xl bg-amber-600/20 text-amber-400 flex items-center justify-center mb-3.5">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
                 </div>
                 <h2 class="text-base font-bold text-white mb-1.5">Session Logger</h2>
-                <p class="text-xs text-slate-400 leading-relaxed">Log practice duration, record technique notes, track streaks, and monitor progress toward weekly playing goals.</p>
+                <p class="text-xs text-zinc-400 leading-relaxed">Log practice duration, record technique notes, track streaks, and monitor progress toward weekly playing goals.</p>
             </div>
 
             <!-- Feature 4: Audio Tools -->
-            <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-sm hover:border-slate-700 transition duration-150">
-                <div class="w-10 h-10 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center mb-3.5">
+            <div class="p-5 rounded-2xl bg-zinc-900/70 border border-zinc-800 backdrop-blur-md hover:border-rose-500/40 hover:shadow-lg hover:shadow-rose-950/20 transition duration-200">
+                <div class="w-10 h-10 rounded-xl bg-rose-600/20 text-rose-400 flex items-center justify-center mb-3.5">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"/></svg>
                 </div>
                 <h2 class="text-base font-bold text-white mb-1.5">Tuner & Metronome</h2>
-                <p class="text-xs text-slate-400 leading-relaxed">Microphone-based chromatic pitch detection, strobe tuning meter, visual metronome pulses, and tap-tempo.</p>
+                <p class="text-xs text-zinc-400 leading-relaxed">Microphone-based chromatic pitch detection, strobe tuning meter, visual metronome pulses, and tap-tempo.</p>
             </div>
         </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="relative z-10 w-full border-t border-slate-800/80 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
+    <footer class="relative z-10 w-full border-t border-zinc-800/80 bg-zinc-950/80 py-6 text-center text-xs text-zinc-500">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p>&copy; 2026 FretMate. Built for guitarists, instructors, and music students.</p>
-            <div class="flex items-center gap-4 text-slate-400">
+            <div class="flex items-center gap-4 text-zinc-400">
                 <span>Free & Open</span>
                 <span>•</span>
                 <span>Zero Ads</span>
                 <span>•</span>
-                <span>No Credit Card Required</span>
+                <span>Electric Crimson & Obsidian</span>
             </div>
         </div>
     </footer>

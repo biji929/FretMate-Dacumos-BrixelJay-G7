@@ -2,24 +2,24 @@
 {% block content %}
 <div class="space-y-8 max-w-7xl mx-auto">
     <!-- Header with Instructor Badge -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-gray-200 dark:border-gray-800">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-zinc-200 dark:border-zinc-800">
         <div>
             <div class="flex items-center gap-3">
-                <h1 class="text-3xl font-black tracking-tight text-gray-900 dark:text-white">Instructor Dashboard</h1>
-                <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200 border border-purple-200 dark:border-purple-800">
+                <h1 class="text-3xl font-black tracking-tight text-zinc-900 dark:text-white">Instructor Dashboard</h1>
+                <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-900/50">
                     Instructor Portal
                 </span>
             </div>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
                 Oversee student practice analytics, curriculum content, and guitar repertoire.
             </p>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{% url 'songs' %}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl text-sm shadow-sm hover:shadow transition duration-200 active:scale-95 cursor-pointer">
+            <a href="{% url 'songs' %}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-semibold rounded-xl text-sm shadow-sm hover:shadow-md hover:shadow-rose-600/20 transition duration-200 active:scale-95 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                 Add Song / Tab
             </a>
-            <a href="/admin/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-100 font-semibold rounded-xl text-sm border border-slate-200 dark:border-slate-600 transition duration-200 cursor-pointer">
+            <a href="/admin/" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-100 font-semibold rounded-xl text-sm border border-zinc-200 dark:border-zinc-700 transition duration-200 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
                 Django Admin
             </a>
@@ -29,66 +29,66 @@
     <!-- Instructor Platform KPIs -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <!-- Active Students -->
-        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md transition duration-200">
+        <div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-rose-500/30 transition duration-200">
             <div class="flex items-center justify-between">
-                <span class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Enrolled Students</span>
-                <div class="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Enrolled Students</span>
+                <div class="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/50 flex items-center justify-center text-rose-600 dark:text-rose-400">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>
                 </div>
             </div>
-            <p class="text-3xl font-black mt-2 text-purple-600 dark:text-purple-400">{{ total_students }}</p>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Registered guitar students</p>
+            <p class="text-3xl font-black mt-2 text-rose-600 dark:text-rose-400">{{ total_students }}</p>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Registered guitar students</p>
         </div>
 
         <!-- Total Practice Minutes Logged -->
-        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md transition duration-200">
+        <div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-red-500/30 transition duration-200">
             <div class="flex items-center justify-between">
-                <span class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Total Practice Logged</span>
-                <div class="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Total Practice Logged</span>
+                <div class="w-9 h-9 rounded-xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900/50 flex items-center justify-center text-red-600 dark:text-red-400">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
                 </div>
             </div>
-            <p class="text-3xl font-black mt-2 text-slate-900 dark:text-white">{{ total_practice_mins }} <span class="text-sm font-medium text-slate-500">mins</span></p>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Across {{ total_sessions }} student sessions</p>
+            <p class="text-3xl font-black mt-2 text-zinc-900 dark:text-white">{{ total_practice_mins }} <span class="text-sm font-medium text-zinc-500">mins</span></p>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Across {{ total_sessions }} student sessions</p>
         </div>
 
         <!-- Total Songs in Curriculum -->
-        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md transition duration-200">
+        <div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-amber-500/30 transition duration-200">
             <div class="flex items-center justify-between">
-                <span class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Song Repertoire</span>
-                <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Song Repertoire</span>
+                <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-900/50 flex items-center justify-center text-amber-600 dark:text-amber-400">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .57-.723V7.05a.75.75 0 0 0-.54-.722l-8.25 2.357a.75.75 0 0 0-.54.722v6.623a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .57-.723V9Z" /></svg>
                 </div>
             </div>
-            <p class="text-3xl font-black mt-2 text-blue-600 dark:text-blue-400">{{ total_songs }}</p>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Published tabs and backing tracks</p>
+            <p class="text-3xl font-black mt-2 text-rose-600 dark:text-rose-400">{{ total_songs }}</p>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Published tabs and backing tracks</p>
         </div>
 
         <!-- Chords in Catalog -->
-        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md transition duration-200">
+        <div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-emerald-500/30 transition duration-200">
             <div class="flex items-center justify-between">
-                <span class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Chord Catalog</span>
+                <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Chord Catalog</span>
                 <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5M6 3.75v16.5m4-16.5v16.5m4-16.5v16.5m4-16.5v16.5" /></svg>
                 </div>
             </div>
-            <p class="text-3xl font-black mt-2 text-green-600 dark:text-green-400">{{ total_chords }}</p>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Interactive chord charts</p>
+            <p class="text-3xl font-black mt-2 text-emerald-600 dark:text-emerald-400">{{ total_chords }}</p>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Interactive chord charts</p>
         </div>
     </div>
 
     <!-- Student Roster & Management -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm overflow-hidden">
-        <div class="p-5 border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between">
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
             <div>
-                <h2 class="text-base font-bold text-gray-900 dark:text-white">Registered Students Roster</h2>
-                <p class="text-xs text-gray-500">Overview of student profiles, skill tiers, and practice targets</p>
+                <h2 class="text-base font-bold text-zinc-900 dark:text-white">Registered Students Roster</h2>
+                <p class="text-xs text-zinc-500">Overview of student profiles, skill tiers, and practice targets</p>
             </div>
         </div>
         {% if students %}
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
-                    <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700/40 text-gray-500">
+                    <thead class="text-xs uppercase bg-zinc-50 dark:bg-zinc-800/60 text-zinc-500">
                         <tr>
                             <th class="px-5 py-3">Student</th>
                             <th class="px-5 py-3">Email</th>
@@ -99,27 +99,27 @@
                             <th class="px-5 py-3 text-right">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                    <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
                         {% for student in students %}
-                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-700/20">
-                                <td class="px-5 py-3.5 font-semibold text-gray-900 dark:text-white">
+                            <tr class="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30">
+                                <td class="px-5 py-3.5 font-semibold text-zinc-900 dark:text-white">
                                     {{ student.user.first_name }} {{ student.user.last_name }}
-                                    <span class="block text-xs font-normal text-gray-400">@{{ student.user.username }}</span>
+                                    <span class="block text-xs font-normal text-zinc-400">@{{ student.user.username }}</span>
                                 </td>
-                                <td class="px-5 py-3.5 text-gray-600 dark:text-gray-300 text-xs">{{ student.user.email|default:"No email recorded" }}</td>
+                                <td class="px-5 py-3.5 text-zinc-600 dark:text-zinc-300 text-xs">{{ student.user.email|default:"No email recorded" }}</td>
                                 <td class="px-5 py-3.5">
                                     <span class="px-2 py-0.5 rounded text-xs font-semibold
-                                        {% if student.skill_level == 'Beginner' %}bg-green-100 text-green-800 dark:bg-green-900/60 dark:text-green-200
-                                        {% elif student.skill_level == 'Intermediate' %}bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200
-                                        {% else %}bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200{% endif %}">
+                                        {% if student.skill_level == 'Beginner' %}bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900/40
+                                        {% elif student.skill_level == 'Intermediate' %}bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-900/40
+                                        {% else %}bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-900/40{% endif %}">
                                         {{ student.skill_level }}
                                     </span>
                                 </td>
-                                <td class="px-5 py-3.5 font-medium text-gray-700 dark:text-gray-300">{{ student.weekly_goal_minutes }} mins/wk</td>
-                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 text-xs">{{ student.contact_number|default:"—" }}</td>
-                                <td class="px-5 py-3.5 text-gray-500 dark:text-gray-400 text-xs">{{ student.created_at|date:"M d, Y" }}</td>
+                                <td class="px-5 py-3.5 font-medium text-zinc-700 dark:text-zinc-300">{{ student.weekly_goal_minutes }} mins/wk</td>
+                                <td class="px-5 py-3.5 text-zinc-500 dark:text-zinc-400 text-xs">{{ student.contact_number|default:"—" }}</td>
+                                <td class="px-5 py-3.5 text-zinc-500 dark:text-zinc-400 text-xs">{{ student.created_at|date:"M d, Y" }}</td>
                                 <td class="px-5 py-3.5 text-right">
-                                    <a href="{% url 'instructor_student_detail' student.user.id %}" class="inline-flex items-center gap-1 px-3 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:hover:bg-purple-900/60 dark:text-purple-300 text-xs font-bold rounded-lg border border-purple-200 dark:border-purple-800 transition">
+                                    <a href="{% url 'instructor_student_detail' student.user.id %}" class="inline-flex items-center gap-1 px-3 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 dark:text-rose-300 text-xs font-bold rounded-lg border border-rose-200 dark:border-rose-900/50 transition">
                                         View Progress →
                                     </a>
                                 </td>
@@ -129,22 +129,22 @@
                 </table>
             </div>
         {% else %}
-            <div class="p-8 text-center text-gray-400">
+            <div class="p-8 text-center text-zinc-400">
                 <p class="text-sm font-semibold">No students registered yet.</p>
             </div>
         {% endif %}
     </div>
 
     <!-- Recent Student Practice Activity Feed -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm overflow-hidden">
-        <div class="p-5 border-b border-gray-200 dark:border-gray-700/60">
-            <h2 class="text-base font-bold text-gray-900 dark:text-white">Recent Student Practice Activity</h2>
-            <p class="text-xs text-gray-500">Live practice submissions from students</p>
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-zinc-200 dark:border-zinc-800">
+            <h2 class="text-base font-bold text-zinc-900 dark:text-white">Recent Student Practice Activity</h2>
+            <p class="text-xs text-zinc-500">Live practice submissions from students</p>
         </div>
         {% if recent_activity %}
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
-                    <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700/40 text-gray-500">
+                    <thead class="text-xs uppercase bg-zinc-50 dark:bg-zinc-800/60 text-zinc-500">
                         <tr>
                             <th class="px-5 py-3">Student</th>
                             <th class="px-5 py-3">Date</th>
@@ -153,25 +153,25 @@
                             <th class="px-5 py-3">Notes</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                    <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
                         {% for session in recent_activity %}
-                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-700/20">
-                                <td class="px-5 py-3.5 font-medium text-gray-900 dark:text-white">@{{ session.user.username }}</td>
-                                <td class="px-5 py-3.5 text-xs text-gray-500">{{ session.date|date:"M d, Y" }}</td>
-                                <td class="px-5 py-3.5 font-bold text-purple-600 dark:text-purple-400">{{ session.duration_minutes }} mins</td>
+                            <tr class="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30">
+                                <td class="px-5 py-3.5 font-medium text-zinc-900 dark:text-white">@{{ session.user.username }}</td>
+                                <td class="px-5 py-3.5 text-xs text-zinc-500">{{ session.date|date:"M d, Y" }}</td>
+                                <td class="px-5 py-3.5 font-bold text-rose-600 dark:text-rose-400">{{ session.duration_minutes }} mins</td>
                                 <td class="px-5 py-3.5">
-                                    <span class="px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                                    <span class="px-2 py-0.5 rounded text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200">
                                         {{ session.focus_area }}
                                     </span>
                                 </td>
-                                <td class="px-5 py-3.5 text-xs text-gray-500 dark:text-gray-400">{{ session.notes|default:"—" }}</td>
+                                <td class="px-5 py-3.5 text-xs text-zinc-500 dark:text-zinc-400">{{ session.notes|default:"—" }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         {% else %}
-            <div class="p-8 text-center text-gray-400 text-xs">
+            <div class="p-8 text-center text-zinc-400 text-xs">
                 No recent student practice logs recorded.
             </div>
         {% endif %}
