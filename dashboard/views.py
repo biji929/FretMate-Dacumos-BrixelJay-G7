@@ -40,8 +40,6 @@ def role_required(allowed_roles):
     return decorator
 
 def home(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
     return render(request, 'landing.html')
 
 @require_POST
