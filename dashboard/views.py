@@ -3,7 +3,7 @@ from functools import wraps
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.contrib import messages
-from django.contrib.auth import login, get_user_model
+from django.contrib.auth import login, logout as auth_logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.utils.crypto import get_random_string
 from django.views.decorators.http import require_POST
@@ -50,6 +50,11 @@ def guest_login(request):
     user.save()
     login(request, user)
     return redirect('dashboard')
+
+def logout_view(request):
+    auth_logout(request)
+    messages.info(request, "You have been signed out.")
+    return redirect('home')
 
 def register(request):
     if request.user.is_authenticated:

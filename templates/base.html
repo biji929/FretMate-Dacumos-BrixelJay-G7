@@ -47,16 +47,27 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen antialiased selection:bg-blue-500 selection:text-white">
     {% if user.is_authenticated and user.username|slice:":6" == "guest_" %}
-        <div class="bg-amber-600 text-white px-4 py-2 text-center text-xs sm:text-sm font-semibold shadow-md fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-2">
-            <span>You are currently exploring on a Guest Account.</span>
-            <a href="{% url 'register' %}" class="underline font-bold hover:text-amber-100 transition">Register now to permanently save your progress</a>
+        <div class="bg-amber-600 text-white px-4 py-2 text-center text-xs font-semibold shadow-md fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center justify-between gap-2">
+            <span class="flex items-center gap-1.5 mx-auto sm:mx-0">
+                <svg class="w-4 h-4 text-amber-200" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>
+                Exploring as a <strong>Guest</strong>. Progress is temporary.
+            </span>
+            <div class="flex items-center gap-2 mx-auto sm:mx-0">
+                <a href="{% url 'register' %}" class="px-2.5 py-1 rounded-md bg-white text-amber-900 font-bold hover:bg-amber-50 transition text-xs shadow-xs">
+                    Register Free
+                </a>
+                <a href="{% url 'logout' %}" class="px-2.5 py-1 rounded-md bg-amber-700/80 hover:bg-amber-800 text-white font-medium transition text-xs border border-amber-500/50 flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" /></svg>
+                    Exit Guest
+                </a>
+            </div>
         </div>
     {% endif %}
 
     <!-- ================= MOBILE TOP HEADER (VISIBLE ONLY ON < MD) ================= -->
     {% if user.is_authenticated %}
-    <header class="md:hidden fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700/80 z-30 px-4 flex items-center justify-between shadow-sm">
-        <a href="{% url 'dashboard' %}" class="flex items-center gap-2.5">
+    <header class="md:hidden fixed {% if user.username|slice:":6" == "guest_" %}top-9{% else %}top-0{% endif %} left-0 right-0 h-16 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700/80 z-30 px-4 flex items-center justify-between shadow-sm">
+        <a href="{% url 'home' %}" class="flex items-center gap-2.5" title="Return to Landing Page">
             <div class="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/30">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .57-.723V7.05a.75.75 0 0 0-.54-.722l-8.25 2.357a.75.75 0 0 0-.54.722v6.623a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .57-.723V9Z" />
@@ -168,6 +179,10 @@
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.964 0a9 9 0 1 0-11.964 0m11.964 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
                     User Profile
                 </a>
+                <a href="{% url 'home' %}" class="flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/60 transition text-slate-600 dark:text-slate-300">
+                    <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+                    Landing Page
+                </a>
             </div>
         </nav>
 
@@ -193,11 +208,11 @@
     <div class="flex min-h-screen">
         {% if user.is_authenticated %}
             <!-- ================= DESKTOP SIDEBAR ================= -->
-            <aside class="w-64 bg-white dark:bg-slate-800 fixed top-0 left-0 h-screen hidden md:flex flex-col border-r border-slate-200 dark:border-slate-700/80 z-40 overflow-y-auto shadow-sm">
+            <aside class="w-64 bg-white dark:bg-slate-800 fixed {% if user.username|slice:":6" == "guest_" %}top-9 h-[calc(100vh-2.25rem)]{% else %}top-0 h-screen{% endif %} left-0 hidden md:flex flex-col border-r border-slate-200 dark:border-slate-700/80 z-40 overflow-y-auto shadow-sm">
                 <!-- Brand Header -->
                 <div class="p-5 border-b border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
                     <div>
-                        <a href="{% url 'dashboard' %}" class="flex items-center gap-2.5 group">
+                        <a href="{% url 'home' %}" class="flex items-center gap-2.5 group" title="Return to Landing Page">
                             <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition duration-200">
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .57-.723V7.05a.75.75 0 0 0-.54-.722l-8.25 2.357a.75.75 0 0 0-.54.722v6.623a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .57-.723V9Z" />
@@ -277,6 +292,10 @@
                             <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.964 0a9 9 0 1 0-11.964 0m11.964 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
                             User Profile
                         </a>
+                        <a href="{% url 'home' %}" class="flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/60 transition duration-150 text-slate-600 dark:text-slate-300">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+                            Landing Page
+                        </a>
                     </div>
                 </nav>
 
@@ -317,7 +336,7 @@
         {% endif %}
 
         <!-- Main Content Area: offset on desktop, padded on mobile -->
-        <main class="flex-1 p-4 sm:p-6 md:p-8 {% if user.is_authenticated %}md:ml-64 pt-20 md:pt-8{% endif %} max-w-full overflow-x-hidden transition-all duration-200">
+        <main class="flex-1 p-4 sm:p-6 md:p-8 {% if user.is_authenticated %}md:ml-64 {% if user.username|slice:":6" == "guest_" %}pt-28 md:pt-16{% else %}pt-20 md:pt-8{% endif %}{% endif %} max-w-full overflow-x-hidden transition-all duration-200">
             {% if messages %}
                 <div class="max-w-7xl mx-auto space-y-3 mb-6">
                     {% for message in messages %}

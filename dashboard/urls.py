@@ -5,7 +5,7 @@ from .forms import StyledAuthenticationForm
 
 urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html', authentication_form=StyledAuthenticationForm), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('logout/', views.logout_view, name='logout'),
     path('register/', views.register, name='register'),
     path('guest/', views.guest_login, name='guest_login'),
     path('dashboard/', views.dashboard, name='dashboard'),
