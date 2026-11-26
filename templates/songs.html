@@ -13,8 +13,9 @@
             <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-mono">
                 {{ total_songs }} Songs in Library
             </span>
-            <button id="toggleAddSongFormBtn" type="button" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold shadow-md transition flex items-center gap-2">
-                <span id="addBtnIcon">+</span> <span id="addBtnText">Add Song</span>
+            <button id="toggleAddSongFormBtn" type="button" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold shadow-md hover:shadow transition duration-150 flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                <svg id="addBtnIcon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                <span id="addBtnText">Add Song</span>
             </button>
         </div>
     </div>
@@ -28,7 +29,9 @@
                 </h3>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Enter song details, pick chords to render diagrams, and format your tab sheet.</p>
             </div>
-            <button type="button" id="closeAddSongBtn" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-lg font-bold p-1">✕</button>
+            <button type="button" id="closeAddSongBtn" class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition cursor-pointer" aria-label="Close form">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+            </button>
         </div>
 
         <form method="POST" action="{% url 'songs' %}" class="space-y-5">
@@ -152,7 +155,10 @@
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
             <!-- Search Bar -->
             <div class="w-full md:w-96 relative">
-                <input type="text" id="songSearch" placeholder="Search by song title, artist, or lyrics..." class="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+                </div>
+                <input type="text" id="songSearch" placeholder="Search by song title, artist, or lyrics..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
             </div>
 
             <!-- Genre Filter Pills -->
@@ -228,21 +234,23 @@
                         {{ song.difficulty }}
                     </span>
                     {% if song.youtube_url %}
-                        <span class="text-xs font-bold px-2 py-1 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center gap-1 border border-red-200 dark:border-red-800/60" title="YouTube video attached">
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center gap-1.5 border border-red-200 dark:border-red-800/60" title="YouTube video attached">
+                            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                             Video
                         </span>
                     {% endif %}
-                    <button type="button" class="toggle-song-btn ml-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5 cursor-pointer" data-song-id="{{ song.id }}">
-                        <span>Play Song</span> <span class="arrow-icon">▼</span>
+                    <button type="button" class="toggle-song-btn ml-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md hover:shadow transition duration-150 flex items-center gap-1.5 cursor-pointer" data-song-id="{{ song.id }}">
+                        <span>Play Song</span> <svg class="arrow-icon w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
                     </button>
-                    <button type="button" class="present-song-btn px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5 cursor-pointer"
+                    <button type="button" class="present-song-btn px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold shadow-md hover:shadow transition duration-150 flex items-center gap-1.5 cursor-pointer"
                         data-song-id="{{ song.id }}"
                         data-title="{{ song.title }}"
                         data-artist="{{ song.artist }}"
                         data-key="{{ song.key }}"
                         data-difficulty="{{ song.difficulty }}"
                         data-youtube-id="{{ song.youtube_embed_id|default:'' }}">
-                        Present
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+                        <span>Present</span>
                     </button>
                 </div>
             </div>
@@ -304,7 +312,7 @@
                     <div class="sheet-controls flex flex-wrap items-center justify-between bg-gray-100 dark:bg-gray-700/80 px-3 py-2 text-xs flex-shrink-0 border-b border-gray-200 dark:border-gray-700 gap-y-1">
                         <div class="flex items-center gap-2">
                             <button type="button" class="autoscroll-btn px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold border border-gray-200 dark:border-gray-600 transition flex items-center gap-1.5 cursor-pointer">
-                                <span>▶</span> <span>Auto Scroll</span>
+                                <svg class="autoscroll-icon w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> <span class="autoscroll-label">Auto Scroll</span>
                             </button>
                             <span class="text-gray-400">Speed:</span>
                             <button type="button" class="speed-btn px-2 py-1 rounded bg-white dark:bg-gray-800 font-bold cursor-pointer" data-speed="1">1x</button>
@@ -366,14 +374,20 @@
 
             <!-- Autoscroll -->
             <span class="text-gray-500 mx-1">|</span>
-            <button id="presenterScrollBtn" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer flex items-center gap-1.5">Auto Scroll</button>
+            <button id="presenterScrollBtn" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer flex items-center gap-1.5">
+                <svg id="presenterScrollIcon" class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <span id="presenterScrollText">Auto Scroll</span>
+            </button>
             <button id="presenterSpeed1" class="px-2 py-1 rounded bg-white/20 text-white cursor-pointer">1x</button>
             <button id="presenterSpeed2" class="px-2 py-1 rounded bg-white/10 text-gray-400 hover:bg-white/20 cursor-pointer">2x</button>
             <button id="presenterSpeed3" class="px-2 py-1 rounded bg-white/10 text-gray-400 hover:bg-white/20 cursor-pointer">3x</button>
 
             <!-- Close -->
             <span class="text-gray-500 mx-1">|</span>
-            <button id="presenterClose" class="px-3 py-1.5 rounded-lg bg-red-700/70 hover:bg-red-600 transition cursor-pointer flex items-center gap-1.5">✕ Exit</button>
+            <button id="presenterClose" class="px-3 py-1.5 rounded-lg bg-red-700/70 hover:bg-red-600 transition cursor-pointer flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+                <span>Exit</span>
+            </button>
         </div>
     </div>
 
@@ -425,13 +439,14 @@
         const isHidden = addSongContainer.classList.contains('hidden');
         if (isHidden) {
             addSongContainer.classList.remove('hidden');
-            addBtnIcon.innerText = '✕';
+            if (addBtnIcon) addBtnIcon.classList.add('rotate-45');
             addBtnText.innerText = 'Close Form';
             toggleAddSongBtn.classList.replace('bg-blue-600', 'bg-gray-700');
-            document.getElementById('songTitleInput').focus();
+            const titleInput = document.getElementById('songTitleInput');
+            if (titleInput) titleInput.focus();
         } else {
             addSongContainer.classList.add('hidden');
-            addBtnIcon.innerText = '+';
+            if (addBtnIcon) addBtnIcon.classList.remove('rotate-45');
             addBtnText.innerText = 'Add Song';
             toggleAddSongBtn.classList.replace('bg-gray-700', 'bg-blue-600');
         }
@@ -637,12 +652,12 @@
 
             if (sheet.classList.contains('hidden')) {
                 sheet.classList.remove('hidden');
-                arrow.innerText = '▲';
+                if (arrow) arrow.classList.add('rotate-180');
                 btn.classList.replace('bg-blue-600', 'bg-gray-800');
                 initChordDiagramsInside(sheet);
             } else {
                 sheet.classList.add('hidden');
-                arrow.innerText = '▼';
+                if (arrow) arrow.classList.remove('rotate-180');
                 btn.classList.replace('bg-gray-800', 'bg-blue-600');
             }
         });
@@ -695,13 +710,17 @@
 
         autoscrollBtn.addEventListener('click', () => {
             isScrolling = !isScrolling;
+            const label = autoscrollBtn.querySelector('.autoscroll-label');
+            const icon = autoscrollBtn.querySelector('.autoscroll-icon');
             if (isScrolling) {
                 autoscrollBtn.classList.add('bg-blue-600', 'text-white');
-                autoscrollBtn.querySelector('span:last-child').innerText = 'Pause Scroll';
+                if (label) label.innerText = 'Pause Scroll';
+                if (icon) icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
                 startScroll();
             } else {
                 autoscrollBtn.classList.remove('bg-blue-600', 'text-white');
-                autoscrollBtn.querySelector('span:last-child').innerText = 'Auto Scroll';
+                if (label) label.innerText = 'Auto Scroll';
+                if (icon) icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
                 clearInterval(scrollInterval);
                 scrollInterval = null;
             }
@@ -818,7 +837,10 @@
             setZoom(1.0);
             stopScroll();
             isScrolling = false;
-            scrollBtn.textContent = '▶ Auto Scroll';
+            const scrollIcon = document.getElementById('presenterScrollIcon');
+            const scrollText = document.getElementById('presenterScrollText');
+            if (scrollText) scrollText.textContent = 'Auto Scroll';
+            if (scrollIcon) scrollIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
             scrollBtn.classList.remove('bg-green-600');
 
             // Handle YouTube Video in Presenter
@@ -1007,12 +1029,16 @@
         // Autoscroll
         scrollBtn.addEventListener('click', () => {
             isScrolling = !isScrolling;
+            const scrollIcon = document.getElementById('presenterScrollIcon');
+            const scrollText = document.getElementById('presenterScrollText');
             if (isScrolling) {
-                scrollBtn.innerHTML = '⏸ Pause Scroll';
+                if (scrollText) scrollText.textContent = 'Pause Scroll';
+                if (scrollIcon) scrollIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
                 scrollBtn.classList.add('bg-green-600');
                 startScroll();
             } else {
-                scrollBtn.innerHTML = '▶ Auto Scroll';
+                if (scrollText) scrollText.textContent = 'Auto Scroll';
+                if (scrollIcon) scrollIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
                 scrollBtn.classList.remove('bg-green-600');
                 stopScroll();
             }
