@@ -16,6 +16,7 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('settings/', views.settings, name='settings'),
     path('logger/', views.logger, name='logger'),
+    path('export/practice-csv/', views.export_practice_csv, name='export_practice_csv'),
     path('library/', views.library, name='library'),
     path('songs/', views.songs, name='songs'),
     path('tuner/', views.tuner, name='tuner'),

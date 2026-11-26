@@ -12,14 +12,27 @@
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <!-- ================= LOG FORM CARD ================= -->
         <div class="lg:col-span-3 bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-2xl shadow-xs border border-zinc-200 dark:border-zinc-800">
-            <h3 class="text-xl font-bold mb-6 flex items-center gap-2.5 text-zinc-900 dark:text-white">
-                <div class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 flex items-center justify-center text-rose-600 dark:text-rose-400">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                </div>
-                Log Practice Session
-            </h3>
+            <!-- Mode Switcher Header -->
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-zinc-100 dark:border-zinc-800">
+                <h3 class="text-xl font-black flex items-center gap-2.5 text-zinc-900 dark:text-white">
+                    <div class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 flex items-center justify-center text-rose-600 dark:text-rose-400">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    </div>
+                    Practice Session
+                </h3>
 
-            <form id="loggerForm" class="space-y-5">
+                <div class="inline-flex p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-xs font-bold border border-zinc-200 dark:border-zinc-700">
+                    <button type="button" id="modeBtnManual" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 text-rose-600 dark:text-rose-400 shadow-xs cursor-pointer">Manual Log</button>
+                    <button type="button" id="modeBtnWorkout" class="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                        Workout Timer
+                    </button>
+                </div>
+            </div>
+
+            <!-- Manual Log Form Container -->
+            <div id="manualLogContainer">
+                <form id="loggerForm" class="space-y-5">
                 {% csrf_token %}
 
                 <!-- Duration Field -->
@@ -65,6 +78,66 @@
                     <span id="submitBtnText">Save Practice Session</span>
                 </button>
             </form>
+            </div>
+
+            <!-- Guided Practice Workout Timer Container -->
+            <div id="workoutTimerContainer" class="hidden space-y-6">
+                <!-- Workout Preset Selector -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Select Structured Workout Routine:</label>
+                    <div class="grid grid-cols-3 gap-2.5" id="workoutPresets">
+                        <button type="button" class="workout-preset-btn p-3 rounded-xl border text-left transition cursor-pointer bg-rose-50/50 dark:bg-rose-950/30 border-rose-500/50 ring-2 ring-rose-500" data-workout="30">
+                            <div class="font-extrabold text-sm text-zinc-900 dark:text-white">30 Min</div>
+                            <div class="text-[11px] text-rose-500 font-semibold mt-0.5">Daily Routine</div>
+                        </button>
+                        <button type="button" class="workout-preset-btn p-3 rounded-xl border text-left transition cursor-pointer bg-zinc-50 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 hover:border-rose-400" data-workout="15">
+                            <div class="font-extrabold text-sm text-zinc-900 dark:text-white">15 Min</div>
+                            <div class="text-[11px] text-zinc-500 font-semibold mt-0.5">Quick Drill</div>
+                        </button>
+                        <button type="button" class="workout-preset-btn p-3 rounded-xl border text-left transition cursor-pointer bg-zinc-50 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 hover:border-rose-400" data-workout="45">
+                            <div class="font-extrabold text-sm text-zinc-900 dark:text-white">45 Min</div>
+                            <div class="text-[11px] text-zinc-500 font-semibold mt-0.5">Intensive</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Timer Card -->
+                <div class="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 text-center space-y-4 shadow-xl">
+                    <div class="flex items-center justify-between text-xs font-bold text-zinc-400 px-1">
+                        <span id="workoutCurrentPhaseTitle" class="text-rose-400 uppercase tracking-wider">Phase 1 of 4: Warmup & Tuning</span>
+                        <span id="workoutTimeRemainingRatio" class="font-mono text-zinc-500">30:00 Total</span>
+                    </div>
+
+                    <!-- Giant Countdown Display -->
+                    <div id="workoutTimerDisplay" class="font-mono font-black text-6xl sm:text-7xl text-white tracking-tight py-2 selection:bg-none">
+                        30:00
+                    </div>
+
+                    <!-- Phase Description Tip -->
+                    <p id="workoutPhaseTip" class="text-xs text-zinc-400 italic">
+                        Chromatic warmup exercises and check guitar tuning with tuner.
+                    </p>
+
+                    <!-- Progress Bar -->
+                    <div class="w-full h-2.5 bg-zinc-800 rounded-full overflow-hidden p-0.5 border border-zinc-700">
+                        <div id="workoutProgressBar" class="h-full bg-gradient-to-r from-rose-600 to-red-500 rounded-full transition-all duration-300" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- Timer Action Controls -->
+                <div class="flex items-center gap-3">
+                    <button type="button" id="workoutStartPauseBtn" class="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-extrabold text-sm shadow-md shadow-rose-600/30 transition flex items-center justify-center gap-2 cursor-pointer active:scale-95">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <span id="workoutStartPauseText">Start Workout</span>
+                    </button>
+                    <button type="button" id="workoutSkipPhaseBtn" class="py-3.5 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 font-bold text-xs transition cursor-pointer border border-zinc-200 dark:border-zinc-700">
+                        Skip Phase
+                    </button>
+                    <button type="button" id="workoutResetBtn" class="py-3.5 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 font-bold text-xs transition cursor-pointer border border-zinc-200 dark:border-zinc-700">
+                        Reset
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- ================= RECENT SESSIONS SIDEBAR ================= -->
@@ -74,7 +147,13 @@
                     <svg class="w-5 h-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
                     Recent History
                 </span>
-                <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-300">Last 10</span>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-300">Last 10</span>
+                    <a href="{% url 'export_practice_csv' %}" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 text-xs font-bold transition border border-zinc-200 dark:border-zinc-700 cursor-pointer shadow-2xs" title="Export all practice sessions to CSV">
+                        <svg class="w-3.5 h-3.5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                        CSV
+                    </a>
+                </div>
             </h3>
 
             <div id="sessionHistoryList" class="space-y-3 flex-1 overflow-y-auto max-h-[460px] pr-1">
@@ -124,7 +203,273 @@
         });
     });
 
-    // Color mapper for focus areas
+
+    /* =========================================================================
+       STRUCTURED WORKOUT TIMER & AUTO-LOGGING ENGINE
+       ========================================================================= */
+    const WORKOUT_ROUTINES = {
+        '15': {
+            name: '15-Min Quick Drill',
+            totalSeconds: 15 * 60,
+            phases: [
+                { title: 'Phase 1: Tuning & Chromatic Warmup', seconds: 3 * 60, focus: 'Scales', tip: 'Slow alternate picking on open chromatic notes.' },
+                { title: 'Phase 2: Chord Transition Practice', seconds: 5 * 60, focus: 'Chords', tip: 'Focus on clean finger transitions without buzzing.' },
+                { title: 'Phase 3: Song Riff / Solo Run', seconds: 5 * 60, focus: 'Songs', tip: 'Play along with a song track at comfortable tempo.' },
+                { title: 'Phase 4: Rhythm & Metronome Cool-down', seconds: 2 * 60, focus: 'Rhythm', tip: 'Strum down-up patterns strictly on the metronome click.' }
+            ]
+        },
+        '30': {
+            name: '30-Min Daily Routine',
+            totalSeconds: 30 * 60,
+            phases: [
+                { title: 'Phase 1: Tuning & Warmup Drills', seconds: 5 * 60, focus: 'Scales', tip: 'Stretch fingers and run major/minor pentatonic shapes.' },
+                { title: 'Phase 2: Chord Mastery & Voicings', seconds: 8 * 60, focus: 'Chords', tip: 'Barre chords and 7th chord voicings up the neck.' },
+                { title: 'Phase 3: Song Repertoire & Backing Tracks', seconds: 12 * 60, focus: 'Songs', tip: 'Full run-throughs of target songs with YouTube backing.' },
+                { title: 'Phase 4: Metronome Groove Timing', seconds: 5 * 60, focus: 'Rhythm', tip: 'Lock in with subdivided eighth & sixteenth note grooves.' }
+            ]
+        },
+        '45': {
+            name: '45-Min Intensive Mastery',
+            totalSeconds: 45 * 60,
+            phases: [
+                { title: 'Phase 1: Deep Warmup & Theory Scales', seconds: 7 * 60, focus: 'Scales', tip: 'Dorian and blues scale patterns across all positions.' },
+                { title: 'Phase 2: Complex Chord Progressions', seconds: 10 * 60, focus: 'Chords', tip: 'Nashville number system chord switching drills.' },
+                { title: 'Phase 3: Master Repertoire & Soloing', seconds: 20 * 60, focus: 'Songs', tip: 'Full song performance rehearsal and improvisation.' },
+                { title: 'Phase 4: Speed Drills & Cool-down', seconds: 8 * 60, focus: 'Rhythm', tip: 'Gradually increase BPM to push speed thresholds.' }
+            ]
+        }
+    };
+
+    let activeWorkoutPlan = '30';
+    let workoutTimerInterval = null;
+    let workoutIsRunning = false;
+    let workoutRemainingSeconds = 30 * 60;
+    let workoutCurrentPhaseIdx = 0;
+    let workoutPhaseRemainingSeconds = 5 * 60;
+
+    const modeBtnManual = document.getElementById('modeBtnManual');
+    const modeBtnWorkout = document.getElementById('modeBtnWorkout');
+    const manualContainer = document.getElementById('manualLogContainer');
+    const workoutContainer = document.getElementById('workoutTimerContainer');
+
+    function switchLoggerMode(mode) {
+        if (mode === 'manual') {
+            if (manualContainer) manualContainer.classList.remove('hidden');
+            if (workoutContainer) workoutContainer.classList.add('hidden');
+            if (modeBtnManual) modeBtnManual.className = 'px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 text-rose-600 dark:text-rose-400 shadow-xs cursor-pointer';
+            if (modeBtnWorkout) modeBtnWorkout.className = 'px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer flex items-center gap-1.5';
+        } else {
+            if (manualContainer) manualContainer.classList.add('hidden');
+            if (workoutContainer) workoutContainer.classList.remove('hidden');
+            if (modeBtnWorkout) modeBtnWorkout.className = 'px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 text-rose-600 dark:text-rose-400 shadow-xs cursor-pointer flex items-center gap-1.5';
+            if (modeBtnManual) modeBtnManual.className = 'px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer';
+        }
+    }
+
+    if (modeBtnManual) modeBtnManual.onclick = () => switchLoggerMode('manual');
+    if (modeBtnWorkout) modeBtnWorkout.onclick = () => switchLoggerMode('workout');
+
+    function formatTime(totalSec) {
+        const m = Math.floor(totalSec / 60);
+        const s = totalSec % 60;
+        return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function playWorkoutChime() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, idx) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                const t = ctx.currentTime + (idx * 0.12);
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, t);
+
+                gain.gain.setValueAtTime(0.001, t);
+                gain.gain.exponentialRampToValueAtTime(0.2, t + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.8);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(t);
+                osc.stop(t + 0.8);
+            });
+        } catch(e) {}
+    }
+
+    function updateWorkoutUI() {
+        const plan = WORKOUT_ROUTINES[activeWorkoutPlan];
+        const displayEl = document.getElementById('workoutTimerDisplay');
+        const phaseTitleEl = document.getElementById('workoutCurrentPhaseTitle');
+        const phaseTipEl = document.getElementById('workoutPhaseTip');
+        const progressBar = document.getElementById('workoutProgressBar');
+        const ratioEl = document.getElementById('workoutTimeRemainingRatio');
+
+        if (displayEl) displayEl.textContent = formatTime(workoutPhaseRemainingSeconds);
+
+        const currentPhase = plan.phases[workoutCurrentPhaseIdx] || plan.phases[0];
+        if (phaseTitleEl) phaseTitleEl.textContent = currentPhase.title;
+        if (phaseTipEl) phaseTipEl.textContent = currentPhase.tip;
+
+        const totalElapsed = plan.totalSeconds - workoutRemainingSeconds;
+        const percent = Math.min(100, Math.max(0, (totalElapsed / plan.totalSeconds) * 100));
+        if (progressBar) progressBar.style.width = percent + '%';
+
+        if (ratioEl) ratioEl.textContent = `${formatTime(workoutRemainingSeconds)} Left`;
+    }
+
+    function initWorkoutPlan(planKey) {
+        clearInterval(workoutTimerInterval);
+        workoutIsRunning = false;
+        activeWorkoutPlan = planKey;
+        const plan = WORKOUT_ROUTINES[planKey];
+        workoutRemainingSeconds = plan.totalSeconds;
+        workoutCurrentPhaseIdx = 0;
+        workoutPhaseRemainingSeconds = plan.phases[0].seconds;
+
+        const btnText = document.getElementById('workoutStartPauseText');
+        if (btnText) btnText.textContent = 'Start Workout';
+
+        document.querySelectorAll('.workout-preset-btn').forEach(btn => {
+            if (btn.dataset.workout === planKey) {
+                btn.className = 'workout-preset-btn p-3 rounded-xl border text-left transition cursor-pointer bg-rose-50/50 dark:bg-rose-950/30 border-rose-500/50 ring-2 ring-rose-500';
+            } else {
+                btn.className = 'workout-preset-btn p-3 rounded-xl border text-left transition cursor-pointer bg-zinc-50 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 hover:border-rose-400';
+            }
+        });
+
+        updateWorkoutUI();
+    }
+
+    function tickWorkout() {
+        if (workoutRemainingSeconds <= 0) {
+            completeWorkout();
+            return;
+        }
+
+        workoutRemainingSeconds--;
+        workoutPhaseRemainingSeconds--;
+
+        if (workoutPhaseRemainingSeconds <= 0) {
+            const plan = WORKOUT_ROUTINES[activeWorkoutPlan];
+            workoutCurrentPhaseIdx++;
+            if (workoutCurrentPhaseIdx < plan.phases.length) {
+                workoutPhaseRemainingSeconds = plan.phases[workoutCurrentPhaseIdx].seconds;
+            } else {
+                completeWorkout();
+                return;
+            }
+        }
+
+        updateWorkoutUI();
+    }
+
+    function toggleWorkoutStartPause() {
+        workoutIsRunning = !workoutIsRunning;
+        const btnText = document.getElementById('workoutStartPauseText');
+
+        if (workoutIsRunning) {
+            workoutTimerInterval = setInterval(tickWorkout, 1000);
+            if (btnText) btnText.textContent = 'Pause Workout';
+        } else {
+            clearInterval(workoutTimerInterval);
+            if (btnText) btnText.textContent = 'Resume Workout';
+        }
+    }
+
+    function skipCurrentPhase() {
+        const plan = WORKOUT_ROUTINES[activeWorkoutPlan];
+        workoutRemainingSeconds -= workoutPhaseRemainingSeconds;
+        workoutCurrentPhaseIdx++;
+        if (workoutCurrentPhaseIdx < plan.phases.length) {
+            workoutPhaseRemainingSeconds = plan.phases[workoutCurrentPhaseIdx].seconds;
+            updateWorkoutUI();
+        } else {
+            completeWorkout();
+        }
+    }
+
+    function completeWorkout() {
+        clearInterval(workoutTimerInterval);
+        workoutIsRunning = false;
+        playWorkoutChime();
+
+        const plan = WORKOUT_ROUTINES[activeWorkoutPlan];
+        const minutes = parseInt(activeWorkoutPlan);
+        const focus = 'Songs';
+        const notes = `Completed ${plan.name} practice workout routine.`;
+
+        const alertBox = document.getElementById('alertMessage');
+        const historyList = document.getElementById('sessionHistoryList');
+        const emptyState = document.getElementById('emptyState');
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        const formData = new FormData();
+        formData.append('duration_minutes', minutes);
+        formData.append('focus_area', focus);
+        formData.append('notes', notes);
+
+        fetch('{% url "logger" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrftoken
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success' && alertBox) {
+                alertBox.className = 'rounded-xl p-4 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-sm font-semibold flex items-center justify-between shadow-xs';
+                alertBox.innerHTML = `<span>Workout Completed! Successfully logged ${minutes} minutes of practice.</span>`;
+                alertBox.classList.remove('hidden');
+
+                if (emptyState) emptyState.remove();
+                if (historyList) {
+                    const newCard = document.createElement('div');
+                    newCard.className = 'session-item p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40 transition hover:border-zinc-300 dark:hover:border-zinc-700 animate-pulse';
+                    newCard.innerHTML = `
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full ${getFocusBadgeClass(data.session.focus_area)}">
+                                ${data.session.focus_area}
+                            </span>
+                            <span class="text-xs text-zinc-400 font-mono">${data.session.date}</span>
+                        </div>
+                        <div class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
+                            ${data.session.duration_minutes} minutes
+                        </div>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 italic line-clamp-2">"${data.session.notes}"</p>
+                    `;
+                    historyList.prepend(newCard);
+                    setTimeout(() => newCard.classList.remove('animate-pulse'), 1000);
+                }
+            }
+        })
+        .catch(err => {
+            console.error(err);
+        });
+
+        initWorkoutPlan(activeWorkoutPlan);
+    }
+
+    // Attach Workout Preset Button Listeners
+    document.querySelectorAll('.workout-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => initWorkoutPlan(btn.dataset.workout));
+    });
+
+    const startPauseBtn = document.getElementById('workoutStartPauseBtn');
+    const skipBtn = document.getElementById('workoutSkipPhaseBtn');
+    const resetBtn = document.getElementById('workoutResetBtn');
+
+    if (startPauseBtn) startPauseBtn.addEventListener('click', toggleWorkoutStartPause);
+    if (skipBtn) skipBtn.addEventListener('click', skipCurrentPhase);
+    if (resetBtn) resetBtn.addEventListener('click', () => initWorkoutPlan(activeWorkoutPlan));
+
+    initWorkoutPlan('30');
+    
+        // Color mapper for focus areas
     function getFocusBadgeClass(focus) {
         switch (focus) {
             case 'Chords': return 'bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300';

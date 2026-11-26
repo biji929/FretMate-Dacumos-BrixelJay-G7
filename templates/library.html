@@ -11,10 +11,14 @@
         </div>
 
         <!-- Section Navigation Switcher -->
-        <div class="flex rounded-xl bg-zinc-200 dark:bg-zinc-800 p-1 self-start md:self-auto shadow-inner">
-            <button id="tabBtnKeys" class="px-4 py-2 text-sm font-bold rounded-lg bg-white dark:bg-zinc-800 text-rose-600 dark:text-rose-400 shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+        <div class="flex flex-wrap rounded-xl bg-zinc-200 dark:bg-zinc-800 p-1 self-start md:self-auto shadow-inner gap-1">
+            <button id="tabBtnKeys" class="px-4 py-2 text-sm font-bold rounded-lg bg-white dark:bg-zinc-900 text-rose-600 dark:text-rose-400 shadow-xs transition flex items-center gap-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5M6 3.75v16.5m4-16.5v16.5m4-16.5v16.5m4-16.5v16.5" /></svg>
                 Keys & Number System
+            </button>
+            <button id="tabBtnFretboard" class="px-4 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition flex items-center gap-1.5 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+                Fretboard Explorer
             </button>
             <button id="tabBtnAllChords" class="px-4 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition flex items-center gap-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25Z" /></svg>
@@ -140,6 +144,86 @@
                     </div>
                 </div>
                 {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= FRETBOARD EXPLORER SECTION ================= -->
+    <div id="fretboardSection" class="hidden space-y-6">
+        <!-- Control Header Card -->
+        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 space-y-5">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-100 dark:border-zinc-800">
+                <div>
+                    <h2 class="text-xl font-black text-zinc-900 dark:text-white flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-lg bg-gradient-to-tr from-rose-600 to-red-600 flex items-center justify-center text-white shadow-sm shadow-rose-600/30">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+                        </span>
+                        Interactive Fretboard Explorer
+                    </h2>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                        Visualize notes, scale degrees, and arpeggios across all 6 strings (Frets 0–15). Click any note to hear its pitch!
+                    </p>
+                </div>
+
+                <!-- Display Mode & Audio Toggles -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="inline-flex rounded-lg bg-zinc-100 dark:bg-zinc-800 p-0.5 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold">
+                        <button type="button" id="fretViewNotesBtn" class="px-3 py-1.5 rounded-md bg-white dark:bg-zinc-700 text-rose-600 dark:text-rose-400 font-bold shadow-xs cursor-pointer">Note Names</button>
+                        <button type="button" id="fretViewIntervalsBtn" class="px-3 py-1.5 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer">Intervals</button>
+                    </div>
+
+                    <button type="button" id="fretAudioToggle" class="px-3 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900/50 text-rose-600 dark:text-rose-400 text-xs font-bold flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" /></svg>
+                        <span>Sound: ON</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Root Key Selector -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Select Root Key:</label>
+                <div class="flex flex-wrap gap-1.5" id="fretKeyPills">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Scale & Pattern Selector -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Scale / Harmonic Pattern:</label>
+                <div class="flex flex-wrap gap-1.5" id="fretPatternPills">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Fretboard Visual Graphic Card -->
+        <div class="bg-zinc-950 p-4 sm:p-6 rounded-2xl shadow-xl border border-zinc-800 space-y-4">
+            <div class="flex items-center justify-between text-xs text-zinc-400 font-mono pb-2 border-b border-zinc-800">
+                <span class="flex items-center gap-3">
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-600 ring-2 ring-rose-400 inline-block"></span> Root Note (1)</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-zinc-800 border border-zinc-600 inline-block"></span> Scale Tones</span>
+                    <span id="blueNoteLegend" class="hidden flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500 ring-2 ring-amber-300 inline-block"></span> Blue Note (b5)</span>
+                </span>
+                <span class="text-zinc-500 hidden sm:inline">Scroll horizontally to view Frets 0–15</span>
+            </div>
+
+            <!-- Fretboard Responsive Scroll Container -->
+            <div class="overflow-x-auto pb-4 pt-2">
+                <div id="fretboardCanvasContainer" class="min-w-[900px]">
+                    <!-- Generated Fretboard Grid via JS -->
+                </div>
+            </div>
+
+            <!-- Scale Analysis Summary Footer -->
+            <div class="p-4 rounded-xl bg-zinc-900 border border-zinc-800/80 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                <div>
+                    <span class="font-bold text-white text-sm" id="fretSummaryTitle">A Minor Pentatonic</span>
+                    <span class="text-zinc-400 ml-2 font-mono" id="fretSummaryNotes">A – C – D – E – G</span>
+                </div>
+                <div class="text-zinc-400 italic text-[11px] max-w-xl" id="fretSummaryDesc">
+                    The essential rock & blues soloing scale. Safe, gritty, and sounds great over minor & dominant chords.
+                </div>
             </div>
         </div>
     </div>
@@ -394,29 +478,366 @@
 
     // Tab Navigation Switcher Logic
     const tabBtnKeys = document.getElementById('tabBtnKeys');
+    const tabBtnFretboard = document.getElementById('tabBtnFretboard');
     const tabBtnAllChords = document.getElementById('tabBtnAllChords');
     const tabBtnTabs = document.getElementById('tabBtnTabs');
     const keysSection = document.getElementById('keysSection');
+    const fretboardSection = document.getElementById('fretboardSection');
     const allChordsSection = document.getElementById('allChordsSection');
     const tabsSection = document.getElementById('tabsSection');
 
-    function setActiveTab(activeBtn, activeSection) {
-        [keysSection, allChordsSection, tabsSection].forEach(s => s.classList.add('hidden'));
-        activeSection.classList.remove('hidden');
+    const allTabs = [
+        { btn: tabBtnKeys, sec: keysSection },
+        { btn: tabBtnFretboard, sec: fretboardSection },
+        { btn: tabBtnAllChords, sec: allChordsSection },
+        { btn: tabBtnTabs, sec: tabsSection }
+    ].filter(item => item.btn && item.sec);
 
-        [tabBtnKeys, tabBtnAllChords, tabBtnTabs].forEach(b => {
-            b.className = 'px-4 py-2 text-sm font-medium rounded-lg text-gray-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition flex items-center gap-1.5';
+    function setActiveTab(activeBtn, activeSection) {
+        allTabs.forEach(item => {
+            item.sec.classList.add('hidden');
+            item.btn.className = 'px-4 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition flex items-center gap-1.5 cursor-pointer';
         });
 
-        activeBtn.className = 'px-4 py-2 text-sm font-bold rounded-lg bg-white dark:bg-zinc-900 text-rose-600 dark:text-rose-400 shadow transition flex items-center gap-1.5';
-        initAllChordDiagrams();
+        activeSection.classList.remove('hidden');
+        activeBtn.className = 'px-4 py-2 text-sm font-bold rounded-lg bg-white dark:bg-zinc-900 text-rose-600 dark:text-rose-400 shadow transition flex items-center gap-1.5 cursor-pointer';
+
+        if (activeSection === allChordsSection) initAllChordDiagrams();
+        if (activeSection === fretboardSection && typeof renderFretboard === 'function') renderFretboard();
     }
 
-    tabBtnKeys.addEventListener('click', () => setActiveTab(tabBtnKeys, keysSection));
-    tabBtnAllChords.addEventListener('click', () => setActiveTab(tabBtnAllChords, allChordsSection));
-    tabBtnTabs.addEventListener('click', () => setActiveTab(tabBtnTabs, tabsSection));
+    if (tabBtnKeys) tabBtnKeys.addEventListener('click', () => setActiveTab(tabBtnKeys, keysSection));
+    if (tabBtnFretboard) tabBtnFretboard.addEventListener('click', () => setActiveTab(tabBtnFretboard, fretboardSection));
+    if (tabBtnAllChords) tabBtnAllChords.addEventListener('click', () => setActiveTab(tabBtnAllChords, allChordsSection));
+    if (tabBtnTabs) tabBtnTabs.addEventListener('click', () => setActiveTab(tabBtnTabs, tabsSection));
 
-    // Live search filter in All Chords tab
+
+    /* =========================================================================
+       INTERACTIVE FRETBOARD EXPLORER ENGINE
+       Supports Chromatic Scales, Pentatonics, Modes, Arpeggios & Pluck Synth
+       ========================================================================= */
+    const FRET_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+    // Standard 6-String Guitar Tuning (1st string e4 down to 6th string E2)
+    const GUITAR_STRINGS = [
+        { label: 'e', rootMidi: 64, noteIndex: 4, gauge: 1 },    // E4 (String 1)
+        { label: 'B', rootMidi: 59, noteIndex: 11, gauge: 1.25 }, // B3 (String 2)
+        { label: 'G', rootMidi: 55, noteIndex: 7, gauge: 1.5 },   // G3 (String 3)
+        { label: 'D', rootMidi: 50, noteIndex: 2, gauge: 2 },     // D3 (String 4)
+        { label: 'A', rootMidi: 45, noteIndex: 9, gauge: 2.5 },   // A2 (String 5)
+        { label: 'E', rootMidi: 40, noteIndex: 4, gauge: 3.2 }    // E2 (String 6)
+    ];
+
+    const FRET_PATTERNS = {
+        'minor_pentatonic': {
+            name: 'Minor Pentatonic',
+            intervals: [0, 3, 5, 7, 10],
+            intervalNames: {0: 'R', 3: 'b3', 5: '4', 7: '5', 10: 'b7'},
+            desc: 'The essential rock and blues soloing scale. Sounds gritty, natural, and powerful over minor & dominant chords.'
+        },
+        'major_pentatonic': {
+            name: 'Major Pentatonic',
+            intervals: [0, 2, 4, 7, 9],
+            intervalNames: {0: 'R', 2: '2', 4: '3', 7: '5', 9: '6'},
+            desc: 'Bright, soulful, country and Southern rock sound. Sweet over major chords and blues progressions.'
+        },
+        'blues': {
+            name: 'Blues Scale',
+            intervals: [0, 3, 5, 6, 7, 10],
+            intervalNames: {0: 'R', 3: 'b3', 5: '4', 6: 'b5', 7: '5', 10: 'b7'},
+            blueNote: 6,
+            desc: 'Adds the tension-filled b5 "blue note" (highlighted in amber) to minor pentatonic for that unmistakable blues bite.'
+        },
+        'natural_minor': {
+            name: 'Natural Minor (Aeolian)',
+            intervals: [0, 2, 3, 5, 7, 8, 10],
+            intervalNames: {0: 'R', 2: '2', 3: 'b3', 5: '4', 7: '5', 8: 'b6', 10: 'b7'},
+            desc: 'Foundational 7-note minor scale. Dark, melodic, and essential for rock, metal, and emotive acoustic ballads.'
+        },
+        'major': {
+            name: 'Major Scale (Ionian)',
+            intervals: [0, 2, 4, 5, 7, 9, 11],
+            intervalNames: {0: 'R', 2: '2', 4: '3', 5: '4', 7: '5', 9: '6', 11: '7'},
+            desc: 'The fundamental building block of Western music theory. All modes, chords, and harmonies are referenced from this scale.'
+        },
+        'dorian': {
+            name: 'Dorian Mode',
+            intervals: [0, 2, 3, 5, 7, 9, 10],
+            intervalNames: {0: 'R', 2: '2', 3: 'b3', 5: '4', 7: '5', 9: '6', 10: 'b7'},
+            desc: 'Minor scale with a bright natural 6th. The classic Carlos Santana, Pink Floyd, and funk-rock groove mode.'
+        },
+        'major_triad': {
+            name: 'Major Triad Arpeggio',
+            intervals: [0, 4, 7],
+            intervalNames: {0: 'R', 4: '3', 7: '5'},
+            desc: 'Root, Major 3rd, and 5th chord tones. Essential for clean chord-tone soloing across the fretboard.'
+        },
+        'minor_triad': {
+            name: 'Minor Triad Arpeggio',
+            intervals: [0, 3, 7],
+            intervalNames: {0: 'R', 3: 'b3', 7: '5'},
+            desc: 'Root, Minor 3rd, and 5th chord tones. The harmonic backbone of minor chords and rhythm licks.'
+        },
+        'dom7': {
+            name: 'Dominant 7th Arpeggio',
+            intervals: [0, 4, 7, 10],
+            intervalNames: {0: 'R', 4: '3', 7: '5', 10: 'b7'},
+            desc: 'Blues and funk powerhouse chord arpeggio (1 - 3 - 5 - b7). Perfectly outlines dominant 7th chords on the fly.'
+        }
+    };
+
+    let selectedFretKey = 'A';
+    let selectedPatternKey = 'minor_pentatonic';
+    let fretViewMode = 'notes'; // 'notes' or 'intervals'
+    let isFretAudioEnabled = true;
+    let fretAudioContext = null;
+
+    function playFretPitch(midiNote) {
+        if (!isFretAudioEnabled) return;
+        try {
+            if (!fretAudioContext) fretAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (fretAudioContext.state === 'suspended') fretAudioContext.resume();
+
+            const osc = fretAudioContext.createOscillator();
+            const gain = fretAudioContext.createGain();
+            const now = fretAudioContext.currentTime;
+
+            osc.type = 'triangle';
+            const freq = 440 * Math.pow(2, (midiNote - 69) / 12);
+            osc.frequency.setValueAtTime(freq, now);
+
+            // Pluck envelope: rapid rise, acoustic exponential ring-out
+            gain.gain.setValueAtTime(0.0001, now);
+            gain.gain.exponentialRampToValueAtTime(0.3, now + 0.008);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+
+            osc.connect(gain);
+            gain.connect(fretAudioContext.destination);
+
+            osc.start(now);
+            osc.stop(now + 1.2);
+        } catch(e) {
+            console.error('Audio play error', e);
+        }
+    }
+
+    function initFretboardControls() {
+        const keyContainer = document.getElementById('fretKeyPills');
+        const patternContainer = document.getElementById('fretPatternPills');
+        if (!keyContainer || !patternContainer) return;
+
+        // Populate Key Pills
+        keyContainer.innerHTML = '';
+        FRET_NOTES.forEach(note => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = note;
+            const isActive = (note === selectedFretKey);
+            btn.className = `px-3 py-1 text-xs font-bold rounded-lg transition cursor-pointer ${
+                isActive ? 'bg-rose-600 text-white shadow-md shadow-rose-600/30 scale-105 ring-2 ring-rose-400'
+                         : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+            }`;
+            btn.addEventListener('click', () => {
+                selectedFretKey = note;
+                initFretboardControls();
+                renderFretboard();
+            });
+            keyContainer.appendChild(btn);
+        });
+
+        // Populate Pattern Pills
+        patternContainer.innerHTML = '';
+        Object.keys(FRET_PATTERNS).forEach(patKey => {
+            const pat = FRET_PATTERNS[patKey];
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = pat.name;
+            const isActive = (patKey === selectedPatternKey);
+            btn.className = `px-3 py-1 text-xs font-medium rounded-full transition cursor-pointer ${
+                isActive ? 'bg-rose-600 text-white font-bold shadow-sm ring-1 ring-rose-400'
+                         : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+            }`;
+            btn.addEventListener('click', () => {
+                selectedPatternKey = patKey;
+                initFretboardControls();
+                renderFretboard();
+            });
+            patternContainer.appendChild(btn);
+        });
+
+        // View Mode buttons
+        const notesBtn = document.getElementById('fretViewNotesBtn');
+        const intervalsBtn = document.getElementById('fretViewIntervalsBtn');
+        if (notesBtn && intervalsBtn) {
+            notesBtn.onclick = () => {
+                fretViewMode = 'notes';
+                notesBtn.className = 'px-3 py-1.5 rounded-md bg-white dark:bg-zinc-700 text-rose-600 dark:text-rose-400 font-bold shadow-xs cursor-pointer';
+                intervalsBtn.className = 'px-3 py-1.5 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer';
+                renderFretboard();
+            };
+            intervalsBtn.onclick = () => {
+                fretViewMode = 'intervals';
+                intervalsBtn.className = 'px-3 py-1.5 rounded-md bg-white dark:bg-zinc-700 text-rose-600 dark:text-rose-400 font-bold shadow-xs cursor-pointer';
+                notesBtn.className = 'px-3 py-1.5 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer';
+                renderFretboard();
+            };
+        }
+
+        // Sound Toggle Button
+        const audioBtn = document.getElementById('fretAudioToggle');
+        if (audioBtn) {
+            audioBtn.onclick = () => {
+                isFretAudioEnabled = !isFretAudioEnabled;
+                audioBtn.innerHTML = `
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" /></svg>
+                    <span>Sound: ${isFretAudioEnabled ? 'ON' : 'MUTED'}</span>
+                `;
+                if (isFretAudioEnabled) {
+                    audioBtn.className = 'px-3 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900/50 text-rose-600 dark:text-rose-400 text-xs font-bold flex items-center gap-1.5 cursor-pointer';
+                } else {
+                    audioBtn.className = 'px-3 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-400 text-xs font-bold flex items-center gap-1.5 cursor-pointer';
+                }
+            };
+        }
+    }
+
+    function renderFretboard() {
+        const container = document.getElementById('fretboardCanvasContainer');
+        if (!container) return;
+
+        const pattern = FRET_PATTERNS[selectedPatternKey];
+        const rootIndex = FRET_NOTES.indexOf(selectedFretKey);
+
+        // Update Summary Footer
+        const summaryTitle = document.getElementById('fretSummaryTitle');
+        const summaryNotes = document.getElementById('fretSummaryNotes');
+        const summaryDesc = document.getElementById('fretSummaryDesc');
+        const blueLegend = document.getElementById('blueNoteLegend');
+
+        const activeNotesInScale = pattern.intervals.map(iv => FRET_NOTES[(rootIndex + iv) % 12]);
+        if (summaryTitle) summaryTitle.textContent = `${selectedFretKey} ${pattern.name}`;
+        if (summaryNotes) summaryNotes.textContent = activeNotesInScale.join(' – ');
+        if (summaryDesc) summaryDesc.textContent = pattern.desc;
+        if (blueLegend) {
+            if (pattern.blueNote !== undefined) blueLegend.classList.remove('hidden');
+            else blueLegend.classList.add('hidden');
+        }
+
+        // Render SVG Fretboard Graphic (Frets 0 to 15)
+        const totalFrets = 15;
+        const width = 940;
+        const height = 210;
+        const nutX = 50;
+        const fretWidth = (width - nutX - 20) / totalFrets; // ~58px per fret
+        const stringSpacing = 28;
+        const topY = 25;
+
+        let svg = `<svg viewBox="0 0 ${width} ${height}" class="w-full select-none" xmlns="http://www.w3.org/2000/svg">`;
+
+        // Fretboard wooden/carbon background
+        svg += `<rect x="${nutX}" y="${topY - 4}" width="${width - nutX - 10}" height="${5 * stringSpacing + 8}" rx="6" fill="#18181b" stroke="#27272a" stroke-width="2" />`;
+
+        // Position Inlay Markers (single dot: 3, 5, 7, 9, 15; double dot: 12)
+        const inlays = [3, 5, 7, 9, 15];
+        inlays.forEach(fret => {
+            const cx = nutX + (fret - 0.5) * fretWidth;
+            const cy = topY + 2.5 * stringSpacing;
+            svg += `<circle cx="${cx}" cy="${cy}" r="4" fill="#3f3f46" opacity="0.8" />`;
+        });
+        // 12th fret double dot
+        const cx12 = nutX + (12 - 0.5) * fretWidth;
+        svg += `<circle cx="${cx12}" cy="${topY + 1.25 * stringSpacing}" r="4" fill="#52525b" />`;
+        svg += `<circle cx="${cx12}" cy="${topY + 3.75 * stringSpacing}" r="4" fill="#52525b" />`;
+
+        // Fret Wires (Vertical)
+        for (let f = 1; f <= totalFrets; f++) {
+            const fx = nutX + f * fretWidth;
+            svg += `<line x1="${fx}" y1="${topY - 4}" x2="${fx}" y2="${topY + 5 * stringSpacing + 4}" stroke="#52525b" stroke-width="2" />`;
+            // Fret Numbers
+            svg += `<text x="${fx - fretWidth / 2}" y="${height - 6}" font-size="10" font-family="monospace" font-weight="bold" fill="#71717a" text-anchor="middle">${f}</text>`;
+        }
+
+        // Nut (Fret 0 divider wire)
+        svg += `<line x1="${nutX}" y1="${topY - 4}" x2="${nutX}" y2="${topY + 5 * stringSpacing + 4}" stroke="#e4e4e7" stroke-width="5" stroke-linecap="round" />`;
+        svg += `<text x="${nutX / 2}" y="${height - 6}" font-size="10" font-family="monospace" font-weight="bold" fill="#a1a1aa" text-anchor="middle">Open (0)</text>`;
+
+        // Strings (Horizontal lines from 1 to 6)
+        GUITAR_STRINGS.forEach((str, si) => {
+            const sy = topY + si * stringSpacing;
+            // String Line
+            svg += `<line x1="${nutX}" y1="${sy}" x2="${width - 15}" y2="${sy}" stroke="#a1a1aa" stroke-width="${str.gauge}" opacity="0.8" />`;
+            // String Tuning Label on left
+            svg += `<text x="20" y="${sy + 4}" font-size="12" font-family="monospace" font-weight="bold" fill="#f43f5e" text-anchor="middle">${str.label}</text>`;
+        });
+
+        // Clickable Note Circles across All Strings & Frets
+        GUITAR_STRINGS.forEach((str, strIdx) => {
+            const sy = topY + strIdx * stringSpacing;
+
+            for (let f = 0; f <= totalFrets; f++) {
+                const noteVal = (str.noteIndex + f) % 12;
+                const noteName = FRET_NOTES[noteVal];
+                const midi = str.rootMidi + f;
+                const intervalFromRoot = (noteVal - rootIndex + 12) % 12;
+
+                const isRoot = (noteVal === rootIndex);
+                const inScale = pattern.intervals.includes(intervalFromRoot);
+                const isBlue = (pattern.blueNote !== undefined && intervalFromRoot === pattern.blueNote);
+
+                const cx = (f === 0) ? (nutX / 2 + 5) : (nutX + (f - 0.5) * fretWidth);
+                const displayText = (fretViewMode === 'notes') ? noteName : (pattern.intervalNames[intervalFromRoot] || noteName);
+
+                if (inScale) {
+                    let fill = '#27272a';
+                    let stroke = '#52525b';
+                    let textFill = '#f4f4f5';
+                    let strokeWidth = '1.5';
+
+                    if (isRoot) {
+                        fill = '#e11d48'; // Electric Crimson
+                        stroke = '#fb7185';
+                        strokeWidth = '2';
+                        textFill = '#ffffff';
+                    } else if (isBlue) {
+                        fill = '#f59e0b'; // Amber Stage Accent
+                        stroke = '#fcd34d';
+                        strokeWidth = '2';
+                        textFill = '#18181b';
+                    }
+
+                    svg += `
+                    <g class="fret-note cursor-pointer group" data-midi="${midi}" data-note="${noteName}">
+                        <circle cx="${cx}" cy="${sy}" r="11" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" class="transition-transform group-hover:scale-125" />
+                        <text x="${cx}" y="${sy + 3.5}" font-size="9" font-family="system-ui, sans-serif" font-weight="bold" fill="${textFill}" text-anchor="middle" pointer-events="none">${displayText}</text>
+                    </g>`;
+                } else {
+                    // Subtle ghosted dot for non-scale notes so user can explore every fret
+                    svg += `
+                    <g class="fret-note cursor-pointer group opacity-20 hover:opacity-100 transition-opacity" data-midi="${midi}" data-note="${noteName}">
+                        <circle cx="${cx}" cy="${sy}" r="7" fill="#3f3f46" class="transition-transform group-hover:scale-125" />
+                        <text x="${cx}" y="${sy + 3}" font-size="8" font-family="monospace" font-weight="bold" fill="#e4e4e7" text-anchor="middle" pointer-events="none">${noteName}</text>
+                    </g>`;
+                }
+            }
+        });
+
+        svg += `</svg>`;
+        container.innerHTML = svg;
+
+        // Attach click audio triggers to all notes
+        container.querySelectorAll('.fret-note').forEach(node => {
+            node.addEventListener('click', () => {
+                const midi = parseInt(node.dataset.midi);
+                playFretPitch(midi);
+            });
+        });
+    }
+
+    // Initialize Fretboard on DOM Ready
+    initFretboardControls();
+    renderFretboard();
+    
+        // Live search filter in All Chords tab
     const searchInput = document.getElementById('chordSearch');
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {

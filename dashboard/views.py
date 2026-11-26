@@ -1,7 +1,8 @@
 import json
+import csv
 from functools import wraps
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
 from django.contrib.auth import login, logout as auth_logout, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -227,6 +228,29 @@ def logger(request):
     form = PracticeSessionForm()
     recent_sessions = PracticeSession.objects.filter(user=request.user).order_by('-id')[:10]
     return render(request, 'logger.html', {'form': form, 'recent_sessions': recent_sessions})
+
+
+@login_required
+def export_practice_csv(request):
+    """Exports user's complete practice session history as a CSV file."""
+    sessions = PracticeSession.objects.filter(user=request.user).order_by('-date', '-id')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="fretmate_practice_{request.user.username}.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Session ID', 'Date', 'Duration (Minutes)', 'Focus Area', 'Notes'])
+
+    for s in sessions:
+        writer.writerow([
+            s.id,
+            s.date.strftime('%Y-%m-%d') if s.date else '',
+            s.duration_minutes,
+            s.focus_area,
+            s.notes or ''
+        ])
+
+    return response
 
 KEY_DEFINITIONS = {
     'C': [

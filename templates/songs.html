@@ -310,7 +310,16 @@
                 <div class="rounded-2xl border border-stone-800 overflow-hidden shadow-inner" style="height:520px; display:flex; flex-direction:column;">
                     <!-- Sticky Controls Bar -->
                     <div class="sheet-controls flex flex-wrap items-center justify-between bg-zinc-100 dark:bg-zinc-800/80 px-3 py-2 text-xs flex-shrink-0 border-b border-zinc-200 dark:border-zinc-800 gap-y-1">
-                        <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <!-- Real-Time Chord Transposer Toolbar -->
+                            <div class="flex items-center gap-1 bg-white dark:bg-zinc-900 px-2.5 py-1 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-2xs">
+                                <span class="text-[10px] font-black uppercase text-zinc-400 mr-0.5">Key:</span>
+                                <button type="button" class="transpose-down-btn px-2 py-0.5 rounded bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 font-black cursor-pointer text-zinc-800 dark:text-zinc-200 transition" title="Transpose down 1 semitone">-1</button>
+                                <span class="current-key-display font-mono font-black text-xs text-rose-600 dark:text-rose-400 px-1 min-w-[28px] text-center" data-original-key="{{ song.key }}">{{ song.key }}</span>
+                                <button type="button" class="transpose-up-btn px-2 py-0.5 rounded bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 font-black cursor-pointer text-zinc-800 dark:text-zinc-200 transition" title="Transpose up 1 semitone">+1</button>
+                                <button type="button" class="transpose-reset-btn text-[10px] text-zinc-400 hover:text-rose-500 font-semibold underline ml-1 cursor-pointer">Reset</button>
+                                <span class="capo-suggestion text-[10px] text-amber-500 font-bold ml-1 hidden"></span>
+                            </div>
                             <button type="button" class="autoscroll-btn px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold border border-zinc-200 dark:border-zinc-700 transition flex items-center gap-1.5 cursor-pointer">
                                 <svg class="autoscroll-icon w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> <span class="autoscroll-label">Auto Scroll</span>
                             </button>
@@ -360,6 +369,15 @@
 
         <!-- Controls -->
         <div class="flex items-center gap-2 flex-shrink-0 text-xs font-bold">
+            <!-- Presenter Transpose -->
+            <div class="inline-flex items-center gap-1 bg-white/10 px-2 py-1 rounded-lg border border-white/10">
+                <span class="text-zinc-400 font-semibold text-[10px] uppercase">Key:</span>
+                <button type="button" id="presenterTransposeDown" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white font-black cursor-pointer">-1</button>
+                <span id="presenterKeyDisplay" class="font-mono font-black text-rose-400 px-1 text-xs"></span>
+                <button type="button" id="presenterTransposeUp" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white font-black cursor-pointer">+1</button>
+                <button type="button" id="presenterTransposeReset" class="text-[10px] text-zinc-400 hover:text-white underline ml-1 cursor-pointer">0</button>
+            </div>
+            <span class="text-zinc-500 mx-1">|</span>
             <!-- Text Size -->
             <span class="text-zinc-500 mr-1">Text:</span>
             <button id="presenterFontDown" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer">A-</button>
@@ -831,6 +849,10 @@
 
             // Fill sheet content
             sheetEl.textContent = content;
+            presenterOriginalSongText = content;
+            presenterBaseKey = key;
+            presenterSemitoneShift = 0;
+            if (pKeyDisplay) pKeyDisplay.textContent = key;
             sheetEl.style.fontSize = fontSize + 'px';
 
             // Reset zoom/scroll
@@ -997,6 +1019,176 @@
             });
             container.appendChild(svg);
         }
+
+        
+    /* =========================================================================
+       REAL-TIME CHORD TRANSPOSER & CAPO HELPER ENGINE
+       Supports bracketed chords [C], slash chords (F#/A#), and chord sheet lines
+       ========================================================================= */
+    const CHORD_NOTES_SHARP = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const CHORD_NOTES_FLAT  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    const CHORD_INDEX_MAP = {
+        'C': 0, 'B#': 0,
+        'C#': 1, 'Db': 1,
+        'D': 2,
+        'D#': 3, 'Eb': 3,
+        'E': 4, 'Fb': 4,
+        'F': 5, 'E#': 5,
+        'F#': 6, 'Gb': 6,
+        'G': 7,
+        'G#': 8, 'Ab': 8,
+        'A': 9,
+        'A#': 10, 'Bb': 10,
+        'B': 11, 'Cb': 11
+    };
+
+    function shiftSingleChord(chordStr, semitones) {
+        if (!chordStr) return chordStr;
+        return chordStr.replace(/([A-G][#b]?)([^/\s]*)(?:\/([A-G][#b]?))?/g, (match, root, quality, bass) => {
+            if (!CHORD_INDEX_MAP.hasOwnProperty(root)) return match;
+            const rootIdx = CHORD_INDEX_MAP[root];
+            const newRootIdx = (rootIdx + semitones + 120) % 12;
+            const useFlats = (root.includes('b') || ['F', 'Bb', 'Eb', 'Ab'].includes(root));
+            const newRoot = useFlats ? CHORD_NOTES_FLAT[newRootIdx] : CHORD_NOTES_SHARP[newRootIdx];
+
+            let res = newRoot + (quality || '');
+            if (bass && CHORD_INDEX_MAP.hasOwnProperty(bass)) {
+                const bassIdx = CHORD_INDEX_MAP[bass];
+                const newBassIdx = (bassIdx + semitones + 120) % 12;
+                const newBass = useFlats ? CHORD_NOTES_FLAT[newBassIdx] : CHORD_NOTES_SHARP[newBassIdx];
+                res += '/' + newBass;
+            }
+            return res;
+        });
+    }
+
+    function transposeSongContent(rawText, semitones) {
+        if (semitones === 0 || !rawText) return rawText;
+
+        // 1. Transpose bracketed chords: [Am], [C#m7], [G/B]
+        let transposed = rawText.replace(/\[([A-G][#b]?[^\]\s]*)\]/g, (m, c) => {
+            return '[' + shiftSingleChord(c, semitones) + ']';
+        });
+
+        // 2. Transpose inline chords in chord-only lines
+        const lines = transposed.split('\n');
+        const processedLines = lines.map(line => {
+            const words = line.trim().split(/\s+/).filter(w => w.length > 0);
+            if (words.length === 0) return line;
+
+            let chordCount = 0;
+            words.forEach(w => {
+                const clean = w.replace(/[\[\](),]/g, '');
+                if (/^[A-G][#b]?(m|maj|min|dim|aug|sus|add|\d|\/[A-G][#b]?)*$/.test(clean)) {
+                    chordCount++;
+                }
+            });
+
+            if (chordCount / words.length >= 0.5) {
+                return line.replace(/\b([A-G][#b]?(?:m|maj|min|dim|aug|sus|add|\d)*(?:\/[A-G][#b]?)?)\b/g, (m, c) => {
+                    return shiftSingleChord(c, semitones);
+                });
+            }
+            return line;
+        });
+
+        return processedLines.join('\n');
+    }
+
+    // Attach Transposer to All Song Cards
+    document.querySelectorAll('.song-card').forEach(card => {
+        const originalContentEl = card.querySelector('.sheet-content');
+        if (!originalContentEl) return;
+
+        const originalText = originalContentEl.textContent;
+        const keyDisplay = card.querySelector('.current-key-display');
+        const originalKey = keyDisplay ? keyDisplay.dataset.originalKey : 'C';
+        const capoTip = card.querySelector('.capo-suggestion');
+
+        let currentShift = 0;
+
+        function applyShift(delta) {
+            currentShift += delta;
+            if (currentShift > 11) currentShift -= 12;
+            if (currentShift < -11) currentShift += 12;
+
+            originalContentEl.textContent = transposeSongContent(originalText, currentShift);
+
+            if (keyDisplay && originalKey) {
+                const newKey = shiftSingleChord(originalKey, currentShift);
+                keyDisplay.textContent = newKey;
+                if (currentShift !== 0) {
+                    keyDisplay.classList.add('underline');
+                } else {
+                    keyDisplay.classList.remove('underline');
+                }
+            }
+
+            if (capoTip) {
+                if (currentShift > 0) {
+                    capoTip.textContent = `(Capo ${12 - currentShift} or play open)`;
+                    capoTip.classList.remove('hidden');
+                } else if (currentShift < 0) {
+                    capoTip.textContent = `(Capo ${Math.abs(currentShift)} to match orig)`;
+                    capoTip.classList.remove('hidden');
+                } else {
+                    capoTip.classList.add('hidden');
+                }
+            }
+        }
+
+        const upBtn = card.querySelector('.transpose-up-btn');
+        const downBtn = card.querySelector('.transpose-down-btn');
+        const resetBtn = card.querySelector('.transpose-reset-btn');
+
+        if (upBtn) upBtn.addEventListener('click', () => applyShift(1));
+        if (downBtn) downBtn.addEventListener('click', () => applyShift(-1));
+        if (resetBtn) resetBtn.addEventListener('click', () => {
+            currentShift = 0;
+            originalContentEl.textContent = originalText;
+            if (keyDisplay) {
+                keyDisplay.textContent = originalKey;
+                keyDisplay.classList.remove('underline');
+            }
+            if (capoTip) capoTip.classList.add('hidden');
+        });
+    });
+
+    // Presenter Transposer Integration
+    let presenterSemitoneShift = 0;
+    let presenterOriginalSongText = '';
+    let presenterBaseKey = '';
+
+    const pTransDown = document.getElementById('presenterTransposeDown');
+    const pTransUp = document.getElementById('presenterTransposeUp');
+    const pTransReset = document.getElementById('presenterTransposeReset');
+    const pKeyDisplay = document.getElementById('presenterKeyDisplay');
+
+    function applyPresenterShift(delta) {
+        if (!sheetEl || !presenterOriginalSongText) return;
+        presenterSemitoneShift += delta;
+        if (presenterSemitoneShift > 11) presenterSemitoneShift -= 12;
+        if (presenterSemitoneShift < -11) presenterSemitoneShift += 12;
+
+        sheetEl.textContent = transposeSongContent(presenterOriginalSongText, presenterSemitoneShift);
+
+        if (pKeyDisplay && presenterBaseKey) {
+            const newKey = shiftSingleChord(presenterBaseKey, presenterSemitoneShift);
+            pKeyDisplay.textContent = newKey;
+        }
+    }
+
+    if (pTransDown) pTransDown.addEventListener('click', () => applyPresenterShift(-1));
+    if (pTransUp) pTransUp.addEventListener('click', () => applyPresenterShift(1));
+    if (pTransReset) pTransReset.addEventListener('click', () => {
+        presenterSemitoneShift = 0;
+        if (sheetEl && presenterOriginalSongText) {
+            sheetEl.textContent = presenterOriginalSongText;
+        }
+        if (pKeyDisplay && presenterBaseKey) {
+            pKeyDisplay.textContent = presenterBaseKey;
+        }
+    });
 
         // Wire up present buttons
         document.querySelectorAll('.present-song-btn').forEach(btn => {
