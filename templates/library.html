@@ -807,14 +807,16 @@
 
                     svg += `
                     <g class="fret-note cursor-pointer group" data-midi="${midi}" data-note="${noteName}">
-                        <circle cx="${cx}" cy="${sy}" r="11" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" class="transition-transform group-hover:scale-125" />
+                        <circle cx="${cx}" cy="${sy}" r="13" fill="transparent" />
+                        <circle cx="${cx}" cy="${sy}" r="11" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" class="note-dot" />
                         <text x="${cx}" y="${sy + 3.5}" font-size="9" font-family="system-ui, sans-serif" font-weight="bold" fill="${textFill}" text-anchor="middle" pointer-events="none">${displayText}</text>
                     </g>`;
                 } else {
                     // Subtle ghosted dot for non-scale notes so user can explore every fret
                     svg += `
-                    <g class="fret-note cursor-pointer group opacity-20 hover:opacity-100 transition-opacity" data-midi="${midi}" data-note="${noteName}">
-                        <circle cx="${cx}" cy="${sy}" r="7" fill="#3f3f46" class="transition-transform group-hover:scale-125" />
+                    <g class="fret-note cursor-pointer group opacity-25 hover:opacity-100 transition-opacity duration-150" data-midi="${midi}" data-note="${noteName}">
+                        <circle cx="${cx}" cy="${sy}" r="12" fill="transparent" />
+                        <circle cx="${cx}" cy="${sy}" r="8" fill="#3f3f46" stroke="#52525b" stroke-width="1" class="note-dot" />
                         <text x="${cx}" y="${sy + 3}" font-size="8" font-family="monospace" font-weight="bold" fill="#e4e4e7" text-anchor="middle" pointer-events="none">${noteName}</text>
                     </g>`;
                 }
@@ -829,6 +831,8 @@
             node.addEventListener('click', () => {
                 const midi = parseInt(node.dataset.midi);
                 playFretPitch(midi);
+                node.classList.add('note-playing');
+                setTimeout(() => node.classList.remove('note-playing'), 220);
             });
         });
     }
@@ -906,4 +910,24 @@
         return cookieValue;
     }
 </script>
+<style>
+    .fret-note .note-dot {
+        transition: filter 150ms ease, stroke 150ms ease, stroke-width 150ms ease;
+    }
+    .fret-note:hover .note-dot {
+        filter: brightness(1.25) drop-shadow(0 0 6px rgba(244, 63, 94, 0.7));
+        stroke: #fda4af;
+        stroke-width: 2.5;
+    }
+    .fret-note.note-playing .note-dot {
+        filter: brightness(1.45) drop-shadow(0 0 10px rgba(244, 63, 94, 0.95));
+        stroke: #ffffff;
+        stroke-width: 3;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .fret-note .note-dot {
+            transition: none;
+        }
+    }
+</style>
 {% endblock %}
