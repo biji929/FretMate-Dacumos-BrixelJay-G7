@@ -108,9 +108,38 @@ class UserProfileUpdateForm(forms.Form):
 
 
 class StyledAuthenticationForm(AuthenticationForm):
+    login_role = forms.ChoiceField(
+        choices=[
+            ('', ''),
+            (UserProfile.ROLE_GUITARIST, 'Student'),
+            (UserProfile.ROLE_INSTRUCTOR, 'Instructor'),
+        ],
+        required=False,
+        widget=forms.HiddenInput(attrs={'id': 'loginRoleInput'}),
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields.values():
+        for name, field in self.fields.items():
+            if name == 'login_role':
+                continue
             field.widget.attrs.update({
-                'class': 'w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                'class': 'w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-2.5 text-base sm:text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-rose-500'
             })
+
+    def confirm_login_allowed(self, user):
+        super().confirm_login_allowed(user)
+        selected_role = self.cleaned_data.get('login_role')
+        if selected_role in (UserProfile.ROLE_GUITARIST, UserProfile.ROLE_INSTRUCTOR):
+            profile = getattr(user, 'profile', None)
+            actual_role = profile.role if profile else UserProfile.ROLE_GUITARIST
+            if actual_role != selected_role:
+                if actual_role == UserProfile.ROLE_INSTRUCTOR:
+                    raise forms.ValidationError(
+                        "This account is registered as an Instructor. Click 'Change role' to sign in as an Instructor.",
+                        code='role_mismatch',
+                    )
+                raise forms.ValidationError(
+                    "This account is registered as a Student. Click 'Change role' to sign in as a Student.",
+                    code='role_mismatch',
+                )
