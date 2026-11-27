@@ -171,3 +171,99 @@ class FretMateTests(TestCase):
         student = User.objects.create_user(username='student2', password='password123')
         response = self.client.get(reverse('instructor_student_detail', kwargs={'student_id': student.id}))
         self.assertRedirects(response, reverse('dashboard_guitarist'))
+
+    # ================= CORE FEATURE CRUD TESTS (VERTICAL SLICE) =================
+    def test_get_practice_session(self):
+        session = PracticeSession.objects.create(
+            user=self.user,
+            duration_minutes=45,
+            focus_area='Scales',
+            notes='Dorian mode practice'
+        )
+        response = self.client.get(reverse('get_practice_session', kwargs={'session_id': session.id}))
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['status'], 'success')
+        self.assertEqual(data['session']['duration_minutes'], 45)
+        self.assertEqual(data['session']['focus_area'], 'Scales')
+        self.assertEqual(data['session']['notes'], 'Dorian mode practice')
+
+    def test_update_practice_session(self):
+        session = PracticeSession.objects.create(
+            user=self.user,
+            duration_minutes=30,
+            focus_area='Chords',
+            notes='Initial chord drills'
+        )
+        response = self.client.post(
+            reverse('update_practice_session', kwargs={'session_id': session.id}),
+            {
+                'duration_minutes': 60,
+                'focus_area': 'Songs',
+                'notes': 'Updated to full song rehearsal'
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['status'], 'success')
+        session.refresh_from_db()
+        self.assertEqual(session.duration_minutes, 60)
+        self.assertEqual(session.focus_area, 'Songs')
+        self.assertEqual(session.notes, 'Updated to full song rehearsal')
+
+    def test_delete_practice_session(self):
+        session = PracticeSession.objects.create(
+            user=self.user,
+            duration_minutes=25,
+            focus_area='Chords',
+            notes='Session to be deleted'
+        )
+        self.assertTrue(PracticeSession.objects.filter(id=session.id).exists())
+        response = self.client.post(
+            reverse('delete_practice_session', kwargs={'session_id': session.id}),
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['status'], 'success')
+        self.assertFalse(PracticeSession.objects.filter(id=session.id).exists())
+
+    def test_practice_session_data_isolation_crud(self):
+        other_user = User.objects.create_user(username='otherguitarist', password='password123')
+        other_session = PracticeSession.objects.create(
+            user=other_user,
+            duration_minutes=50,
+            focus_area='Songs',
+            notes='Secret other notes'
+        )
+        # Attempt to read other user's session
+        get_res = self.client.get(reverse('get_practice_session', kwargs={'session_id': other_session.id}))
+        self.assertEqual(get_res.status_code, 404)
+
+        # Attempt to update other user's session
+        update_res = self.client.post(
+            reverse('update_practice_session', kwargs={'session_id': other_session.id}),
+            {'duration_minutes': 10, 'focus_area': 'Scales', 'notes': 'Hacked notes'},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(update_res.status_code, 404)
+        other_session.refresh_from_db()
+        self.assertEqual(other_session.duration_minutes, 50)
+
+        # Attempt to delete other user's session
+        del_res = self.client.post(
+            reverse('delete_practice_session', kwargs={'session_id': other_session.id}),
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertEqual(del_res.status_code, 404)
+        self.assertTrue(PracticeSession.objects.filter(id=other_session.id).exists())
+
+    def test_export_practice_csv(self):
+        PracticeSession.objects.create(user=self.user, duration_minutes=35, focus_area='Chords', notes='CSV drill')
+        response = self.client.get(reverse('export_practice_csv'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/csv')
+        self.assertIn(f'attachment; filename="fretmate_practice_{self.user.username}.csv"', response['Content-Disposition'])
+        self.assertIn('CSV drill', response.content.decode('utf-8'))
+

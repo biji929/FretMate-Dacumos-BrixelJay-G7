@@ -217,6 +217,7 @@ def logger(request):
             return JsonResponse({
                 'status': 'success',
                 'session': {
+                    'id': session.id,
                     'date': session.date.strftime('%b %d, %Y') if session.date else 'Today',
                     'duration_minutes': session.duration_minutes,
                     'focus_area': session.focus_area,
@@ -228,6 +229,80 @@ def logger(request):
     form = PracticeSessionForm()
     recent_sessions = PracticeSession.objects.filter(user=request.user).order_by('-id')[:10]
     return render(request, 'logger.html', {'form': form, 'recent_sessions': recent_sessions})
+
+
+@login_required
+def get_practice_session(request, session_id):
+    """CRUD: READ details of a single practice session."""
+    session = get_object_or_404(PracticeSession, id=session_id, user=request.user)
+    return JsonResponse({
+        'status': 'success',
+        'session': {
+            'id': session.id,
+            'date': session.date.strftime('%Y-%m-%d') if session.date else '',
+            'duration_minutes': session.duration_minutes,
+            'focus_area': session.focus_area,
+            'notes': session.notes or ''
+        },
+        'id': session.id,
+        'date': session.date.strftime('%Y-%m-%d') if session.date else '',
+        'duration_minutes': session.duration_minutes,
+        'focus_area': session.focus_area,
+        'notes': session.notes or ''
+    })
+
+
+@login_required
+@require_POST
+def update_practice_session(request, session_id):
+    """
+    CRUD: UPDATE an existing practice session.
+    Enforces user data isolation (user can only update their own records).
+    """
+    session = get_object_or_404(PracticeSession, id=session_id, user=request.user)
+    form = PracticeSessionForm(request.POST, instance=session)
+    if form.is_valid():
+        updated = form.save()
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Practice session updated successfully.',
+                'session': {
+                    'id': updated.id,
+                    'date': updated.date.strftime('%b %d, %Y') if updated.date else 'Today',
+                    'duration_minutes': updated.duration_minutes,
+                    'focus_area': updated.focus_area,
+                    'notes': updated.notes or ''
+                }
+            })
+        messages.success(request, 'Practice session updated successfully.')
+        return redirect('logger')
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+    messages.error(request, 'Failed to update session. Please check input values.')
+    return redirect('logger')
+
+
+@login_required
+@require_POST
+def delete_practice_session(request, session_id):
+    """
+    CRUD: DELETE an existing practice session.
+    Enforces user data isolation (user can only delete their own records).
+    """
+    session = get_object_or_404(PracticeSession, id=session_id, user=request.user)
+    deleted_id = session.id
+    session.delete()
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Practice session deleted successfully.',
+            'deleted_id': deleted_id
+        })
+    messages.success(request, 'Practice session deleted successfully.')
+    return redirect('logger')
 
 
 @login_required

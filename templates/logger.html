@@ -159,23 +159,37 @@
             <div id="sessionHistoryList" class="space-y-3 flex-1 overflow-y-auto max-h-[460px] pr-1">
                 {% if recent_sessions %}
                     {% for session in recent_sessions %}
-                        <div class="session-item p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40 transition hover:border-zinc-300 dark:hover:border-zinc-700">
+                        <div class="session-item p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40 transition hover:border-zinc-300 dark:hover:border-zinc-700 group"
+                            id="sessionCard-{{ session.id }}"
+                            data-id="{{ session.id }}"
+                            data-duration="{{ session.duration_minutes }}"
+                            data-focus="{{ session.focus_area }}"
+                            data-notes="{{ session.notes|default:'' }}">
                             <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full
+                                <span class="focus-badge text-xs font-semibold px-2.5 py-0.5 rounded-full
                                     {% if session.focus_area == 'Chords' %} bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300
                                     {% elif session.focus_area == 'Songs' %} bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300
                                     {% elif session.focus_area == 'Scales' %} bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300
                                     {% else %} bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300 {% endif %}">
                                     {{ session.focus_area }}
                                 </span>
-                                <span class="text-xs text-zinc-400 font-mono">{{ session.date|date:"M d, Y"|default:"Today" }}</span>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-xs text-zinc-400 font-mono">{{ session.date|date:"M d, Y"|default:"Today" }}</span>
+                                    <!-- Action buttons: Edit & Delete -->
+                                    <div class="flex items-center gap-0.5 opacity-80 group-hover:opacity-100 transition-opacity ml-1">
+                                        <button type="button" class="edit-session-btn p-1 text-zinc-400 hover:text-rose-500 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 transition cursor-pointer" title="Edit session" data-id="{{ session.id }}">
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+                                        </button>
+                                        <button type="button" class="delete-session-btn p-1 text-zinc-400 hover:text-red-500 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 transition cursor-pointer" title="Delete session" data-id="{{ session.id }}">
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">
+                            <div class="font-bold text-zinc-900 dark:text-zinc-100 text-sm duration-display">
                                 {{ session.duration_minutes }} minutes
                             </div>
-                            {% if session.notes %}
-                                <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 italic line-clamp-2">"{{ session.notes }}"</p>
-                            {% endif %}
+                            <p class="notes-display text-xs text-zinc-500 dark:text-zinc-400 mt-1 italic line-clamp-2">{% if session.notes %}"{{ session.notes }}"{% endif %}</p>
                         </div>
                     {% endfor %}
                 {% else %}
@@ -186,6 +200,79 @@
                     </div>
                 {% endif %}
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= EDIT PRACTICE SESSION MODAL (CRUD: UPDATE) ================= -->
+<div id="editSessionModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-zinc-200 dark:border-zinc-800 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
+            <h3 class="text-lg font-black text-zinc-900 dark:text-white flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 flex items-center justify-center text-rose-600 dark:text-rose-400">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+                </span>
+                Edit Practice Session
+            </h3>
+            <button type="button" id="closeEditModalBtn" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-white p-1 rounded-lg cursor-pointer">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+
+        <form id="editSessionForm" class="space-y-4">
+            <input type="hidden" id="editSessionId" name="session_id" value="">
+            <div>
+                <label for="editDuration" class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">Duration (Minutes) <span class="text-rose-500">*</span></label>
+                <input type="number" id="editDuration" name="duration_minutes" min="1" max="600" required class="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm">
+                <span id="edit-duration-error" class="text-xs text-rose-500 hidden mt-1 block"></span>
+            </div>
+
+            <div>
+                <label for="editFocusArea" class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">Focus Area <span class="text-rose-500">*</span></label>
+                <select id="editFocusArea" name="focus_area" class="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm">
+                    <option value="Chords">Chords</option>
+                    <option value="Songs">Songs</option>
+                    <option value="Scales">Scales</option>
+                    <option value="Rhythm">Rhythm</option>
+                </select>
+                <span id="edit-focus-error" class="text-xs text-rose-500 hidden mt-1 block"></span>
+            </div>
+
+            <div>
+                <label for="editNotes" class="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">Notes (optional)</label>
+                <textarea id="editNotes" name="notes" rows="3" class="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm" placeholder="Feedback or songs practiced..."></textarea>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2">
+                <button type="button" id="cancelEditBtn" class="flex-1 py-2.5 px-4 rounded-xl border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer">
+                    Cancel
+                </button>
+                <button type="submit" id="saveEditBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-xs shadow-md shadow-rose-600/30 transition cursor-pointer">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ================= DELETE PRACTICE SESSION MODAL (CRUD: DELETE) ================= -->
+<div id="deleteSessionModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl border border-zinc-200 dark:border-zinc-800 text-center space-y-4 animate-in fade-in zoom-in-95 duration-200">
+        <div class="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-800 flex items-center justify-center text-red-600 dark:text-red-400 mx-auto">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+        </div>
+        <h3 class="text-lg font-black text-zinc-900 dark:text-white">Delete Practice Session?</h3>
+        <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            Are you sure you want to delete this session? This action cannot be undone and will update your practice statistics.
+        </p>
+        <input type="hidden" id="deleteSessionId" value="">
+        <div class="flex items-center gap-3 pt-2">
+            <button type="button" id="cancelDeleteBtn" class="flex-1 py-2.5 px-4 rounded-xl border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer">
+                Cancel
+            </button>
+            <button type="button" id="confirmDeleteBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-md shadow-red-600/30 transition cursor-pointer">
+                Delete
+            </button>
         </div>
     </div>
 </div>
@@ -479,7 +566,235 @@
         }
     }
 
-    // Form submission via AJAX
+
+    /* =========================================================================
+       CRUD JAVASCRIPT ENGINE: UPDATE & DELETE PRACTICE SESSIONS
+       ========================================================================= */
+    const editModal = document.getElementById('editSessionModal');
+    const deleteModal = document.getElementById('deleteSessionModal');
+    const editForm = document.getElementById('editSessionForm');
+    const editIdInput = document.getElementById('editSessionId');
+    const editDurationInput = document.getElementById('editDuration');
+    const editFocusInput = document.getElementById('editFocusArea');
+    const editNotesInput = document.getElementById('editNotes');
+    const deleteIdInput = document.getElementById('deleteSessionId');
+
+    function openEditModal(sessionId) {
+        const card = document.getElementById(`sessionCard-${sessionId}`);
+        if (!card) return;
+
+        editIdInput.value = sessionId;
+        editDurationInput.value = card.dataset.duration || '';
+        editFocusInput.value = card.dataset.focus || 'Chords';
+        editNotesInput.value = card.dataset.notes || '';
+
+        // Reset error messages
+        const durErr = document.getElementById('edit-duration-error');
+        if (durErr) durErr.classList.add('hidden');
+
+        editModal.classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+        if (editModal) editModal.classList.add('hidden');
+    }
+
+    function openDeleteModal(sessionId) {
+        deleteIdInput.value = sessionId;
+        deleteModal.classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+        if (deleteModal) deleteModal.classList.add('hidden');
+    }
+
+    // Modal close triggers
+    const closeEditBtn = document.getElementById('closeEditModalBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+    if (closeEditBtn) closeEditBtn.addEventListener('click', closeEditModal);
+    if (cancelEditBtn) cancelEditBtn.addEventListener('click', closeEditModal);
+    if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+
+    // Wire up clicks on card action buttons via delegation
+    document.addEventListener('click', (e) => {
+        const editBtn = e.target.closest('.edit-session-btn');
+        if (editBtn) {
+            e.stopPropagation();
+            openEditModal(editBtn.dataset.id);
+            return;
+        }
+
+        const deleteBtn = e.target.closest('.delete-session-btn');
+        if (deleteBtn) {
+            e.stopPropagation();
+            openDeleteModal(deleteBtn.dataset.id);
+            return;
+        }
+    });
+
+    // Handle Edit Form Submission (CRUD: UPDATE)
+    if (editForm) {
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const sessionId = editIdInput.value;
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const saveBtn = document.getElementById('saveEditBtn');
+
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerText = 'Saving...';
+            }
+
+            try {
+                const formData = new FormData(editForm);
+                const response = await fetch(`/logger/${sessionId}/update/`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                const result = await response.json();
+                if (result.status === 'success') {
+                    // Update DOM card in place
+                    const card = document.getElementById(`sessionCard-${sessionId}`);
+                    if (card) {
+                        card.dataset.duration = result.session.duration_minutes;
+                        card.dataset.focus = result.session.focus_area;
+                        card.dataset.notes = result.session.notes;
+
+                        const badge = card.querySelector('.focus-badge');
+                        if (badge) {
+                            badge.className = `focus-badge text-xs font-semibold px-2.5 py-0.5 rounded-full ${getFocusBadgeClass(result.session.focus_area)}`;
+                            badge.innerText = result.session.focus_area;
+                        }
+
+                        const durEl = card.querySelector('.duration-display');
+                        if (durEl) durEl.innerText = `${result.session.duration_minutes} minutes`;
+
+                        const notesEl = card.querySelector('.notes-display');
+                        if (notesEl) {
+                            notesEl.innerText = result.session.notes ? `"${result.session.notes}"` : '';
+                        }
+
+                        card.classList.add('ring-2', 'ring-rose-500');
+                        setTimeout(() => card.classList.remove('ring-2', 'ring-rose-500'), 1500);
+                    }
+
+                    closeEditModal();
+                    showAlert('Practice session updated successfully!', 'success');
+                } else {
+                    const durErr = document.getElementById('edit-duration-error');
+                    if (durErr && result.errors && result.errors.duration_minutes) {
+                        durErr.innerText = result.errors.duration_minutes.join(' ');
+                        durErr.classList.remove('hidden');
+                    }
+                }
+            } catch(err) {
+                console.error(err);
+                showAlert('Failed to update session. Please try again.', 'error');
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerText = 'Save Changes';
+                }
+            }
+        });
+    }
+
+    // Handle Delete Confirmation (CRUD: DELETE)
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', async () => {
+            const sessionId = deleteIdInput.value;
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            confirmDeleteBtn.disabled = true;
+            confirmDeleteBtn.innerText = 'Deleting...';
+
+            try {
+                const response = await fetch(`/logger/${sessionId}/delete/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                const result = await response.json();
+                if (result.status === 'success') {
+                    const card = document.getElementById(`sessionCard-${sessionId}`);
+                    if (card) {
+                        card.style.transition = 'all 0.3s ease-out';
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.9)';
+                        setTimeout(() => {
+                            card.remove();
+                            // If list is empty, show empty state
+                            const historyList = document.getElementById('sessionHistoryList');
+                            if (historyList && historyList.children.length === 0) {
+                                historyList.innerHTML = `
+                                    <div id="emptyState" class="text-center py-12 text-zinc-400 dark:text-zinc-500 text-sm">
+                                        <svg class="w-10 h-10 mx-auto text-zinc-300 dark:text-zinc-600 mb-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                                        <p class="font-semibold">No practice sessions logged yet.</p>
+                                        <p class="text-xs mt-1 text-zinc-400">Fill out the form to log your first session!</p>
+                                    </div>
+                                `;
+                            }
+                        }, 300);
+                    }
+                    closeDeleteModal();
+                    showAlert('Practice session deleted successfully.', 'success');
+                }
+            } catch(err) {
+                console.error(err);
+                showAlert('Failed to delete session. Please try again.', 'error');
+            } finally {
+                confirmDeleteBtn.disabled = false;
+                confirmDeleteBtn.innerText = 'Delete';
+            }
+        });
+    }
+
+    // Helper: Build newly created card with Edit and Delete action buttons
+    function createSessionCardElement(session) {
+        const div = document.createElement('div');
+        div.className = 'session-item p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40 transition hover:border-zinc-300 dark:hover:border-zinc-700 group animate-pulse';
+        div.id = `sessionCard-${session.id}`;
+        div.dataset.id = session.id;
+        div.dataset.duration = session.duration_minutes;
+        div.dataset.focus = session.focus_area;
+        div.dataset.notes = session.notes || '';
+
+        div.innerHTML = `
+            <div class="flex items-center justify-between mb-1.5">
+                <span class="focus-badge text-xs font-semibold px-2.5 py-0.5 rounded-full ${getFocusBadgeClass(session.focus_area)}">
+                    ${session.focus_area}
+                </span>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-xs text-zinc-400 font-mono">${session.date}</span>
+                    <div class="flex items-center gap-0.5 opacity-80 group-hover:opacity-100 transition-opacity ml-1">
+                        <button type="button" class="edit-session-btn p-1 text-zinc-400 hover:text-rose-500 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 transition cursor-pointer" title="Edit session" data-id="${session.id}">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+                        </button>
+                        <button type="button" class="delete-session-btn p-1 text-zinc-400 hover:text-red-500 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 transition cursor-pointer" title="Delete session" data-id="${session.id}">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="font-bold text-zinc-900 dark:text-zinc-100 text-sm duration-display">
+                ${session.duration_minutes} minutes
+            </div>
+            <p class="notes-display text-xs text-zinc-500 dark:text-zinc-400 mt-1 italic line-clamp-2">${session.notes ? `"${session.notes}"` : ''}</p>
+        `;
+        return div;
+    }
+
+        // Form submission via AJAX
     const form = document.getElementById('loggerForm');
     const alertBox = document.getElementById('alertMessage');
     const submitBtn = document.getElementById('submitBtn');
@@ -523,20 +838,7 @@
                     if (emptyState) {
                         emptyState.remove();
                     }
-                    const newCard = document.createElement('div');
-                    newCard.className = 'session-item p-3.5 rounded-lg border border-gray-100 dark:border-gray-700/60 bg-gray-50 dark:bg-gray-900 transition hover:border-gray-300 dark:hover:border-gray-600 animate-pulse';
-                    newCard.innerHTML = `
-                        <div class="flex items-center justify-between mb-1.5">
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full ${getFocusBadgeClass(result.session.focus_area)}">
-                                ${result.session.focus_area}
-                            </span>
-                            <span class="text-xs text-gray-400">${result.session.date}</span>
-                        </div>
-                        <div class="font-bold text-gray-900 dark:text-gray-100 text-sm">
-                            ${result.session.duration_minutes} minutes
-                        </div>
-                        ${result.session.notes ? `<p class="text-xs text-gray-500 dark:text-gray-400 mt-1 italic line-clamp-2">"${result.session.notes}"</p>` : ''}
-                    `;
+                    const newCard = createSessionCardElement(result.session);
                     historyList.prepend(newCard);
                     setTimeout(() => newCard.classList.remove('animate-pulse'), 1000);
                 }
