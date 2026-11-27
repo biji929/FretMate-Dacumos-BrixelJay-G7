@@ -35,20 +35,22 @@ The Core Feature operates end-to-end through every layer of the system:
 ---
 
 ## 🛡️ Standard Features (PD1 Baseline — 100% Maintained)
-1. **Account Registration (`/register/`):** RFC-compliant unique email validation, unique username, strong password checks, and role assignment (`Guitarist` or `Instructor`).
-2. **Login / Logout (`/login/`, `/logout/`):** Cryptographic PBKDF2 authentication, CSRF-safe POST logout, session flushing, and one-click guest access.
+1. **Account Registration (`/register/`):** Streamlined sign-up with RFC-compliant unique email validation, unique username, strong password checks, and role assignment (`Guitarist` or `Instructor`). Guest users clicking **Register Free** automatically keep their logged practice sessions and chord mastery when upgrading.
+2. **Role-First Sign In & Logout (`/login/`, `/logout/`):** Two-step sign-in asking **Student** or **Instructor** first with backend role-match validation, PBKDF2 authentication, CSRF-safe logout, and one-click guest access.
 3. **Role-Based User Dashboards (`/dashboard/`):** Automatic dispatch via `@role_required`. Guitarist views personal 7-day practice stats; Instructor views enrolled student roster and drill-down logs (`/instructor/student/<id>/`).
-4. **User Profile Management (`/profile/`):** Viewing and editing musician contact number, biography, skill tier, and weekly goal minutes with strict user data isolation.
+4. **User Profile Management (`/profile/`):** Viewing and editing musician name, contact number, biography, skill tier, and weekly goal minutes with strict user data isolation.
 
 ---
 
 ## 🔑 Test Accounts & Evaluation Credentials
 
-| Role | Username | Password | Purpose & Privileges |
-| :--- | :--- | :--- | :--- |
-| **Guitarist (Student)** | `guitarist_user` | `Testpass123!` | Full CRUD practice session logging, personal analytics, fretboard explorer, chord transposer. |
-| **Instructor (Teacher)** | `instructor_user` | `Testpass123!` | Instructor dashboard, student roster, student practice log drill-down (`/instructor/student/<id>/`). |
-| **Guest Explorer** | Instant Guest Access | None (One-Click) | Temporary session created from landing page; persistent top banner with upgrade options. |
+Run `python manage.py seed_data` to ensure these test accounts and sample practice records exist:
+
+| Role | Username | Email | Password | Purpose & Privileges |
+| :--- | :--- | :--- | :--- | :--- |
+| **Guitarist (Student)** | `guitarist_user` | `guitarist@fretmate.test` | `Testpass123!` | Full CRUD practice session logging, personal analytics, fretboard explorer, chord transposer. |
+| **Instructor (Teacher)** | `instructor_user` | `instructor@fretmate.test` | `Testpass123!` | Instructor dashboard, student roster, student practice log drill-down (`/instructor/student/<id>/`). |
+| **Guest Explorer** | Instant Guest Access | — | None (One-Click) | Temporary session created from landing page; persistent top banner with seamless account upgrade. |
 
 ---
 
@@ -101,7 +103,7 @@ python manage.py seed_data
 ```powershell
 python manage.py test
 ```
-*Expected: 19 of 19 tests pass successfully.*
+*Expected: 22 of 22 tests pass successfully.*
 
 ### 6. Start Development Server
 ```powershell
@@ -118,11 +120,18 @@ In strict accordance with academic specifications:
 - `develop`: Integration branch created from `main`.
 - `feature/<name>`: Dedicated feature branches branched from `develop` and merged via Pull Requests. Merged branches are preserved.
 
-| Branch Name | Base Branch | Target Branch | Objective & Pull Request | Status |
-| :--- | :--- | :--- | :--- | :---: |
-| `feature/practice-session-crud` | `develop` | `develop` | Practice Session Update and Delete (Full CRUD), modal UI, AJAX responses, and test suite (PR #1). | **Merged** |
-| `feature/pd2-docs-and-report` | `develop` | `develop` | Official PD2 completion report PDF in `docs/` and updated README setup documentation (PR #2). | **Merged** |
-| `develop` | `main` | `main` | Production consolidation of tested core feature vertical slice (PR #3). | **Merged** |
+| Branch Name | Base Branch | Target Branch | Pull Request / Objective |
+| :--- | :--- | :--- | :--- |
+| `feature/practice-session-crud` | `develop` | `develop` | Practice Session Update and Delete (Full CRUD), modal UI, AJAX responses, and test suite. |
+| `feature/pd2-docs-and-report` | `develop` | `develop` | Initial PD2 completion report PDF in `docs/` and README documentation. |
+| `feature/guest-account-upgrade` | `develop` | `develop` | Allow guest accounts to register and migrate guest practice sessions & chord mastery. |
+| `feature/simplify-registration-form` | `develop` | `develop` | Streamlined registration form and username fallbacks across views/templates. |
+| `feature/fix-fretboard-hover` | `develop` | `develop` | Fix SVG fretboard note hover stability with crimson glow & pluck feedback. |
+| `feature/role-first-signin` | `develop` | `develop` | Two-step Student / Instructor Sign In with backend role-match verification. |
+| `feature/fretmate-brand-logo` | `develop` | `develop` | Minimalist guitar-pick FretMate SVG logo & favicon across all layouts. |
+| `feature/pd2-test-accounts-and-docs` | `develop` | `develop` | **PR #1:** Seed official evaluation test accounts (`guitarist_user` / `instructor_user`) and update README. |
+| `feature/pd2-completion-report-final` | `develop` | `develop` | **PR #2:** Official PD2 completion report PDF (matching course template with screenshots & PR links). |
+| `develop` | `main` | `main` | **PR #3:** Final Project Development 2 increment release into production `main`. |
 
 ---
 
@@ -136,7 +145,7 @@ FretMate/
 │   ├── forms.py                   # RegistrationForm, UserProfileUpdateForm, PracticeSessionForm
 │   ├── urls.py                    # Application routing
 │   ├── admin.py                   # Model registration with filters
-│   └── tests.py                   # 19 automated unit tests (100% pass)
+│   └── tests.py                   # 22 automated unit tests (100% pass)
 │
 ├── docs/                          # Course deliverables
 │   ├── FretMate-Dacumos-BrixelJay-G7-PD2.pdf # Official PD2 completion report PDF
@@ -158,9 +167,9 @@ FretMate/
 │   ├── songs.html                 # Song repertoire with real-time chord transposer HUD
 │   ├── tuner.html                 # Dedicated chromatic guitar tuner screen
 │   ├── metronome.html             # Dedicated digital metronome with time signatures
-│   └── registration/              # Login and Register pages
+│   └── registration/              # Role-first Login and Register pages
 │
-├── static/                        # CSS, Web Audio JS (tuner.js, metronome.js), audio
+├── static/                        # Custom logo.svg, studio_bg.jpg, Web Audio JS (tuner.js, metronome.js)
 ├── requirements.txt               # Locked project dependencies
 └── README.md                      # Project documentation
 ```

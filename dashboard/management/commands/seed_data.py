@@ -1225,7 +1225,7 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS(f'Successfully verified {len(chord_instances)} chords across all keys.'))
 
-        # 3. Create or get demo user
+        # 3. Create or get demo user and official PD2 evaluation test accounts
         user, user_created = User.objects.get_or_create(username='demo_user')
         if user_created:
             user.set_password('password')
@@ -1235,6 +1235,69 @@ class Command(BaseCommand):
             defaults={'skill_level': 'Intermediate', 'weekly_goal_minutes': 150}
         )
 
+        # Official Guitarist (Student) evaluation account
+        guitarist, _ = User.objects.get_or_create(
+            username='guitarist_user',
+            defaults={
+                'email': 'guitarist@fretmate.test',
+                'first_name': 'Carlos',
+                'last_name': 'Reyes',
+            }
+        )
+        guitarist.email = 'guitarist@fretmate.test'
+        guitarist.set_password('Testpass123!')
+        guitarist.save()
+        UserProfile.objects.update_or_create(
+            user=guitarist,
+            defaults={
+                'role': UserProfile.ROLE_GUITARIST,
+                'skill_level': 'Intermediate',
+                'weekly_goal_minutes': 180,
+                'bio': 'Self-directed guitarist practicing barre chords, pentatonic scales, and acoustic repertoire.',
+            }
+        )
+
+        # Official Instructor evaluation account
+        instructor, _ = User.objects.get_or_create(
+            username='instructor_user',
+            defaults={
+                'email': 'instructor@fretmate.test',
+                'first_name': 'Elena',
+                'last_name': 'Santos',
+            }
+        )
+        instructor.email = 'instructor@fretmate.test'
+        instructor.set_password('Testpass123!')
+        instructor.save()
+        UserProfile.objects.update_or_create(
+            user=instructor,
+            defaults={
+                'role': UserProfile.ROLE_INSTRUCTOR,
+                'skill_level': 'Advanced',
+                'weekly_goal_minutes': 240,
+                'bio': 'Guitar instructor overseeing student practice streaks, skill progression, and song repertoire.',
+            }
+        )
+
+        # Seed realistic practice sessions for guitarist_user if none exist
+        if not PracticeSession.objects.filter(user=guitarist).exists():
+            today = timezone.now().date()
+            sample_sessions = [
+                (0, 35, 'Chords', 'Worked on clean F Major and Bm barre chord transitions at 90 BPM.'),
+                (1, 45, 'Songs', 'Full play-through of Wonderwall and Hotel California intro arpeggios.'),
+                (2, 25, 'Scales', 'A Minor Pentatonic box 1 and box 2 alternate picking drills.'),
+                (3, 30, 'Rhythm', 'Sixteenth-note strumming patterns with metronome subdivisions.'),
+                (4, 40, 'Chords', 'Practiced CAGED chord voicings up to the 7th fret.'),
+            ]
+            for days_ago, mins, focus, notes in sample_sessions:
+                session = PracticeSession.objects.create(
+                    user=guitarist,
+                    duration_minutes=mins,
+                    focus_area=focus,
+                    notes=notes,
+                )
+                PracticeSession.objects.filter(pk=session.pk).update(date=today - timedelta(days=days_ago))
+
         # 4. Seed User Progress for Chords
         for i, (name, chord) in enumerate(chord_instances.items()):
             status = 'Mastered' if chord.difficulty == 'Easy' and i < 8 else 'Learning'
@@ -1243,6 +1306,14 @@ class Command(BaseCommand):
                 chord=chord,
                 defaults={'status': status}
             )
+            if i < 12:
+                UserChordProgress.objects.update_or_create(
+                    user=guitarist,
+                    chord=chord,
+                    defaults={'status': status}
+                )
+
+        self.stdout.write(self.style.SUCCESS('Verified test accounts: guitarist_user & instructor_user (password: Testpass123!).'))
 
         # 5. Clean up old dummy tabs
         Tab.objects.filter(title__startswith='Tab_').delete()
