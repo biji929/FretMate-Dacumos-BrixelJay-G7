@@ -32,7 +32,7 @@
 
             <!-- Manual Log Form Container -->
             <div id="manualLogContainer">
-                <form id="loggerForm" class="space-y-5">
+                <form id="loggerForm" novalidate class="space-y-5">
                 {% csrf_token %}
 
                 <!-- Duration Field -->
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     {{ form.duration_minutes }}
-                    <span id="duration-error" class="text-xs text-rose-500 hidden mt-1 block"></span>
+                    <span id="duration_minutes-error" class="text-xs text-rose-500 hidden mt-1 block font-medium"></span>
                 </div>
 
                 <!-- Focus Area Field -->
@@ -60,7 +60,7 @@
                         Focus Area <span class="text-rose-500">*</span>
                     </label>
                     {{ form.focus_area }}
-                    <span id="focus-error" class="text-xs text-rose-500 hidden mt-1 block"></span>
+                    <span id="focus_area-error" class="text-xs text-rose-500 hidden mt-1 block font-medium"></span>
                 </div>
 
                 <!-- Notes Field -->
