@@ -1,138 +1,149 @@
-# PROJECT DEVELOPMENT 2 (PD2) COMPLETION REPORT
-## Core Feature Implementation: Guitar Practice Session Logging & Skill Management (Vertical Slice)
+# Project Development 2 — Implementation / Completion Report
 
-**Project Title:** FretMate: Web-Based Practice & Skill-Analytics Platform for Guitarists  
-**Author / Student:** Brixel Jay Dacumos  
-**Degree Program:** Bachelor of Science in Information Technology (BSIT)  
-**Course:** Information Management 2 (IM2) – Section G7  
-**Institution:** Cebu Institute of Technology - University (CIT-U)  
-**Deadline:** December 1, 2026 (11:59 PM)  
-**Repository:** [https://github.com/biji929/FretMate-Dacumos-BrixelJay-G7](https://github.com/biji929/FretMate-Dacumos-BrixelJay-G7)  
-**Repository Visibility:** Public  
-**Deliverable PDF:** `docs/FretMate-Dacumos-BrixelJay-G7-PD2.pdf`  
+## Project Information
 
----
-
-## 1. Executive Summary & Core Feature Definition
-
-**FretMate** is an integrated, web-based guitar practice management and skill-analytics platform. In this milestone (**Project Development 2 – Core Feature Vertical Slice**), the central operational engine of the system has been implemented end-to-end:
-
-### The Core Feature
-The Core Feature of FretMate is **Guitar Practice Session Logging & Skill Management (Practice Logger)**. This is the primary reason the system exists. Without session logging, guitarist habit tracking, streak calculations, weekly goal progress, dynamic Chart.js visualizations, and instructor student oversight cannot function.
-
-### Vertical Slice Architecture
-The Practice Logger functions seamlessly across all three system layers:
-1. **Database Layer:** PostgreSQL / Supabase storing relational models (`dashboard_practicesession`, `dashboard_userprofile`, `dashboard_userchordprogress`). Configured with foreign key cascades, proper indexing, and strict per-user data isolation.
-2. **Backend Layer:** Django views (`logger`, `get_practice_session`, `update_practice_session`, `delete_practice_session`, `export_practice_csv`), Django ModelForm (`PracticeSessionForm`), strict `@login_required` decorators, and JSON/REST responses.
-3. **Frontend Layer:** Django templates (`templates/logger.html`, `templates/dashboard_guitarist.html`, `templates/dashboard_instructor.html`, `templates/instructor_student_detail.html`) styled in the modern Electric Crimson & Obsidian palette, complete with asynchronous modal dialogs, real-time DOM card manipulation, and CSV export triggers.
+| Field | Details |
+| :--- | :--- |
+| **System Name** | FretMate |
+| **Student Name** | Dacumos, Brixel Jay |
+| **Section** | G7 |
+| **Increment** | Project Development 2 – Core Feature (Vertical Slice) |
+| **GitHub Repository** | [https://github.com/biji929/FretMate-Dacumos-BrixelJay-G7](https://github.com/biji929/FretMate-Dacumos-BrixelJay-G7) |
+| **Date Submitted** | 11/27/2026 |
+| **Official PDF** | [`docs/FretMate-Dacumos-BrixelJay-G7-PD2.pdf`](FretMate-Dacumos-BrixelJay-G7-PD2.pdf) |
 
 ---
 
-## 2. Standard Features Status (PD1 Verification)
+## 1. Project Overview
 
-All standard baseline features from Project Development 1 remain complete and verified:
+**FretMate** is a web-based guitar practice management and skill-analytics platform built for self-directed guitarists (students) and guitar instructors. Musicians often juggle separate apps for tuning, metronomes, chord diagrams, song sheets, and manual practice journals, making it hard to sustain consistent habits or track measurable improvement. FretMate unifies interactive guitar tools with structured practice logging and real-time analytics in one role-aware workspace.
 
-| Feature Name | Route / Endpoint | Description & Access Control | Status |
-| :--- | :--- | :--- | :---: |
-| **Account Registration** | `/register/` | Validates unique RFC-compliant email, username, strong password, and role selection (`Guitarist` or `Instructor`). Creates linked `UserProfile`. | **Complete** |
-| **Login / Logout** | `/login/`, `/logout/` | Secure PBKDF2 authentication, CSRF-safe POST logout, session flushing, and one-click guest access. | **Complete** |
-| **Role-Based User Dashboards** | `/dashboard/` | Role dispatch via `@role_required`. Guitarist views personal 7-day practice stats; Instructor views enrolled student roster. | **Complete** |
-| **User Profile Management** | `/profile/` | Comprehensive view and update form for musician contact number, biography, skill tier, and weekly goal minutes. | **Complete** |
+- **Core feature for this increment:** Practice Session Logging & Skill Management (Practice Logger)
+- **Justification:** Practice Session Logging is the primary operational core of FretMate because every dashboard KPI (total minutes, daily streak, weekly goal progress), Chart.js 7-day trend visualization, CSV history export, and instructor student progress review depends directly on persisted practice session records.
 
 ---
 
-## 3. Core Feature CRUD Operations Implementation
+## 2. Features Implemented in This Increment
 
-The Practice Logger implements all four CRUD operations through the user interface:
+### 2.1 Standard Features (from Project Development 1)
 
-| Operation | HTTP Method & Route | Frontend UI & Workflow | Database & Backend Action |
+| Feature | Status | Notes |
+| :--- | :---: | :--- |
+| **Account Registration** | **Complete** | Streamlined sign-up with username, unique email validation, role choice (Guitarist/Instructor), and PBKDF2 password hashing. Guest users upgrading via Register Free automatically retain their logged sessions and chord mastery. |
+| **Login / Logout** | **Complete** | Two-step role-first Sign In (Student vs. Instructor) with backend role-match validation, CSRF-safe logout, session flushing, and one-click Guest Mode. |
+| **Role-Based User Dashboard** | **Complete** | Automatic dispatch via `@role_required`. Guitarists view personal KPIs and Chart.js trends (`/dashboard/guitarist/`); Instructors view student roster and student drill-downs (`/dashboard/instructor/`). |
+| **User Profile (view and edit)** | **Complete** | Users view and edit their name, email, contact number, bio, guitar skill tier, and weekly practice goal at `/profile/` with strict `request.user` isolation. |
+
+### 2.2 Core Feature: Practice Session Logging & Skill Management
+
+**Description:** The Practice Logger enables authenticated guitarists to log manual or timed practice sessions (duration, focus category, and practice notes), browse their recent history, edit past logs via an interactive modal, delete sessions with confirmation, and export their full practice history to CSV. All records persist end-to-end through Django models into PostgreSQL/Supabase (with SQLite local dev fallback), immediately update Guitarist Dashboard charts and streaks, and surface in read-only form on the Instructor's student progress detail view.
+
+#### User Roles and Access
+
+| Role | What this role can do in the feature |
+| :--- | :--- |
+| **Student (Guitarist)** | Create, read, update, and delete their own practice sessions; run the guided Workout Timer; export personal history to CSV; view live 7-day trend & focus-distribution analytics. |
+| **Instructor** | View platform-wide practice volume on the Instructor Dashboard and inspect any enrolled student's full practice session history and focus breakdown in read-only mode (`/instructor/student/<id>/`). |
+
+#### User Flow
+1. User visits `/login/`, selects their role (**Student** or **Instructor**), and signs in with valid credentials.
+2. Student lands on `/dashboard/guitarist/`, sees current KPIs & charts, and clicks **Practice Logger** (`/logger/`).
+3. Student enters Duration (1–600 min), Focus Area (`Chords`, `Songs`, `Scales`, or `Rhythm`), and optional Notes (or uses quick presets / Workout Timer) and clicks **Save Practice Session**.
+4. Invalid entries (e.g., duration `999`) trigger clear crimson error banners and inline field errors; valid entries save to the database, show a green confirmation banner, and prepend the new card to Recent History.
+5. Student can click **Edit** on any card to modify fields in the Edit Practice Session modal, click **Delete** to remove a session via confirmation modal, or click **CSV** to download their full history.
+6. Instructor signs in via the Instructor card, views enrolled students on `/dashboard/instructor/`, and clicks **View Progress** to audit a student's logged practice sessions.
+
+#### CRUD Operations
+
+| Operation | Implemented? | Where in the UI | Who can do it |
+| :--- | :---: | :--- | :--- |
+| **Create** | Yes | `/logger/` — Manual Practice Session form & Guided Workout Timer (`Save Practice Session`) | Authenticated Student (Guitarist) / Guest |
+| **Read** | Yes | `/logger/` Recent History feed & `CSV` export; `/dashboard/guitarist/` charts; `/instructor/student/<id>/` | Student (own logs); Instructor (enrolled student logs) |
+| **Update** | Yes | `/logger/` — Edit icon on each card opens `Edit Practice Session` modal (`Save Changes`) | Record owner only (`user=request.user`) |
+| **Delete** | Yes | `/logger/` — Trash icon on each card opens `Delete Practice Session?` confirmation modal | Record owner only (`user=request.user`) |
+
+#### Database Models
+
+| Model / Table | Key Fields | Relationships (ForeignKey / ManyToMany) |
+| :--- | :--- | :--- |
+| **PracticeSession** (`dashboard_practicesession`) | `id`, `date`, `duration_minutes` (1–600), `focus_area`, `notes` | `ForeignKey -> auth.User (CASCADE)` |
+| **UserProfile** (`dashboard_userprofile`) | `id`, `role`, `contact_number`, `bio`, `skill_level`, `weekly_goal_minutes`, `created_at` | `OneToOneField -> auth.User (CASCADE)` |
+| **UserChordProgress** (`dashboard_userchordprogress`) | `id`, `status` (`Learning` / `Mastered`) | `ForeignKey -> auth.User`, `ForeignKey -> Chord` (`unique_together`) |
+| **Chord & Tab** (`dashboard_chord`, `dashboard_tab`) | `name`/`title`, `artist`, `genre`, `difficulty`, `key`, `diagram_data`, `content`, `youtube_url` | `ManyToManyField: Tab.associated_chords <-> Chord` |
+
+#### Key Files
+
+| Layer | File path(s) |
+| :--- | :--- |
+| **Models** | `dashboard/models.py`, `dashboard/migrations/*.py` |
+| **Views** | `dashboard/views.py` |
+| **URLs** | `dashboard/urls.py`, `fretmate_project/urls.py` |
+| **Forms** | `dashboard/forms_session.py`, `dashboard/forms.py`, `dashboard/forms_song.py` |
+| **Templates** | `templates/logger.html`, `templates/dashboard_guitarist.html`, `templates/dashboard_instructor.html`, `templates/instructor_student_detail.html`, `templates/base.html`, `templates/registration/login.html`, `templates/registration/register.html` |
+| **Tests & Seed** | `dashboard/tests.py` (22 automated tests, 100% passing), `dashboard/management/commands/seed_data.py` |
+
+#### Validation and Business Rules
+
+| Rule | How it is enforced |
+| :--- | :--- |
+| Duration must be 1–600 minutes | `MinValueValidator(1)` / `MaxValueValidator(600)` + `PracticeSessionForm`; AJAX returns HTTP 400 with red banner and inline field error. |
+| Focus Area must be a valid category | Model `FOCUS_AREAS` choices enforced by `PracticeSessionForm`. |
+| Login required for all core routes | `@login_required` redirects anonymous requests to `/login/`. |
+| Per-user data ownership / isolation | `get_object_or_404(PracticeSession, id=session_id, user=request.user)` returns HTTP 404 on cross-user access. |
+| Role-based access & Sign-In role check | `@role_required` + `StyledAuthenticationForm.confirm_login_allowed`. |
+| Guest progress transfer on signup | `views.register` migrates guest sessions & chord progress inside `transaction.atomic()`. |
+
+#### Branches and Pull Requests
+
+| Branch | Merged Into | Pull Request Link | What it contains |
 | :--- | :--- | :--- | :--- |
-| **CREATE** | `POST /logger/` | Guitarist inputs duration (1–600 min), focus area (`Chords`, `Songs`, `Scales`, `Rhythm`), and notes. Asynchronous AJAX submission dynamically prepends the session card to the history list without reloading. | Persisted in PostgreSQL `dashboard_practicesession` with foreign key to `request.user`. |
-| **READ** | `GET /logger/`<br/>`GET /logger/<id>/`<br/>`GET /export/practice-csv/` | 1) History list displays past practice cards. 2) Single session endpoint populates the Edit modal. 3) CSV export endpoint streams complete practice history. | Filtered strictly by `user=request.user` to prevent cross-account data leakage. |
-| **UPDATE** | `POST /logger/<id>/update/` | Clicking the Edit icon opens an Electric Crimson modal pre-filled with existing data. Saving validates inputs and updates the card in place in the DOM. | `PracticeSessionForm` validates inputs and updates record in PostgreSQL with ownership verification. |
-| **DELETE** | `POST /logger/<id>/delete/` | Clicking Delete prompts a confirmation modal. On confirmation, the card slides out and is removed from the DOM. | Record permanently removed from PostgreSQL via `session.delete()`. |
+| `feature/practice-session-crud` | `develop` | Preserved feature branch (merged into `develop`) | Full CRUD endpoints, modal UI, CSV export, and CRUD tests. |
+| `feature/guest-account-upgrade` | `develop` | Preserved feature branch (merged into `develop`) | Guest `/register/` access + progress migration on account upgrade. |
+| `feature/role-first-signin` | `develop` | Preserved feature branch (merged into `develop`) | Two-step Student / Instructor Sign In with backend role validation. |
+| `feature/fretmate-brand-logo` | `develop` | Preserved feature branch (merged into `develop`) | Custom minimalist guitar-pick SVG logo & favicon across layouts. |
+| `feature/pd2-test-accounts-and-docs` | `develop` | [PR #1](https://github.com/biji929/FretMate-Dacumos-BrixelJay-G7/pull/1) | Seed official evaluation test accounts (`guitarist_user`, `instructor_user`) & updated README. |
+| `feature/pd2-completion-report-final` | `develop` | [PR #2](https://github.com/biji929/FretMate-Dacumos-BrixelJay-G7/pull/2) | Fix `#loggerForm` inline error display and commit final PD2 Completion Report PDF (with screenshots). |
+| `develop` | `main` | [PR #3](https://github.com/biji929/FretMate-Dacumos-BrixelJay-G7/pull/3) | Project Development 2 Core Feature (Vertical Slice) increment release into `main`. |
+
+*Full labeled screenshots of the end-to-end flow (Role-First Sign In, Guitarist Dashboard, Server-Side Validation Error, Create Success, Edit Modal, Delete Modal, and Instructor Student Oversight) are embedded in [`docs/FretMate-Dacumos-BrixelJay-G7-PD2.pdf`](FretMate-Dacumos-BrixelJay-G7-PD2.pdf).*
 
 ---
 
-## 4. Input Validation & Business Rules
+## 3. Remaining Tasks
 
-1. **Duration Minutes:** Strictly validated as positive integer between 1 and 600 minutes. Non-numeric or out-of-range inputs trigger clear inline error banners.
-2. **Focus Area:** Required choice among `Chords`, `Songs`, `Scales`, and `Rhythm`.
-3. **Data Isolation:** `get_object_or_404(PracticeSession, id=session_id, user=request.user)` ensures no user can view, edit, or delete another guitarist's practice session (returns HTTP 404).
-4. **Role Isolation:** Guitarists manage their own sessions. Instructors can inspect enrolled student practice records in read-only mode via `/instructor/student/<id>/`.
-
----
-
-## 5. GitHub Branching Strategy & Pull Request History
-
-In strict accordance with course specifications:
-- `main`: Stable release branch. Direct commits prohibited.
-- `develop`: Integration branch created from `main`.
-- `feature/<name>`: Dedicated feature branches branched from `develop` and merged via Pull Requests. Merged branches are preserved.
-
-| Branch Name | Base Branch | Target Branch | Objective & Pull Request | Status |
-| :--- | :--- | :--- | :--- | :---: |
-| `feature/practice-session-crud` | `develop` | `develop` | Practice Session Update and Delete (Full CRUD), modal UI, AJAX responses, and test suite (PR #1). | **Merged** |
-| `feature/pd2-docs-and-report` | `develop` | `develop` | Official PD2 completion report PDF in `docs/` and updated README setup documentation (PR #2). | **Merged** |
-| `develop` | `main` | `main` | Production consolidation of tested core feature vertical slice (PR #3). | **Merged** |
+| No. | Task | Description | Priority | Target Increment |
+| :---: | :--- | :--- | :---: | :--- |
+| 1 | **Instructor Session Feedback** | Allow instructors to leave coaching comments on student practice logs. | High | Project Development 3 |
+| 2 | **Practice History Filtering & Search** | Add date-range, focus-area filter, and keyword search to `/logger/`. | Medium | Project Development 3 |
+| 3 | **Automated Guest Account Cleanup** | Management command to purge abandoned `guest_*` accounts older than 7 days. | Low | Project Development 3 |
+| 4 | **Practice Streak Reminders** | Optional goal milestone alerts when approaching weekly practice targets. | Low | Project Development 3 |
 
 ---
 
-## 6. Verification & Automated Test Suite
+## 4. Outstanding Issues
 
-Automated test suite located in `dashboard/tests.py`. **19 of 19 tests pass with 100% success**:
-
-```text
-Found 19 test(s).
-Creating test database for alias 'default'...
-...................
-----------------------------------------------------------------------
-Ran 19 tests in 31.379s
-
-OK
-Destroying test database for alias 'default'...
-```
-
-### Test Cases Summary Table
-
-| Test Case Name | Objective | Result |
-| :--- | :--- | :---: |
-| `test_auth_protection` | Anonymous request to `/dashboard/` redirects to `/login/` | **PASSED** |
-| `test_logger_ajax` | CREATE: Log practice session via AJAX (HTTP 201) | **PASSED** |
-| `test_get_practice_session` | READ: Retrieve single session JSON for modal | **PASSED** |
-| `test_update_practice_session` | UPDATE: Mutate duration, focus area, notes via AJAX | **PASSED** |
-| `test_delete_practice_session` | DELETE: Remove practice session record via AJAX | **PASSED** |
-| `test_practice_session_data_isolation_crud` | Security: User A cannot read, update, or delete User B records (HTTP 404) | **PASSED** |
-| `test_export_practice_csv` | READ: CSV export streaming with user filename attachment | **PASSED** |
-| `test_data_isolation` | Database scoping between multiple users | **PASSED** |
-| `test_songs_view` | Song library page rendering (HTTP 200) | **PASSED** |
-| `test_add_song_post` | Submit new song tablature and persist in DB | **PASSED** |
-| `test_registration_with_email_and_role` | Register with valid unique email & role | **PASSED** |
-| `test_registration_duplicate_email_rejected` | Duplicate email rejection validation | **PASSED** |
-| `test_role_based_dashboard_dispatch` | Role dispatch to guitarist/instructor dashboards | **PASSED** |
-| `test_role_url_protection_blocks_guitarist` | Guitarist URL injection prevention | **PASSED** |
-| `test_user_profile_view_and_edit` | View and edit own user profile information | **PASSED** |
-| `test_api_chord_progress_learning_and_mastered` | Interactive chord mastery state toggles | **PASSED** |
-| `test_api_chord_progress_reset` | Reset chord mastery state | **PASSED** |
-| `test_instructor_student_detail_view` | Instructor student practice log drill-down | **PASSED** |
-| `test_instructor_student_detail_blocked_for_guitarist` | Guitarist forbidden from student drill-down | **PASSED** |
+| Issue ID | Description | Steps to Reproduce | Severity | Status / Workaround |
+| :--- | :--- | :--- | :---: | :--- |
+| `ISS-01` | Local development falls back to SQLite when `DATABASE_URL` is unset in `.env`. | 1. Copy `.env.example` to `.env` without `DATABASE_URL`. 2. Run `manage.py runserver`. | Minor | By design for offline dev; configuring Supabase PostgreSQL `DATABASE_URL` in `.env` switches automatically via `dj-database-url`. |
+| `ISS-02` | Abandoned guest accounts remain in `auth_user` if the tab is closed without upgrading or logging out. | 1. Click Continue as Guest. 2. Close browser without registering. | Minor | Open — Upgrading via `/register/` deletes the temporary guest cleanly; cleanup command planned for PD3. |
 
 ---
 
-## 7. Test Accounts & Evaluation Credentials
+## 5. Test Accounts
 
-| Role | Username | Password | Purpose & Privileges |
-| :--- | :--- | :--- | :--- |
-| **Guitarist (Student)** | `guitarist_user` | `Testpass123!` | Full CRUD practice session logging, personal analytics, fretboard explorer, chord transposer. |
-| **Instructor (Teacher)** | `instructor_user` | `Testpass123!` | Instructor dashboard, student roster, student practice log drill-down (`/instructor/student/<id>/`). |
-| **Guest Account** | Instant Guest Access | None (One-Click) | Temporary session created from landing page; persistent top banner with upgrade options. |
+Run `python manage.py seed_data` to ensure both evaluation accounts and sample practice logs exist:
 
----
-
-## 8. Remaining Tasks & Outstanding Issues
-
-- **Outstanding Issues:** None. 0 critical bugs, 0 compiler/lint warnings (`manage.py check` reports 0 issues), and 0 unhandled exceptions.
-- **Remaining Tasks for Next Milestones:** Real-time student-instructor feedback chat, Spotify/YouTube live audio sync, and peer leaderboard gamification.
+| Role | Username / Email | Password |
+| :--- | :--- | :--- |
+| **Student (Guitarist)** | `guitarist_user` / `guitarist@fretmate.test` | `Testpass123!` |
+| **Instructor** | `instructor_user` / `instructor@fretmate.test` | `Testpass123!` |
+| **Guest Explorer** | Click **Continue as Guest** on `/login/` or `/` | None (One-Click) |
 
 ---
-*Report certified by Brixel Jay Dacumos for IM2 Evaluation, Cebu Institute of Technology - University.*
+
+## 6. Declaration
+
+I declare that the work described in this report is my own, that it is accurately reflected in my GitHub repository, and that all remaining tasks and known issues are disclosed above.
+
+**Name:** Brixel Jay Dacumos  
+**Date:** 11/27/2026
