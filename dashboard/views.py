@@ -12,6 +12,7 @@ from .forms import RegistrationForm, UserProfileUpdateForm
 from .forms_session import PracticeSessionForm
 from .forms_song import SongForm
 from .models import PracticeSession, Chord, Tab, UserChordProgress, UserProfile
+from django.db import transaction
 from django.db.models import Sum, Count, Q
 from datetime import date, timedelta
 
@@ -58,22 +59,48 @@ def logout_view(request):
     return redirect('home')
 
 def register(request):
-    if request.user.is_authenticated:
+    is_guest = request.user.is_authenticated and request.user.username.startswith('guest_')
+    if request.user.is_authenticated and not is_guest:
         return redirect('dashboard')
 
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            guest_user = request.user if is_guest else None
+            with transaction.atomic():
+                user = form.save()
+                if guest_user:
+                    # Transfer any practice sessions and chord mastery logged during guest mode
+                    PracticeSession.objects.filter(user=guest_user).update(user=user)
+                    for progress in UserChordProgress.objects.filter(user=guest_user):
+                        UserChordProgress.objects.update_or_create(
+                            user=user,
+                            chord=progress.chord,
+                            defaults={'status': progress.status},
+                        )
+
+            if guest_user:
+                auth_logout(request)
+                guest_user.delete()
+
             role_display = user.profile.get_role_display() if hasattr(user, 'profile') else 'Guitarist'
-            messages.success(request, f'Welcome to FretMate, {user.first_name}! Your {role_display} account was created successfully.')
+            if guest_user:
+                messages.success(
+                    request,
+                    f'Welcome to FretMate, {user.first_name}! Your {role_display} account was created and your guest progress has been saved.'
+                )
+            else:
+                messages.success(
+                    request,
+                    f'Welcome to FretMate, {user.first_name}! Your {role_display} account was created successfully.'
+                )
             login(request, user)
             return redirect('dashboard')
         else:
             messages.error(request, 'Registration failed. Please review the errors below.')
     else:
         form = RegistrationForm()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form, 'is_guest': is_guest})
 
 @login_required
 def dashboard(request):

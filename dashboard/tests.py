@@ -267,3 +267,43 @@ class FretMateTests(TestCase):
         self.assertIn(f'attachment; filename="fretmate_practice_{self.user.username}.csv"', response['Content-Disposition'])
         self.assertIn('CSV drill', response.content.decode('utf-8'))
 
+    def test_guest_can_access_register_and_upgrade_account(self):
+        self.client.logout()
+        # Sign in as guest
+        guest_res = self.client.post(reverse('guest_login'))
+        self.assertEqual(guest_res.status_code, 302)
+        guest_user = User.objects.get(username__startswith='guest_')
+
+        # Create guest practice session and chord progress
+        chord = Chord.objects.create(name='A Minor', genre='Pop', difficulty='Easy', diagram_data={'frets': [-1, 0, 2, 2, 1, 0]})
+        PracticeSession.objects.create(user=guest_user, duration_minutes=20, focus_area='Chords', notes='Guest session')
+        UserChordProgress.objects.create(user=guest_user, chord=chord, status='Learning')
+
+        # Guest clicking "Register Free" must load the register page (200), not redirect to dashboard
+        get_res = self.client.get(reverse('register'))
+        self.assertEqual(get_res.status_code, 200)
+        self.assertTemplateUsed(get_res, 'registration/register.html')
+        self.assertTrue(get_res.context['is_guest'])
+
+        # Submit registration to permanently save guest progress
+        post_res = self.client.post(reverse('register'), {
+            'username': 'upgradedguitarist',
+            'first_name': 'Alex',
+            'last_name': 'Lifeson',
+            'email': 'alex@example.com',
+            'role': UserProfile.ROLE_GUITARIST,
+            'password1': 'StrongP@ssw0rd123!',
+            'password2': 'StrongP@ssw0rd123!',
+        })
+        self.assertEqual(post_res.status_code, 302)
+        new_user = User.objects.get(username='upgradedguitarist')
+        # Guest account removed and progress migrated to new user
+        self.assertFalse(User.objects.filter(id=guest_user.id).exists())
+        self.assertTrue(PracticeSession.objects.filter(user=new_user, notes='Guest session').exists())
+        self.assertTrue(UserChordProgress.objects.filter(user=new_user, chord=chord, status='Learning').exists())
+
+    def test_regular_authenticated_user_redirected_from_register(self):
+        response = self.client.get(reverse('register'))
+        self.assertRedirects(response, reverse('dashboard'), fetch_redirect_response=False)
+
+
