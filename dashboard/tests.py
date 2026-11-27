@@ -303,4 +303,56 @@ class FretMateTests(TestCase):
         response = self.client.get(reverse('register'))
         self.assertRedirects(response, reverse('dashboard'), fetch_redirect_response=False)
 
+    def test_login_asks_role_first_and_enforces_role_match(self):
+        self.client.logout()
+        # Step 1: GET /login/ asks Student or Instructor first
+        get_res = self.client.get(reverse('login'))
+        self.assertEqual(get_res.status_code, 200)
+        self.assertContains(get_res, 'chooseStudentBtn')
+        self.assertContains(get_res, 'chooseInstructorBtn')
+        self.assertContains(get_res, 'name="login_role"')
+
+        # Setup a student and an instructor account
+        self.user.profile.role = UserProfile.ROLE_GUITARIST
+        self.user.profile.save()
+        instructor = User.objects.create_user(username='teacher1', password='password')
+        instructor.profile.role = UserProfile.ROLE_INSTRUCTOR
+        instructor.profile.save()
+
+        # Student trying to sign in via Instructor portal is rejected
+        mismatch_student = self.client.post(reverse('login'), {
+            'username': 'testuser',
+            'password': 'password',
+            'login_role': UserProfile.ROLE_INSTRUCTOR,
+        })
+        self.assertEqual(mismatch_student.status_code, 200)
+        self.assertContains(mismatch_student, 'registered as a Student')
+
+        # Instructor trying to sign in via Student portal is rejected
+        mismatch_instructor = self.client.post(reverse('login'), {
+            'username': 'teacher1',
+            'password': 'password',
+            'login_role': UserProfile.ROLE_GUITARIST,
+        })
+        self.assertEqual(mismatch_instructor.status_code, 200)
+        self.assertContains(mismatch_instructor, 'registered as an Instructor')
+
+        # Matching role sign-in succeeds for Student
+        ok_student = self.client.post(reverse('login'), {
+            'username': 'testuser',
+            'password': 'password',
+            'login_role': UserProfile.ROLE_GUITARIST,
+        })
+        self.assertEqual(ok_student.status_code, 302)
+
+        # Matching role sign-in succeeds for Instructor
+        self.client.logout()
+        ok_instructor = self.client.post(reverse('login'), {
+            'username': 'teacher1',
+            'password': 'password',
+            'login_role': UserProfile.ROLE_INSTRUCTOR,
+        })
+        self.assertEqual(ok_instructor.status_code, 302)
+
+
 
