@@ -43,6 +43,19 @@
             outline: 2px solid #f43f5e !important;
             outline-offset: 2px !important;
         }
+        /* Reserve right space for password visibility eye button */
+        .password-input-wrap input {
+            padding-right: 2.85rem !important;
+        }
+        /* Keep browser autofilled inputs dark and readable */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 1000px #1e1e24 inset !important;
+            -webkit-text-fill-color: #ffffff !important;
+            caret-color: #ffffff !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-rose-950 text-zinc-100 flex items-center justify-center px-4 antialiased selection:bg-rose-600 selection:text-white">
@@ -95,6 +108,28 @@
         } else {
             html.classList.remove('dark');
         }
+
+        // Shared Show / Hide Password toggle for auth forms
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.toggle-password-btn');
+            if (!btn) return;
+            const targetId = btn.dataset.target;
+            const input = document.getElementById(targetId);
+            if (!input) return;
+
+            const isHidden = input.type === 'password';
+            input.type = isHidden ? 'text' : 'password';
+            btn.setAttribute('aria-pressed', String(isHidden));
+            btn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+            btn.setAttribute('title', isHidden ? 'Hide password' : 'Show password');
+
+            const eyeOpen = btn.querySelector('.icon-eye-open');
+            const eyeClosed = btn.querySelector('.icon-eye-closed');
+            if (eyeOpen && eyeClosed) {
+                eyeOpen.classList.toggle('hidden', isHidden);
+                eyeClosed.classList.toggle('hidden', !isHidden);
+            }
+        });
     </script>
 </body>
 </html>
