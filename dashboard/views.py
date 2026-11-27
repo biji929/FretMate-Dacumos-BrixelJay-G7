@@ -84,15 +84,16 @@ def register(request):
                 guest_user.delete()
 
             role_display = user.profile.get_role_display() if hasattr(user, 'profile') else 'Guitarist'
+            display_name = user.first_name or user.username
             if guest_user:
                 messages.success(
                     request,
-                    f'Welcome to FretMate, {user.first_name}! Your {role_display} account was created and your guest progress has been saved.'
+                    f'Welcome to FretMate, {display_name}! Your {role_display} account was created and your guest progress has been saved.'
                 )
             else:
                 messages.success(
                     request,
-                    f'Welcome to FretMate, {user.first_name}! Your {role_display} account was created successfully.'
+                    f'Welcome to FretMate, {display_name}! Your {role_display} account was created successfully.'
                 )
             login(request, user)
             return redirect('dashboard')

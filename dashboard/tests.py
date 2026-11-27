@@ -51,10 +51,12 @@ class FretMateTests(TestCase):
 
     def test_registration_with_email_and_role(self):
         self.client.logout()
+        get_res = self.client.get(reverse('register'))
+        self.assertNotIn('first_name', get_res.context['form'].fields)
+        self.assertNotIn('last_name', get_res.context['form'].fields)
+
         response = self.client.post(reverse('register'), {
             'username': 'newguitarist',
-            'first_name': 'Carlos',
-            'last_name': 'Santana',
             'email': 'carlos@example.com',
             'role': UserProfile.ROLE_GUITARIST,
             'password1': 'StrongP@ssw0rd123!',
@@ -63,7 +65,6 @@ class FretMateTests(TestCase):
         self.assertEqual(response.status_code, 302)
         user = User.objects.get(username='newguitarist')
         self.assertEqual(user.email, 'carlos@example.com')
-        self.assertEqual(user.first_name, 'Carlos')
         self.assertEqual(user.profile.role, UserProfile.ROLE_GUITARIST)
 
     def test_registration_duplicate_email_rejected(self):
@@ -71,8 +72,6 @@ class FretMateTests(TestCase):
         self.client.logout()
         response = self.client.post(reverse('register'), {
             'username': 'differentuser',
-            'first_name': 'Test',
-            'last_name': 'User',
             'email': 'unique@example.com',
             'role': UserProfile.ROLE_GUITARIST,
             'password1': 'StrongP@ssw0rd123!',
@@ -288,8 +287,6 @@ class FretMateTests(TestCase):
         # Submit registration to permanently save guest progress
         post_res = self.client.post(reverse('register'), {
             'username': 'upgradedguitarist',
-            'first_name': 'Alex',
-            'last_name': 'Lifeson',
             'email': 'alex@example.com',
             'role': UserProfile.ROLE_GUITARIST,
             'password1': 'StrongP@ssw0rd123!',
