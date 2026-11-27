@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FretMate – {% block page_title %}Welcome{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/logo.svg' %}">
     <!-- Modern Typography: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,10 +57,8 @@
     <div class="relative z-10 w-full max-w-md py-8">
         <!-- Logo / Brand -->
         <div class="text-center mb-8">
-            <a href="{% url 'home' %}" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-rose-600 to-red-600 shadow-xl shadow-rose-600/30 mb-4 text-white hover:scale-105 transition-transform" title="Return to Landing Page">
-                <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .57-.723V7.05a.75.75 0 0 0-.54-.722l-8.25 2.357a.75.75 0 0 0-.54.722v6.623a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .57-.723V9Z" />
-                </svg>
+            <a href="{% url 'home' %}" class="inline-flex items-center justify-center mb-4 rounded-2xl shadow-xl shadow-rose-600/30 hover:shadow-rose-500/50 transition-shadow duration-200" title="Return to Landing Page">
+                <img src="{% static 'images/logo.svg' %}" alt="FretMate logo" width="56" height="56" class="w-14 h-14 rounded-2xl">
             </a>
             <h1 class="text-3xl font-black tracking-tight text-white">FretMate</h1>
             <p class="text-zinc-400 text-sm mt-1">Your Guitar Practice Companion</p>
