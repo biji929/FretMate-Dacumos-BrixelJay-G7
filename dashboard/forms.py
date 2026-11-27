@@ -4,8 +4,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import UserProfile
 
 class RegistrationForm(UserCreationForm):
-    first_name = forms.CharField(max_length=50, required=True, label="First Name")
-    last_name = forms.CharField(max_length=50, required=True, label="Last Name")
     email = forms.EmailField(required=True, label="Email Address")
     role = forms.ChoiceField(
         choices=UserProfile.ROLE_CHOICES,
@@ -16,7 +14,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'role')
+        fields = ('username', 'email', 'role')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -36,8 +34,6 @@ class RegistrationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.first_name = self.cleaned_data.get('first_name', '').strip()
-        user.last_name = self.cleaned_data.get('last_name', '').strip()
         user.email = self.cleaned_data.get('email', '').strip().lower()
         if commit:
             user.save()
@@ -48,8 +44,8 @@ class RegistrationForm(UserCreationForm):
 
 
 class UserProfileUpdateForm(forms.Form):
-    first_name = forms.CharField(max_length=50, required=True, label="First Name")
-    last_name = forms.CharField(max_length=50, required=True, label="Last Name")
+    first_name = forms.CharField(max_length=50, required=False, label="First Name")
+    last_name = forms.CharField(max_length=50, required=False, label="Last Name")
     email = forms.EmailField(required=True, label="Email Address")
     contact_number = forms.CharField(max_length=25, required=False, label="Contact Number")
     bio = forms.CharField(max_length=500, required=False, widget=forms.Textarea(attrs={'rows': 3}), label="Bio")
@@ -95,8 +91,8 @@ class UserProfileUpdateForm(forms.Form):
     def save(self):
         if not self.user:
             return None
-        self.user.first_name = self.cleaned_data['first_name'].strip()
-        self.user.last_name = self.cleaned_data['last_name'].strip()
+        self.user.first_name = self.cleaned_data.get('first_name', '').strip()
+        self.user.last_name = self.cleaned_data.get('last_name', '').strip()
         self.user.email = self.cleaned_data['email'].strip().lower()
         self.user.save()
 

@@ -28,7 +28,7 @@
                     {{ student.first_name|default:student.username|slice:":1"|upper }}
                 </div>
                 <div>
-                    <h2 class="font-bold text-zinc-900 dark:text-white text-lg">{{ student.first_name }} {{ student.last_name }}</h2>
+                    <h2 class="font-bold text-zinc-900 dark:text-white text-lg">{% if student.first_name or student.last_name %}{{ student.first_name }} {{ student.last_name }}{% else %}{{ student.username }}{% endif %}</h2>
                     <p class="text-xs text-zinc-400">{{ student.email|default:"No email recorded" }}</p>
                 </div>
             </div>
